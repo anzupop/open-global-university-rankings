@@ -17,6 +17,7 @@ import re
 import statistics
 import sys
 import time
+import unicodedata
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -53,6 +54,20 @@ WINDOW_END = 2024
 WORK_TYPES = "article,review,book,book-chapter"
 PER_PAGE = 200
 SLEEP_SECONDS = 0.12
+CANDIDATE_RANK_LIMIT = 200
+SOURCE_RANK_FIELDS = {
+    "ARWU 2025": "arwu_2025_rank",
+    "QS 2027": "qs_2027_rank",
+    "US News 2026-2027": "usnews_2026_2027_rank",
+}
+SOURCE_FLAGS = {
+    "ARWU 2025": "in_arwu_2025",
+    "QS 2027": "in_qs_2027",
+    "US News 2026-2027": "in_usnews_2026_2027",
+}
+SOURCE_RANK_FIELDNAMES = list(SOURCE_RANK_FIELDS.values())
+SOURCE_FLAG_FIELDNAMES = list(SOURCE_FLAGS.values())
+AMBIGUOUS_RANK = "__AMBIGUOUS__"
 
 
 def ensure_dirs() -> None:
@@ -183,6 +198,37 @@ def norm_key(name: str) -> str:
     return re.sub(r"\s+", " ", name).strip()
 
 
+def ascii_fold(value: str) -> str:
+    return unicodedata.normalize("NFKD", clean_text(value)).encode("ascii", "ignore").decode("ascii")
+
+
+def strict_rank_key(name: str) -> str:
+    name = ascii_fold(name).lower()
+    name = name.replace("&", " and ").replace("--", " ")
+    name = re.sub(r"\([^)]*\)", " ", name)
+    name = re.sub(r"\bthe\b", " ", name)
+    name = re.sub(r"[^a-z0-9]+", " ", name)
+    return re.sub(r"\s+", " ", name).strip()
+
+
+def rank_match_keys(name: str) -> set[str]:
+    keys = {strict_rank_key(name)}
+    loose = norm_key(ascii_fold(name))
+    if len(loose.replace(" ", "")) >= 5:
+        keys.add(loose)
+    return {key for key in keys if key}
+
+
+def better_rank(existing: str, candidate: str) -> str:
+    if not existing:
+        return candidate
+    if not candidate:
+        return existing
+    existing_bound = rank_upper_bound(existing) or 999999
+    candidate_bound = rank_upper_bound(candidate) or 999999
+    return candidate if candidate_bound < existing_bound else existing
+
+
 @dataclass
 class SourceEntry:
     name: str
@@ -241,7 +287,7 @@ def parse_nuxt_payload(payload: str) -> list[dict[str, Any]]:
     return deduped
 
 
-def fetch_arwu(refresh: bool = False) -> list[SourceEntry]:
+def fetch_arwu_all(refresh: bool = False, rank_limit: int | None = None) -> list[SourceEntry]:
     html_text = cached_get(ARWU_URL, "arwu_2025.html", timeout=60, refresh=refresh)
     m = re.search(r'href="([^"]+/rankings/arwu/2025/payload\.js)"', html_text)
     if not m:
@@ -254,13 +300,18 @@ def fetch_arwu(refresh: bool = False) -> list[SourceEntry]:
         name = clean_text(row.get("univNameEn"))
         rank = clean_text(row.get("ranking"))
         country = clean_text(row.get("region"))
-        if name and rank_upper_bound(rank) and rank_upper_bound(rank) <= 200:
+        upper = rank_upper_bound(rank)
+        if name and upper and (rank_limit is None or upper <= rank_limit):
             entries.append(SourceEntry(name=name, country=country, source="ARWU 2025", source_rank=rank))
     entries.sort(key=lambda e: (rank_upper_bound(e.source_rank) or 9999, e.name))
     return entries
 
 
-def parse_qs_from_html(html_text: str) -> list[SourceEntry]:
+def fetch_arwu(refresh: bool = False) -> list[SourceEntry]:
+    return fetch_arwu_all(refresh=refresh, rank_limit=CANDIDATE_RANK_LIMIT)
+
+
+def parse_qs_from_html(html_text: str, rank_limit: int | None = CANDIDATE_RANK_LIMIT) -> list[SourceEntry]:
     entries: list[SourceEntry] = []
     # Some Drupal responses include a JSON blob in data attributes. Keep this
     # lenient because QS changes the front-end often.
@@ -275,12 +326,13 @@ def parse_qs_from_html(html_text: str) -> list[SourceEntry]:
         name = clean_text(obj.get("title") or obj.get("name") or obj.get("uni") or obj.get("institution"))
         rank = clean_text(obj.get("rank_display") or obj.get("rank") or obj.get("overall_rank"))
         country = clean_text(obj.get("country") or obj.get("location"))
-        if name and rank_upper_bound(rank) and rank_upper_bound(rank) <= 200:
+        upper = rank_upper_bound(rank)
+        if name and upper and (rank_limit is None or upper <= rank_limit):
             entries.append(SourceEntry(name=name, country=country, source="QS 2027", source_rank=rank))
     return entries
 
 
-def fetch_qs(refresh: bool = False) -> list[SourceEntry]:
+def fetch_qs_all(refresh: bool = False, rank_limit: int | None = None) -> list[SourceEntry]:
     entries: list[SourceEntry] = []
     xlsx_path = RAW / "qs_2027.xlsx"
     try:
@@ -290,7 +342,8 @@ def fetch_qs(refresh: bool = False) -> list[SourceEntry]:
         for values in rows[3:]:
             row = {headers[i]: values[i] if i < len(values) else "" for i in range(len(headers))}
             rank = row.get("Rank", "")
-            if rank_upper_bound(rank) and rank_upper_bound(rank) <= 200:
+            upper = rank_upper_bound(rank)
+            if upper and (rank_limit is None or upper <= rank_limit):
                 entries.append(
                     SourceEntry(
                         name=clean_text(row.get("Name")),
@@ -303,12 +356,13 @@ def fetch_qs(refresh: bool = False) -> list[SourceEntry]:
         print(f"WARNING: QS Excel fetch/parse failed: {exc}", file=sys.stderr)
     if not entries:
         html_text = cached_get(QS_URL, "qs_2027.html", timeout=60, refresh=refresh)
-        entries = parse_qs_from_html(html_text)
+        entries = parse_qs_from_html(html_text, rank_limit=rank_limit)
     manual_path = ROOT / "data" / "manual_qs_2027_top200.csv"
     if manual_path.exists():
         for row in read_csv(manual_path):
             rank = row.get("rank", "")
-            if rank_upper_bound(rank) and rank_upper_bound(rank) <= 200:
+            upper = rank_upper_bound(rank)
+            if upper and (rank_limit is None or upper <= rank_limit):
                 entries.append(
                     SourceEntry(
                         name=clean_text(row.get("name")),
@@ -322,13 +376,18 @@ def fetch_qs(refresh: bool = False) -> list[SourceEntry]:
     return entries
 
 
-def fetch_usnews(refresh: bool = False) -> list[SourceEntry]:
+def fetch_qs(refresh: bool = False) -> list[SourceEntry]:
+    return fetch_qs_all(refresh=refresh, rank_limit=CANDIDATE_RANK_LIMIT)
+
+
+def fetch_usnews_all(refresh: bool = False, rank_limit: int | None = None) -> list[SourceEntry]:
     manual_path = ROOT / "data" / "manual_usnews_2026_2027_top200.csv"
     entries: list[SourceEntry] = []
     if manual_path.exists():
         for row in read_csv(manual_path):
             rank = row.get("rank", "")
-            if rank_upper_bound(rank) and rank_upper_bound(rank) <= 200:
+            upper = rank_upper_bound(rank)
+            if upper and (rank_limit is None or upper <= rank_limit):
                 entries.append(
                     SourceEntry(
                         name=clean_text(row.get("name")),
@@ -338,7 +397,7 @@ def fetch_usnews(refresh: bool = False) -> list[SourceEntry]:
                     )
                 )
     if not entries:
-        entries = fetch_usnews_search_api(refresh=refresh)
+        entries = fetch_usnews_search_api(refresh=refresh, rank_limit=rank_limit)
     if not entries and refresh:
         try:
             html_text = cached_get(USNEWS_URL, "usnews_2026_2027.html", timeout=30, refresh=refresh)
@@ -348,7 +407,8 @@ def fetch_usnews(refresh: bool = False) -> list[SourceEntry]:
             ):
                 rank = clean_text(m.group("rank"))
                 name = clean_text(m.group("name"))
-                if rank_upper_bound(rank) and rank_upper_bound(rank) <= 200:
+                upper = rank_upper_bound(rank)
+                if upper and (rank_limit is None or upper <= rank_limit):
                     entries.append(SourceEntry(name=name, country="", source="US News 2026-2027", source_rank=rank))
         except Exception as exc:
             print(f"WARNING: US News fetch failed: {exc}", file=sys.stderr)
@@ -363,7 +423,24 @@ def fetch_usnews(refresh: bool = False) -> list[SourceEntry]:
     return entries
 
 
-def fetch_usnews_search_api(refresh: bool = False, max_pages: int = 25) -> list[SourceEntry]:
+def fetch_usnews(refresh: bool = False) -> list[SourceEntry]:
+    return fetch_usnews_all(refresh=refresh, rank_limit=CANDIDATE_RANK_LIMIT)
+
+
+def cached_usnews_page_numbers() -> list[int]:
+    pages: list[int] = []
+    for path in RAW.glob("usnews_search_page_*.json"):
+        m = re.search(r"usnews_search_page_(\d+)\.json$", path.name)
+        if m:
+            pages.append(int(m.group(1)))
+    return sorted(pages)
+
+
+def fetch_usnews_search_api(
+    refresh: bool = False,
+    max_pages: int | None = None,
+    rank_limit: int | None = CANDIDATE_RANK_LIMIT,
+) -> list[SourceEntry]:
     """Fetch US News global university search JSON pages.
 
     The endpoint is known to expose `items`, `total_pages`, and paginated ranking
@@ -371,9 +448,16 @@ def fetch_usnews_search_api(refresh: bool = False, max_pages: int = 25) -> list[
     intentionally cache-friendly and tolerant of field-name variation.
     """
     entries: list[SourceEntry] = []
-    total_pages = max_pages
+    total_pages = max_pages or 300
+    cached_pages = cached_usnews_page_numbers() if not refresh and max_pages is None else []
+    if cached_pages:
+        total_pages = max(cached_pages)
     for page in range(1, total_pages + 1):
         cache_name = f"usnews_search_page_{page}.json"
+        if cached_pages and page not in cached_pages:
+            break
+        cache_path = RAW / cache_name
+        used_cache = cache_path.exists() and not refresh
         try:
             data = api_json(
                 USNEWS_SEARCH_URL.format(page=page),
@@ -387,9 +471,10 @@ def fetch_usnews_search_api(refresh: bool = False, max_pages: int = 25) -> list[
             break
         if page == 1:
             try:
-                total_pages = min(int(data.get("total_pages", max_pages) or max_pages), max_pages)
+                detected_pages = int(data.get("total_pages", total_pages) or total_pages)
+                total_pages = min(detected_pages, max_pages) if max_pages else detected_pages
             except Exception:
-                total_pages = max_pages
+                total_pages = max_pages or total_pages
         items = data.get("items") or []
         if not items:
             break
@@ -399,11 +484,12 @@ def fetch_usnews_search_api(refresh: bool = False, max_pages: int = 25) -> list[
                 continue
             rank, name, country = parsed
             upper = rank_upper_bound(rank)
-            if upper and upper <= 200:
+            if upper and (rank_limit is None or upper <= rank_limit):
                 entries.append(SourceEntry(name=name, country=country, source="US News 2026-2027", source_rank=rank))
-        if entries and max(rank_upper_bound(e.source_rank) or 0 for e in entries) >= 200:
+        if rank_limit and entries and max(rank_upper_bound(e.source_rank) or 0 for e in entries) >= rank_limit:
             break
-        time.sleep(0.5)
+        if not used_cache:
+            time.sleep(0.5)
     return entries
 
 
@@ -439,6 +525,18 @@ def parse_usnews_item(item: dict[str, Any]) -> tuple[str, str, str] | None:
                 or ranks.get("display")
             )
         elif isinstance(ranks, list):
+            best = ""
+            for entry in ranks:
+                if not isinstance(entry, dict):
+                    continue
+                label = clean_text(entry.get("label")).lower()
+                value = clean_text(entry.get("value") or entry.get("rank") or entry.get("display"))
+                if value and ("best global universities" in label or not best):
+                    best = value
+                    if "best global universities" in label:
+                        break
+            rank = best
+        elif isinstance(ranks, list):
             for r in ranks:
                 if not isinstance(r, dict):
                     continue
@@ -467,6 +565,66 @@ def dedupe_source_entries(entries: Iterable[SourceEntry]) -> list[SourceEntry]:
             seen.add(key)
             out.append(e)
     return out
+
+
+def build_reference_rank_index(refresh: bool = False) -> dict[str, dict[str, str]]:
+    """Build a conservative name index for display-only published ranks."""
+    source_entries = (
+        fetch_arwu_all(refresh=refresh, rank_limit=None)
+        + fetch_qs_all(refresh=refresh, rank_limit=None)
+        + fetch_usnews_all(refresh=refresh, rank_limit=None)
+    )
+    index: dict[str, dict[str, str]] = {}
+    owner: dict[tuple[str, str], str] = {}
+    for entry in source_entries:
+        field = SOURCE_RANK_FIELDS[entry.source]
+        strict_key = strict_rank_key(entry.name)
+        if strict_key:
+            rec = index.setdefault(strict_key, {})
+            rec[field] = better_rank(rec.get(field, ""), entry.source_rank)
+            owner[(field, strict_key)] = strict_key
+        for key in rank_match_keys(entry.name) - {strict_key}:
+            owner_key = (field, key)
+            if owner_key in owner and owner[owner_key] != strict_key:
+                index.setdefault(key, {})[field] = AMBIGUOUS_RANK
+                continue
+            owner[owner_key] = strict_key
+            rec = index.setdefault(key, {})
+            if rec.get(field) == AMBIGUOUS_RANK:
+                continue
+            rec[field] = better_rank(rec.get(field, ""), entry.source_rank)
+    return index
+
+
+def enrich_reference_ranks(
+    rows: list[dict[str, Any]],
+    refresh: bool = False,
+    index: dict[str, dict[str, str]] | None = None,
+) -> list[dict[str, Any]]:
+    if index is None:
+        index = build_reference_rank_index(refresh=refresh)
+    enriched: list[dict[str, Any]] = []
+    for row in rows:
+        out = dict(row)
+        names = [
+            out.get("canonical_name", ""),
+            out.get("matched_name", ""),
+            out.get("display_name", ""),
+        ]
+        names.extend(x for x in clean_text(out.get("source_names", "")).split("; ") if x)
+        for field in SOURCE_RANK_FIELDNAMES:
+            if out.get(field):
+                continue
+            for name in names:
+                for key in rank_match_keys(name):
+                    rank = index.get(key, {}).get(field, "")
+                    if rank and rank != AMBIGUOUS_RANK:
+                        out[field] = rank
+                        break
+                if out.get(field):
+                    break
+        enriched.append(out)
+    return enriched
 
 
 def build_candidate_pool(refresh: bool = False) -> list[dict[str, Any]]:
@@ -610,6 +768,7 @@ def match_candidates(refresh: bool = False) -> list[dict[str, Any]]:
     if manual_path.exists():
         for row in read_csv(manual_path):
             manual[norm_key(row.get("canonical_name", ""))] = row
+    reference_index = build_reference_rank_index(refresh=refresh)
 
     for i, row in enumerate(rows, start=1):
         name = row["canonical_name"]
@@ -641,9 +800,10 @@ def match_candidates(refresh: bool = False) -> list[dict[str, Any]]:
             )
         if i % 25 == 0:
             print(f"matched {i}/{len(rows)}")
+            partial = enrich_reference_ranks(out, refresh=refresh, index=reference_index)
             write_csv(
                 out_path,
-                out,
+                partial,
                 [
                     "canonical_name",
                     "matched_name",
@@ -653,16 +813,13 @@ def match_candidates(refresh: bool = False) -> list[dict[str, Any]]:
                     "ror_id",
                     "match_status",
                     "source_names",
-                    "arwu_2025_rank",
-                    "qs_2027_rank",
-                    "usnews_2026_2027_rank",
-                    "in_arwu_2025",
-                    "in_qs_2027",
-                    "in_usnews_2026_2027",
+                    *SOURCE_RANK_FIELDNAMES,
+                    *SOURCE_FLAG_FIELDNAMES,
                 ],
             )
         time.sleep(SLEEP_SECONDS)
     out = merge_matched_duplicates(out)
+    out = enrich_reference_ranks(out, refresh=refresh, index=reference_index)
     write_csv(
         out_path,
         out,
@@ -675,12 +832,8 @@ def match_candidates(refresh: bool = False) -> list[dict[str, Any]]:
             "ror_id",
             "match_status",
             "source_names",
-            "arwu_2025_rank",
-            "qs_2027_rank",
-            "usnews_2026_2027_rank",
-            "in_arwu_2025",
-            "in_qs_2027",
-            "in_usnews_2026_2027",
+            *SOURCE_RANK_FIELDNAMES,
+            *SOURCE_FLAG_FIELDNAMES,
         ],
     )
     return out
@@ -700,10 +853,10 @@ def merge_matched_duplicates(rows: list[dict[str, Any]]) -> list[dict[str, Any]]
         base = by_id[oid]
         names = sorted(set(filter(None, (base.get("source_names", "") + "; " + row.get("source_names", "")).split("; "))))
         base["source_names"] = "; ".join(names)
-        for src in ["arwu_2025_rank", "qs_2027_rank", "usnews_2026_2027_rank"]:
+        for src in SOURCE_RANK_FIELDNAMES:
             if not base.get(src) and row.get(src):
                 base[src] = row[src]
-        for flag in ["in_arwu_2025", "in_qs_2027", "in_usnews_2026_2027"]:
+        for flag in SOURCE_FLAG_FIELDNAMES:
             base[flag] = str(base.get(flag)).lower() == "true" or str(row.get(flag)).lower() == "true"
         if len(row.get("canonical_name", "")) > len(base.get("canonical_name", "")):
             # Prefer the fuller source name for display, but keep source_names for provenance.
@@ -720,6 +873,7 @@ def compute_metrics_light(refresh: bool = False) -> list[dict[str, Any]]:
     if not candidate_path.exists():
         match_candidates(refresh=refresh)
     candidates = read_csv(candidate_path)
+    candidates = enrich_reference_ranks(candidates, refresh=refresh)
     out_path = PROCESSED / "open_metrics.csv"
     rows: list[dict[str, Any]] = []
     existing: dict[str, dict[str, str]] = {}
@@ -731,7 +885,10 @@ def compute_metrics_light(refresh: bool = False) -> list[dict[str, Any]]:
         if not oid:
             continue
         if oid in existing:
-            rows.append(existing[oid])
+            cached = dict(existing[oid])
+            for field in SOURCE_RANK_FIELDNAMES:
+                cached[field] = row.get(field, cached.get(field, ""))
+            rows.append(cached)
             continue
         try:
             inst = get_institution_object(oid, refresh=refresh)
@@ -813,9 +970,7 @@ def compute_metrics_light(refresh: bool = False) -> list[dict[str, Any]]:
                     "field_entropy",
                     "active_fields",
                     "has_medical_school_or_center",
-                    "arwu_2025_rank",
-                    "qs_2027_rank",
-                    "usnews_2026_2027_rank",
+                    *SOURCE_RANK_FIELDNAMES,
                 ],
             )
     write_csv(
@@ -840,9 +995,7 @@ def compute_metrics_light(refresh: bool = False) -> list[dict[str, Any]]:
             "field_entropy",
             "active_fields",
             "has_medical_school_or_center",
-            "arwu_2025_rank",
-            "qs_2027_rank",
-            "usnews_2026_2027_rank",
+            *SOURCE_RANK_FIELDNAMES,
         ],
     )
     return rows
@@ -879,6 +1032,7 @@ def compute_metrics(refresh: bool = False, limit: int | None = None) -> list[dic
     if not candidate_path.exists():
         match_candidates(refresh=refresh)
     candidates = read_csv(candidate_path)
+    candidates = enrich_reference_ranks(candidates, refresh=refresh)
     if limit:
         candidates = candidates[:limit]
     rows: list[dict[str, Any]] = []
@@ -974,9 +1128,7 @@ def compute_metrics(refresh: bool = False, limit: int | None = None) -> list[dic
             "field_entropy",
             "active_fields",
             "has_medical_school_or_center",
-            "arwu_2025_rank",
-            "qs_2027_rank",
-            "usnews_2026_2027_rank",
+            *SOURCE_RANK_FIELDNAMES,
         ],
     )
     return rows
@@ -1087,6 +1239,7 @@ def percentile(values: list[float], p: float) -> float:
 
 def score_rankings() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     rows = read_csv(PROCESSED / "open_metrics.csv")
+    rows = enrich_reference_ranks(rows)
     metrics = {
         "scale_score": ("works_2020_2024", True),
         "top_output_score": ("top10_count", True),
@@ -1171,9 +1324,7 @@ def score_rankings() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
         "has_medical_school_or_center",
         "openalex_id",
         "ror_id",
-        "arwu_2025_rank",
-        "qs_2027_rank",
-        "usnews_2026_2027_rank",
+        *SOURCE_RANK_FIELDNAMES,
     ]
     write_csv(PROCESSED / "world_universities_research_top200.csv", research, out_fields)
     write_csv(PROCESSED / "world_universities_academic_comprehensive_top200.csv", comprehensive, out_fields)
@@ -1212,9 +1363,11 @@ The candidate pool is intended to be the union of the top 200 institutions in:
 - QS World University Rankings 2027
 - ARWU 2025
 
-Commercial ranking positions and scores are used only for candidate-pool inclusion and provenance. They are not used in final scoring.
+Commercial ranking positions and scores are used only for candidate-pool inclusion and display provenance. They are not used in final scoring.
 
-Current generated files include the ARWU 2025 top 200, QS 2027 top 200, and US News 2026-2027 top 200. US News was retrieved from the search JSON endpoint (`/education/best-global-universities/search?format=json&page=N`) after first establishing a browser session with `www.usnews.com`. If the endpoint is blocked in a future run, cache `data/raw/usnews_search_page_N.json` via browser or add `data/manual_usnews_2026_2027_top200.csv` with columns `rank,name,country`, then rerun:
+Current generated files use the ARWU 2025 top 200, QS 2027 top 200, and US News 2026-2027 top 200 to define the candidate pool. The `Published Rankings` display column is then filled from the fullest available ARWU/QS/US News source files or cached JSON pages, so a candidate can show ranks from rankings where it appears outside the top 200.
+
+US News was retrieved from the search JSON endpoint (`/education/best-global-universities/search?format=json&page=N`) after first establishing a browser session with `www.usnews.com`. The script reuses any cached `data/raw/usnews_search_page_N.json` files for display-only published ranks; missing pages simply leave unmatched US News reference badges blank. If the endpoint is blocked in a future run, cache more pages via browser or add `data/manual_usnews_2026_2027_top200.csv` with columns `rank,name,country`, then rerun:
 
 ```powershell
 python .\\scripts\\build_rankings.py --candidate-pool --match --metrics --score

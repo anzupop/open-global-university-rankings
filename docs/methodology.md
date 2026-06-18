@@ -10,9 +10,11 @@ The candidate pool is intended to be the union of the top 200 institutions in:
 - QS World University Rankings 2027
 - ARWU 2025
 
-Commercial ranking positions and scores are used only for candidate-pool inclusion and provenance. They are not used in final scoring.
+Commercial ranking positions and scores are used only for candidate-pool inclusion and display provenance. They are not used in final scoring.
 
-Current generated files include the ARWU 2025 top 200, QS 2027 top 200, and US News 2026-2027 top 200. US News was retrieved from the search JSON endpoint (`/education/best-global-universities/search?format=json&page=N`) after first establishing a browser session with `www.usnews.com`. If the endpoint is blocked in a future run, cache `data/raw/usnews_search_page_N.json` via browser or add `data/manual_usnews_2026_2027_top200.csv` with columns `rank,name,country`, then rerun:
+Current generated files use the ARWU 2025 top 200, QS 2027 top 200, and US News 2026-2027 top 200 to define the candidate pool. The `Published Rankings` display column is then filled from the fullest available ARWU/QS/US News source files or cached JSON pages, so a candidate can show ranks from rankings where it appears outside the top 200.
+
+US News was retrieved from the search JSON endpoint (`/education/best-global-universities/search?format=json&page=N`) after first establishing a browser session with `www.usnews.com`. The script reuses any cached `data/raw/usnews_search_page_N.json` files for display-only published ranks; missing pages simply leave unmatched US News reference badges blank. If the endpoint is blocked in a future run, cache more pages via browser or add `data/manual_usnews_2026_2027_top200.csv` with columns `rank,name,country`, then rerun:
 
 ```powershell
 python .\scripts\build_rankings.py --candidate-pool --match --metrics --score

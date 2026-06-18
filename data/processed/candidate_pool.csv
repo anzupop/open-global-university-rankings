@@ -1,15 +1,15 @@
 canonical_name,matched_name,country_hint,country_code,openalex_id,ror_id,match_status,source_names,arwu_2025_rank,qs_2027_rank,usnews_2026_2027_rank,in_arwu_2025,in_qs_2027,in_usnews_2026_2027
-Khalifa University,Khalifa University of Science and Technology,United Arab Emirates,AE,https://openalex.org/I176601375,https://ror.org/05hffr360,auto,Khalifa University,,147,,False,True,False
+Khalifa University,Khalifa University of Science and Technology,United Arab Emirates,AE,https://openalex.org/I176601375,https://ror.org/05hffr360,auto,Khalifa University,601-700,147,340,False,True,False
 Universidad de Buenos Aires (UBA),Universidad de Buenos Aires,Argentina,AR,https://openalex.org/I24354313,https://ror.org/0081fs513,manual,Universidad de Buenos Aires (UBA),,84,,False,True,False
 Technische Universität Wien,TU Wien,Austria,AT,https://openalex.org/I145847075,https://ror.org/04d836q62,auto,Technische Universität Wien,,191,,False,True,False
 University of Vienna,University of Vienna,Austria,AT,https://openalex.org/I129774422,https://ror.org/03prydq77,auto,University of Vienna,101-150,140,193,True,True,True
-Curtin University,Curtin University,Australia,AU,https://openalex.org/I205640436,https://ror.org/02n415q13,auto,Curtin University,,189,155,False,True,True
-Deakin University,Deakin University,Australia,AU,https://openalex.org/I149704539,https://ror.org/02czsnj07,manual,Deakin University,,,142,False,False,True
-"Macquarie University (Sydney, Australia)",Macquarie University,Australia,AU,https://openalex.org/I99043593,https://ror.org/01sf06y89,manual,"Macquarie University; Macquarie University (Sydney, Australia)",,126,173,False,True,True
+Curtin University,Curtin University,Australia,AU,https://openalex.org/I205640436,https://ror.org/02n415q13,auto,Curtin University,201-300,189,155,False,True,True
+Deakin University,Deakin University,Australia,AU,https://openalex.org/I149704539,https://ror.org/02czsnj07,manual,Deakin University,201-300,227,142,False,False,True
+"Macquarie University (Sydney, Australia)",Macquarie University,Australia,AU,https://openalex.org/I99043593,https://ror.org/01sf06y89,manual,"Macquarie University; Macquarie University (Sydney, Australia)",201-300,126,173,False,True,True
 Monash University,Monash University,Australia,AU,https://openalex.org/I56590836,https://ror.org/02bfwt286,auto,Monash University,76,31,38,True,True,True
-Queensland University of Technology,Queensland University of Technology,Australia,AU,https://openalex.org/I160993911,https://ror.org/03pnv4752,auto,Queensland University of Technology,,,172,False,False,True
-RMIT University,RMIT University,Australia,AU,https://openalex.org/I82951845,https://ror.org/04ttjf776,auto,RMIT University,,119,173,False,True,True
-Swinburne University of Technology,Swinburne University of Technology,Australia,AU,https://openalex.org/I57093077,https://ror.org/031rekg67,auto,Swinburne University of Technology,,,164,False,False,True
+Queensland University of Technology,Queensland University of Technology,Australia,AU,https://openalex.org/I160993911,https://ror.org/03pnv4752,auto,Queensland University of Technology,301-400,240,172,False,False,True
+RMIT University,RMIT University,Australia,AU,https://openalex.org/I82951845,https://ror.org/04ttjf776,auto,RMIT University,301-400,119,173,False,True,True
+Swinburne University of Technology,Swinburne University of Technology,Australia,AU,https://openalex.org/I57093077,https://ror.org/031rekg67,auto,Swinburne University of Technology,201-300,291,164,False,False,True
 The Australian National University,Australian National University,Australia,AU,https://openalex.org/I118347636,https://ror.org/019wvm592,manual,Australian National University; Australian National University (ANU); The Australian National University,101-150,29,81,True,True,True
 The University of Adelaide,The University of Adelaide,Australia,AU,https://openalex.org/I5681781,https://ror.org/00892tw58,auto,Adelaide University; The University of Adelaide,151-200,79,85,True,True,True
 The University of Melbourne,The University of Melbourne,Australia,AU,https://openalex.org/I165779595,https://ror.org/01ej9dk98,auto,The University of Melbourne; University of Melbourne,38,22,28,True,True,True
@@ -17,218 +17,218 @@ The University of New South Wales,UNSW Sydney,Australia,AU,https://openalex.org/
 The University of Western Australia,The University of Western Australia,Australia,AU,https://openalex.org/I177877127,https://ror.org/047272k79,auto,The University of Western Australia; University of Western Australia,101-150,77,90,True,True,True
 University of Queensland Australia,The University of Queensland,Australia,AU,https://openalex.org/I165143802,https://ror.org/00rqy9422,auto,The University of Queensland; University of Queensland Australia,65,40,42,True,True,True
 University of Sydney,The University of Sydney,Australia,AU,https://openalex.org/I129604602,https://ror.org/0384j8v12,auto,The University of Sydney; University of Sydney,72,28,31,True,True,True
-University of Technology Sydney,University of Technology Sydney,Australia,AU,https://openalex.org/I114017466,https://ror.org/03f0f6041,auto,University of Technology Sydney,,87,85,False,True,True
-University of Wollongong,University of Wollongong,Australia,AU,https://openalex.org/I204824540,https://ror.org/00jtmb277,auto,University of Wollongong,,195,,False,True,False
+University of Technology Sydney,University of Technology Sydney,Australia,AU,https://openalex.org/I114017466,https://ror.org/03f0f6041,auto,University of Technology Sydney,201-300,87,85,False,True,True
+University of Wollongong,University of Wollongong,Australia,AU,https://openalex.org/I204824540,https://ror.org/00jtmb277,auto,University of Wollongong,301-400,195,204,False,True,False
 Ghent University,Ghent University,Belgium,BE,https://openalex.org/I32597200,https://ror.org/00cv9y106,auto,Ghent University,91,150,104,True,True,True
 KU Leuven,KU Leuven,Belgium,BE,https://openalex.org/I99464096,https://ror.org/05f950310,auto,KU Leuven,76,59,48,True,True,True
 Université catholique de Louvain (UCLouvain),UCLouvain,Belgium,BE,https://openalex.org/I95674353,https://ror.org/02495e989,auto,Université catholique de Louvain (UCLouvain),,196,,False,True,False
-Universit茅 libre de Bruxelles (ULB),Université Libre de Bruxelles,Belgium,BE,https://openalex.org/I132053463,https://ror.org/01r9htc13,manual,Universit茅 libre de Bruxelles (ULB),101-150,,,True,False,False
+Universit茅 libre de Bruxelles (ULB),Université Libre de Bruxelles,Belgium,BE,https://openalex.org/I132053463,https://ror.org/01r9htc13,manual,Universit茅 libre de Bruxelles (ULB),101-150,248,275,True,False,False
 Universidade de São Paulo,Universidade de São Paulo,Brazil,BR,https://openalex.org/I17974374,https://ror.org/036rp1748,auto,Universidade de São Paulo; University of Sao Paulo,101-150,133,134,True,True,True
 McGill University,McGill University,Canada,CA,https://openalex.org/I5023651,https://ror.org/01pxwe438,auto,McGill University,76,30,68,True,True,True
 McMaster University,McMaster University,Canada,CA,https://openalex.org/I98251732,https://ror.org/02fa3aq29,auto,McMaster University,101-150,174,150,True,True,True
-Queen's University at Kingston,Queen's University,Canada,CA,https://openalex.org/I204722609,https://ror.org/02y72wh86,auto,Queen's University at Kingston,,179,,False,True,False
-The University of Calgary,University of Calgary,Canada,CA,https://openalex.org/I168635309,https://ror.org/03yjb2x39,manual,The University of Calgary,151-200,,,True,False,False
+Queen's University at Kingston,Queen's University,Canada,CA,https://openalex.org/I204722609,https://ror.org/02y72wh86,auto,Queen's University at Kingston,201-300,179,415,False,True,False
+The University of Calgary,University of Calgary,Canada,CA,https://openalex.org/I168635309,https://ror.org/03yjb2x39,manual,The University of Calgary,151-200,249,208,True,False,False
 University of Alberta,University of Alberta,Canada,CA,https://openalex.org/I154425047,https://ror.org/0160cpw27,auto,University of Alberta,101-150,96,164,True,True,True
 University of British Columbia,University of British Columbia,Canada,CA,https://openalex.org/I141945490,https://ror.org/03rmrcq20,auto,University of British Columbia,53,45,42,True,True,True
 University of Montreal,Université de Montréal,Canada,CA,https://openalex.org/I70931966,https://ror.org/0161xgx34,auto,University of Montreal; Université de Montréal,151-200,162,193,True,True,True
 University of Toronto,University of Toronto,Canada,CA,https://openalex.org/I185261750,https://ror.org/03dbr7087,auto,University of Toronto,25,32,20,True,True,True
 University of Waterloo,University of Waterloo,Canada,CA,https://openalex.org/I151746483,https://ror.org/01aff2v68,auto,University of Waterloo,151-200,113,199,True,True,True
-Western University,Western University,Canada,CA,https://openalex.org/I125749732,https://ror.org/02grkyz14,auto,Western University,,142,,False,True,False
+Western University,Western University,Canada,CA,https://openalex.org/I125749732,https://ror.org/02grkyz14,auto,Western University,301-400,142,309,False,True,False
 EPFL – École polytechnique fédérale de Lausanne,École Polytechnique Fédérale de Lausanne,Switzerland,CH,https://openalex.org/I5124864,https://ror.org/02s376052,auto,EPFL – École polytechnique fédérale de Lausanne; Swiss Federal Institute of Technology Lausanne; École Polytechnique Federale of Lausanne,44,22,80,True,True,True
 Swiss Federal Institute of Technology Zurich,ETH Zurich,Switzerland,CH,https://openalex.org/I35440088,https://ror.org/05a28rw58,auto,ETH Zurich; Swiss Federal Institute of Technology Zurich,22,8,33,True,True,True
 University of Basel,University of Basel,Switzerland,CH,https://openalex.org/I1850255,https://ror.org/02s6k3f65,auto,University of Basel,94,150,189,True,True,True
 University of Bern,University of Bern,Switzerland,CH,https://openalex.org/I118564535,https://ror.org/02k7v4d05,auto,University of Bern,151-200,191,113,True,True,True
 University of Geneva,University of Geneva,Switzerland,CH,https://openalex.org/I114457229,https://ror.org/01swzsf04,auto,University of Geneva,58,168,129,True,True,True
-University of Lausanne,University of Lausanne,Switzerland,CH,https://openalex.org/I97565354,https://ror.org/019whta54,auto,University of Lausanne,101-150,,179,True,False,True
+University of Lausanne,University of Lausanne,Switzerland,CH,https://openalex.org/I97565354,https://ror.org/019whta54,auto,University of Lausanne,101-150,233,179,True,False,True
 University of Zurich,University of Zurich,Switzerland,CH,https://openalex.org/I202697423,https://ror.org/02crff812,auto,University of Zurich,64,98,64,True,True,True
 Pontificia Universidad Católica de Chile (UC),Pontificia Universidad Católica de Chile,Chile,CL,https://openalex.org/I162148367,https://ror.org/04teye511,manual,Pontificia Universidad Católica de Chile (UC),,119,,False,True,False
-Universidad de Chile,University of Chile,Chile,CL,https://openalex.org/I69737025,https://ror.org/047gc3g35,manual,Universidad de Chile,,185,,False,True,False
-Beihang University,Beihang University,China,CN,https://openalex.org/I82880672,https://ror.org/00wk2mp56,auto,Beihang University,101-150,,183,True,False,True
-Beijing Institute of Technology,Beijing Institute of Technology,China,CN,https://openalex.org/I125839683,https://ror.org/01skt4w74,auto,Beijing Institute of Technology,101-150,,152,True,False,True
-Beijing Normal University,Beijing Normal University,China,CN,https://openalex.org/I25254941,https://ror.org/022k4wk35,auto,Beijing Normal University,101-150,,135,True,False,True
-Central South University,Central South University,China,CN,https://openalex.org/I139660479,https://ror.org/00f1zfq44,auto,Central South University,96,,131,True,False,True
-China Agricultural University,China Agricultural University,China,CN,https://openalex.org/I52158045,https://ror.org/04v3ywz14,auto,China Agricultural University,151-200,,192,True,False,True
-Chongqing University,Chongqing University,China,CN,https://openalex.org/I158842170,https://ror.org/023rhb549,auto,Chongqing University,151-200,,,True,False,False
-Dalian University of Technology,Dalian University of Technology,China,CN,https://openalex.org/I27357992,https://ror.org/023hj5876,auto,Dalian University of Technology,151-200,,,True,False,False
+Universidad de Chile,University of Chile,Chile,CL,https://openalex.org/I69737025,https://ror.org/047gc3g35,manual,Universidad de Chile,501-600,185,421,False,True,False
+Beihang University,Beihang University,China,CN,https://openalex.org/I82880672,https://ror.org/00wk2mp56,auto,Beihang University,101-150,349,183,True,False,True
+Beijing Institute of Technology,Beijing Institute of Technology,China,CN,https://openalex.org/I125839683,https://ror.org/01skt4w74,auto,Beijing Institute of Technology,101-150,243,152,True,False,True
+Beijing Normal University,Beijing Normal University,China,CN,https://openalex.org/I25254941,https://ror.org/022k4wk35,auto,Beijing Normal University,101-150,237,135,True,False,True
+Central South University,Central South University,China,CN,https://openalex.org/I139660479,https://ror.org/00f1zfq44,auto,Central South University,96,452,131,True,False,True
+China Agricultural University,China Agricultural University,China,CN,https://openalex.org/I52158045,https://ror.org/04v3ywz14,auto,China Agricultural University,151-200,477,192,True,False,True
+Chongqing University,Chongqing University,China,CN,https://openalex.org/I158842170,https://ror.org/023rhb549,auto,Chongqing University,151-200,465,202,True,False,False
+Dalian University of Technology,Dalian University of Technology,China,CN,https://openalex.org/I27357992,https://ror.org/023hj5876,auto,Dalian University of Technology,151-200,463,254,True,False,False
 Fudan University,Fudan University,China,CN,https://openalex.org/I24943067,https://ror.org/013q1eq08,auto,Fudan University,41,26,49,True,True,True
 Harbin Institute of Technology,Harbin Institute of Technology,China,CN,https://openalex.org/I204983213,https://ror.org/01yqg2h08,auto,Harbin Institute of Technology,101-150,190,111,True,True,True
-Huazhong University of Science and Technology,Huazhong University of Science and Technology,China,CN,https://openalex.org/I47720641,https://ror.org/00p991c53,auto,Huazhong University of Science and Technology,73,,92,True,False,True
-Hunan University,Hunan University,China,CN,https://openalex.org/I16609230,https://ror.org/05htk5m33,auto,Hunan University,151-200,,115,True,False,True
-Jilin University,Jilin University,China,CN,https://openalex.org/I194450716,https://ror.org/00js3aw79,auto,Jilin University,101-150,,,True,False,False
+Huazhong University of Science and Technology,Huazhong University of Science and Technology,China,CN,https://openalex.org/I47720641,https://ror.org/00p991c53,auto,Huazhong University of Science and Technology,73,307,92,True,False,True
+Hunan University,Hunan University,China,CN,https://openalex.org/I16609230,https://ror.org/05htk5m33,auto,Hunan University,151-200,477,115,True,False,True
+Jilin University,Jilin University,China,CN,https://openalex.org/I194450716,https://ror.org/00js3aw79,auto,Jilin University,101-150,488,255,True,False,False
 Nanjing University,Nanjing University,China,CN,https://openalex.org/I881766915,https://ror.org/01rxvg760,auto,Nanjing University,75,90,77,True,True,True
-Nankai University,Nankai University,China,CN,https://openalex.org/I205237279,https://ror.org/01y1kjr75,auto,Nankai University,151-200,,146,True,False,True
-Northwestern Polytechnical University,Northwestern Polytechnical University,China,CN,https://openalex.org/I17145004,https://ror.org/01y0j0j86,auto,Northwestern Polytechnical University,101-150,,182,True,False,True
-Peking Union Medical College,Chinese Academy of Medical Sciences & Peking Union Medical College,China,CN,https://openalex.org/I200296433,https://ror.org/02drdmm93,auto,Peking Union Medical College,151-200,,,True,False,False
+Nankai University,Nankai University,China,CN,https://openalex.org/I205237279,https://ror.org/01y1kjr75,auto,Nankai University,151-200,329,146,True,False,True
+Northwestern Polytechnical University,Northwestern Polytechnical University,China,CN,https://openalex.org/I17145004,https://ror.org/01y0j0j86,auto,Northwestern Polytechnical University,101-150,425,182,True,False,True
+Peking Union Medical College,Chinese Academy of Medical Sciences & Peking Union Medical College,China,CN,https://openalex.org/I200296433,https://ror.org/02drdmm93,auto,Peking Union Medical College,151-200,,378,True,False,False
 Peking University,Peking University,China,CN,https://openalex.org/I20231570,https://ror.org/02v51f717,auto,Peking University,23,13,19,True,True,True
-Shandong University,Shandong University,China,CN,https://openalex.org/I154099455,https://ror.org/0207yh398,auto,Shandong University,101-150,,,True,False,False
+Shandong University,Shandong University,China,CN,https://openalex.org/I154099455,https://ror.org/0207yh398,auto,Shandong University,101-150,309,222,True,False,False
 Shanghai Jiao Tong University,Shanghai Jiao Tong University,China,CN,https://openalex.org/I183067930,https://ror.org/0220qvk04,auto,Shanghai Jiao Tong University,30,36,37,True,True,True
-Shenzhen University,Shenzhen University,China,CN,https://openalex.org/I180726961,https://ror.org/01vy4gh70,auto,Shenzhen University,,,166,False,False,True
-Sichuan University,Sichuan University,China,CN,https://openalex.org/I24185976,https://ror.org/011ashp19,auto,Sichuan University,87,,139,True,False,True
-Soochow University (China),Soochow University,China,CN,https://openalex.org/I3923682,https://ror.org/05t8y2r12,manual,Soochow University (China),101-150,,,True,False,False
-South China University of Technology,South China University of Technology,China,CN,https://openalex.org/I90610280,https://ror.org/0530pts50,auto,South China University of Technology,101-150,,162,True,False,True
-Southeast University,Southeast University,China,CN,https://openalex.org/I76569877,https://ror.org/04ct4d772,auto,Southeast University,101-150,,133,True,False,True
-Southern University of Science and Technology,Southern University of Science and Technology,China,CN,https://openalex.org/I3045169105,https://ror.org/049tv2d57,auto,Southern University of Science and Technology,101-150,,119,True,False,True
-Sun Yat-sen University,Sun Yat-sen University,China,CN,https://openalex.org/I157773358,https://ror.org/0064kty71,auto,Sun Yat-sen University,65,,74,True,False,True
-Tianjin University,Tianjin University,China,CN,https://openalex.org/I162868743,https://ror.org/012tb2g32,auto,Tianjin University,101-150,,166,True,False,True
+Shenzhen University,Shenzhen University,China,CN,https://openalex.org/I180726961,https://ror.org/01vy4gh70,auto,Shenzhen University,201-300,416,166,False,False,True
+Sichuan University,Sichuan University,China,CN,https://openalex.org/I24185976,https://ror.org/011ashp19,auto,Sichuan University,87,300,139,True,False,True
+Soochow University (China),Soochow University,China,CN,https://openalex.org/I3923682,https://ror.org/05t8y2r12,manual,Soochow University (China),101-150,711-720,312,True,False,False
+South China University of Technology,South China University of Technology,China,CN,https://openalex.org/I90610280,https://ror.org/0530pts50,auto,South China University of Technology,101-150,342,162,True,False,True
+Southeast University,Southeast University,China,CN,https://openalex.org/I76569877,https://ror.org/04ct4d772,auto,Southeast University,101-150,335,133,True,False,True
+Southern University of Science and Technology,Southern University of Science and Technology,China,CN,https://openalex.org/I3045169105,https://ror.org/049tv2d57,auto,Southern University of Science and Technology,101-150,317,119,True,False,True
+Sun Yat-sen University,Sun Yat-sen University,China,CN,https://openalex.org/I157773358,https://ror.org/0064kty71,auto,Sun Yat-sen University,65,258,74,True,False,True
+Tianjin University,Tianjin University,China,CN,https://openalex.org/I162868743,https://ror.org/012tb2g32,auto,Tianjin University,101-150,235,166,True,False,True
 Tongji University,Tongji University,China,CN,https://openalex.org/I116953780,https://ror.org/03rc6as71,auto,Tongji University,101-150,146,110,True,True,True
 Tsinghua University,Tsinghua University,China,CN,https://openalex.org/I99065089,https://ror.org/03cve4549,auto,Tsinghua University,18,14,6,True,True,True
-University of Chinese Academy of Sciences,University of Chinese Academy of Sciences,China,CN,https://openalex.org/I4210165038,https://ror.org/05qbk4x57,auto,University of Chinese Academy of Sciences,,,53,False,False,True
-University of Electronic Science and Technology of China,University of Electronic Science and Technology of China,China,CN,https://openalex.org/I150229711,https://ror.org/04qr3zq92,auto,University of Electronic Science and Technology of China,151-200,,152,True,False,True
+University of Chinese Academy of Sciences,University of Chinese Academy of Sciences,China,CN,https://openalex.org/I4210165038,https://ror.org/05qbk4x57,auto,University of Chinese Academy of Sciences,,360,53,False,False,True
+University of Electronic Science and Technology of China,University of Electronic Science and Technology of China,China,CN,https://openalex.org/I150229711,https://ror.org/04qr3zq92,auto,University of Electronic Science and Technology of China,151-200,488,152,True,False,True
 "University of Science & Technology of China, CAS",University of Science and Technology of China,China,CN,https://openalex.org/I126520041,https://ror.org/04c4dkn09,auto,"University of Science & Technology of China, CAS; University of Science and Technology of China",40,134,59,True,True,True
 Wuhan University,Wuhan University,China,CN,https://openalex.org/I37461747,https://ror.org/033vjfk17,auto,Wuhan University,81,165,85,True,True,True
 Xi'an Jiaotong University,Xi'an Jiaotong University,China,CN,https://openalex.org/I87445476,https://ror.org/017zhmm22,auto,Xi'an Jiaotong University,92,,129,True,False,True
-Xiamen University,Xiamen University,China,CN,https://openalex.org/I191208505,https://ror.org/00mcjh785,auto,Xiamen University,101-150,,176,True,False,True
+Xiamen University,Xiamen University,China,CN,https://openalex.org/I191208505,https://ror.org/00mcjh785,auto,Xiamen University,101-150,303,176,True,False,True
 Zhejiang University,Zhejiang University,China,CN,https://openalex.org/I76130692,https://ror.org/00a2xv884,auto,Zhejiang University,24,47,35,True,True,True
-Zhengzhou University,Zhengzhou University,China,CN,https://openalex.org/I38877650,https://ror.org/04ypx8c21,auto,Zhengzhou University,151-200,,,True,False,False
+Zhengzhou University,Zhengzhou University,China,CN,https://openalex.org/I38877650,https://ror.org/04ypx8c21,auto,Zhengzhou University,151-200,581,208,True,False,False
 "Eberhard Karls University, Tübingen",University of Tübingen,Germany,DE,https://openalex.org/I8087733,https://ror.org/03a1kwz48,manual,"Eberhard Karls University, Tübingen; University of Tuebingen",151-200,,193,True,False,True
 Freie Universitaet Berlin,Freie Universität Berlin,Germany,DE,https://openalex.org/I75951250,https://ror.org/046ak2485,manual,Freie Universitaet Berlin; Freie Universität Berlin,,98,63,False,True,True
 Goethe University Frankfurt,Goethe University Frankfurt,Germany,DE,https://openalex.org/I114090438,https://ror.org/04cvxnb49,auto,Goethe University Frankfurt,151-200,,,True,False,False
 Humboldt-Universität zu Berlin,Humboldt-Universität zu Berlin,Germany,DE,https://openalex.org/I39343248,https://ror.org/01hcx6992,auto,Humboldt-Universität zu Berlin,,140,51,False,True,True
-"KIT, Karlsruhe Institute of Technology",Karlsruhe Institute of Technology,Germany,DE,https://openalex.org/I102335020,https://ror.org/04t3en479,auto,"KIT, Karlsruhe Institute of Technology",,110,,False,True,False
+"KIT, Karlsruhe Institute of Technology",Karlsruhe Institute of Technology,Germany,DE,https://openalex.org/I102335020,https://ror.org/04t3en479,auto,"KIT, Karlsruhe Institute of Technology",301-400,110,299,False,True,False
 Ludwig-Maximilians-Universität München,Ludwig-Maximilians-Universität München,Germany,DE,https://openalex.org/I8204097,https://ror.org/05591te55,manual,Ludwig-Maximilians-Universität München; University of Munich,42,61,50,True,True,True
-RWTH Aachen University,RWTH Aachen University,Germany,DE,https://openalex.org/I887968799,https://ror.org/04xfq0f34,auto,RWTH Aachen University,,104,,False,True,False
+RWTH Aachen University,RWTH Aachen University,Germany,DE,https://openalex.org/I887968799,https://ror.org/04xfq0f34,auto,RWTH Aachen University,201-300,104,223,False,True,False
 Technical University of Munich,Technical University of Munich,Germany,DE,https://openalex.org/I62916508,https://ror.org/02kkvpp62,auto,Technical University of Munich,45,25,73,True,True,True
 Technische Universität Berlin (TU Berlin),Technische Universität Berlin,Germany,DE,https://openalex.org/I4577782,https://ror.org/03v4gjf40,auto,Technische Universität Berlin (TU Berlin),,158,,False,True,False
 Technische Universität Dresden,Technische Universität Dresden,Germany,DE,https://openalex.org/I78650965,https://ror.org/042aqky30,auto,Technische Universität Dresden,,185,,False,True,False
 University of Bonn,University of Bonn,Germany,DE,https://openalex.org/I135140700,https://ror.org/041nas322,auto,University of Bonn,68,,179,True,False,True
-University of Cologne,University of Cologne,Germany,DE,https://openalex.org/I180923762,https://ror.org/00rcxh774,auto,University of Cologne,151-200,,,True,False,False
-University of Freiburg,University of Freiburg,Germany,DE,https://openalex.org/I161046081,https://ror.org/0245cg223,auto,University of Freiburg,101-150,,,True,False,False
-University of Goettingen,University of Göttingen,Germany,DE,https://openalex.org/I74656192,https://ror.org/01y9bpm73,manual,University of Goettingen; University of Göttingen,151-200,,187,True,False,True
-University of Hamburg,Universität Hamburg,Germany,DE,https://openalex.org/I159176309,https://ror.org/00g30e956,auto,University of Hamburg,,,146,False,False,True
-University of Mainz,Johannes Gutenberg University Mainz,Germany,DE,https://openalex.org/I197323543,https://ror.org/023b0x485,auto,University of Mainz,151-200,,,True,False,False
-University of Muenster,University of Münster,Germany,DE,https://openalex.org/I22465464,https://ror.org/00pd74e08,auto,University of Muenster,151-200,,,True,False,False
+University of Cologne,University of Cologne,Germany,DE,https://openalex.org/I180923762,https://ror.org/00rcxh774,auto,University of Cologne,151-200,269,238,True,False,False
+University of Freiburg,University of Freiburg,Germany,DE,https://openalex.org/I161046081,https://ror.org/0245cg223,auto,University of Freiburg,101-150,,227,True,False,False
+University of Goettingen,University of Göttingen,Germany,DE,https://openalex.org/I74656192,https://ror.org/01y9bpm73,manual,University of Goettingen; University of Göttingen,151-200,261,187,True,False,True
+University of Hamburg,Universität Hamburg,Germany,DE,https://openalex.org/I159176309,https://ror.org/00g30e956,auto,University of Hamburg,201-300,209,146,False,False,True
+University of Mainz,Johannes Gutenberg University Mainz,Germany,DE,https://openalex.org/I197323543,https://ror.org/023b0x485,auto,University of Mainz,151-200,,223,True,False,False
+University of Muenster,University of Münster,Germany,DE,https://openalex.org/I22465464,https://ror.org/00pd74e08,auto,University of Muenster,151-200,370,218,True,False,False
 Universität Heidelberg,Heidelberg University,Germany,DE,https://openalex.org/I223822909,https://ror.org/038t36y30,auto,Heidelberg University; Universität Heidelberg,51,86,68,True,True,True
 Aarhus University,Aarhus University,Denmark,DK,https://openalex.org/I204337017,https://ror.org/01aj84f44,auto,Aarhus University,85,128,117,True,True,True
 Technical University of Denmark,Technical University of Denmark,Denmark,DK,https://openalex.org/I96673099,https://ror.org/04qtj9h94,auto,Technical University of Denmark,151-200,105,189,True,True,True
 University of Copenhagen,University of Copenhagen,Denmark,DK,https://openalex.org/I124055696,https://ror.org/035b05819,auto,University of Copenhagen,35,90,45,True,True,True
-Autonomous University of Barcelona,Universitat Autònoma de Barcelona,Spain,ES,https://openalex.org/I123044942,https://ror.org/052g8jq94,manual,Autonomous University of Barcelona,,,131,False,False,True
-Complutense University of Madrid,Universidad Complutense de Madrid,Spain,ES,https://openalex.org/I121748325,https://ror.org/02p0gd045,auto,Complutense University of Madrid,,199,,False,True,False
+Autonomous University of Barcelona,Universitat Autònoma de Barcelona,Spain,ES,https://openalex.org/I123044942,https://ror.org/052g8jq94,manual,Autonomous University of Barcelona,301-400,211,131,False,False,True
+Complutense University of Madrid,Universidad Complutense de Madrid,Spain,ES,https://openalex.org/I121748325,https://ror.org/02p0gd045,auto,Complutense University of Madrid,301-400,199,296,False,True,False
 Universitat de Barcelona,Universitat de Barcelona,Spain,ES,https://openalex.org/I71999127,https://ror.org/021018s57,auto,Universitat de Barcelona; University of Barcelona,151-200,165,88,True,True,True
-Aalto University,Aalto University,Finland,FI,https://openalex.org/I9927081,https://ror.org/020hwjq30,auto,Aalto University,,126,,False,True,False
+Aalto University,Aalto University,Finland,FI,https://openalex.org/I9927081,https://ror.org/020hwjq30,auto,Aalto University,401-500,126,290,False,True,False
 University of Helsinki,University of Helsinki,Finland,FI,https://openalex.org/I133731052,https://ror.org/040af2s02,auto,University of Helsinki,94,123,109,True,True,True
-Aix Marseille University,Aix-Marseille Université,France,FR,https://openalex.org/I21491767,https://ror.org/035xkbk20,auto,Aix Marseille University,151-200,,,True,False,False
-Institut Polytechnique de Paris,Institut Polytechnique de Paris,France,FR,https://openalex.org/I4210145102,https://ror.org/042tfbd02,auto,Institut Polytechnique de Paris,,43,,False,True,False
+Aix Marseille University,Aix-Marseille Université,France,FR,https://openalex.org/I21491767,https://ror.org/035xkbk20,auto,Aix Marseille University,151-200,443,247,True,False,False
+Institut Polytechnique de Paris,Institut Polytechnique de Paris,France,FR,https://openalex.org/I4210145102,https://ror.org/042tfbd02,auto,Institut Polytechnique de Paris,201-300,43,328,False,True,False
 PSL Research University Paris (ComUE),Université Paris Sciences et Lettres,France,FR,https://openalex.org/I2746051580,https://ror.org/013cjyk83,auto,PSL Research University Paris (ComUE); PSL University; Université PSL,34,34,108,True,True,True
 Paris-Saclay University,Université Paris-Saclay,France,FR,https://openalex.org/I277688954,https://ror.org/03xjwb503,auto,Paris-Saclay University; Universite Paris Saclay; Université Paris-Saclay,13,76,82,True,True,True
 Sorbonne University,Sorbonne Université,France,FR,https://openalex.org/I39804081,https://ror.org/02en5vm52,auto,Sorbonne Universite; Sorbonne University,43,73,67,True,True,True
-University of Montpellier,Université de Montpellier,France,FR,https://openalex.org/I19894307,https://ror.org/051escj72,auto,University of Montpellier,151-200,,,True,False,False
-University of Strasbourg,Université de Strasbourg,France,FR,https://openalex.org/I68947357,https://ror.org/00pg6eq24,auto,University of Strasbourg,101-150,,,True,False,False
-Universit茅 Grenoble Alpes,Université Grenoble Alpes,France,FR,https://openalex.org/I899635006,https://ror.org/02rx3b187,manual,Universit茅 Grenoble Alpes,151-200,,,True,False,False
-Universit茅 Paris Cit茅,Université Paris Cité,France,FR,https://openalex.org/I204730241,https://ror.org/05f82e368,manual,Université de Paris; Universit茅 Paris Cit茅,60,,61,True,False,True
-Cardiff University,Cardiff University,United Kingdom,GB,https://openalex.org/I79510175,https://ror.org/03kk7td41,auto,Cardiff University,,179,,False,True,False
-Durham University,Durham University,United Kingdom,GB,https://openalex.org/I190082696,https://ror.org/01v29qb04,auto,Durham University,,85,,False,True,False
+University of Montpellier,Université de Montpellier,France,FR,https://openalex.org/I19894307,https://ror.org/051escj72,auto,University of Montpellier,151-200,473,259,True,False,False
+University of Strasbourg,Université de Strasbourg,France,FR,https://openalex.org/I68947357,https://ror.org/00pg6eq24,auto,University of Strasbourg,101-150,456,331,True,False,False
+Universit茅 Grenoble Alpes,Université Grenoble Alpes,France,FR,https://openalex.org/I899635006,https://ror.org/02rx3b187,manual,Universit茅 Grenoble Alpes,151-200,387,320,True,False,False
+Universit茅 Paris Cit茅,Université Paris Cité,France,FR,https://openalex.org/I204730241,https://ror.org/05f82e368,manual,Université de Paris; Universit茅 Paris Cit茅,60,303,61,True,False,True
+Cardiff University,Cardiff University,United Kingdom,GB,https://openalex.org/I79510175,https://ror.org/03kk7td41,auto,Cardiff University,201-300,179,211,False,True,False
+Durham University,Durham University,United Kingdom,GB,https://openalex.org/I190082696,https://ror.org/01v29qb04,auto,Durham University,201-300,85,270,False,True,False
 Imperial College London,Imperial College London,United Kingdom,GB,https://openalex.org/I47508984,https://ror.org/041kmwe10,auto,Imperial College London,26,2,14,True,True,True
 King's College London,King's College London,United Kingdom,GB,https://openalex.org/I183935753,https://ror.org/0220mzb33,auto,King's College London,61,37,42,True,True,True
-Lancaster University,Lancaster University,United Kingdom,GB,https://openalex.org/I67415387,https://ror.org/04f2nsd36,auto,Lancaster University,,164,,False,True,False
-London School of Hygiene and Tropical Medicine,London School of Hygiene & Tropical Medicine,United Kingdom,GB,https://openalex.org/I4210089966,https://ror.org/00a0jsq62,manual,London School of Hygiene and Tropical Medicine,,,127,False,False,True
-Newcastle University,Newcastle University,United Kingdom,GB,https://openalex.org/I84884186,https://ror.org/01kj2bm70,auto,Newcastle University,,149,,False,True,False
-Queen Mary University of London,Queen Mary University of London,United Kingdom,GB,https://openalex.org/I166337079,https://ror.org/026zzn846,auto,"Queen Mary University of London; Queen Mary, University of London",,103,101,False,True,True
-Queen's University Belfast,Queen's University Belfast,United Kingdom,GB,https://openalex.org/I126231945,https://ror.org/00hswnk62,auto,Queen's University Belfast,,174,,False,True,False
-The London School of Economics and Political Science,London School of Economics and Political Science,United Kingdom,GB,https://openalex.org/I909854389,https://ror.org/0090zs177,manual,The London School of Economics and Political Science; The London School of Economics and Political Science (LSE),151-200,62,,True,True,False
+Lancaster University,Lancaster University,United Kingdom,GB,https://openalex.org/I67415387,https://ror.org/04f2nsd36,auto,Lancaster University,301-400,164,324,False,True,False
+London School of Hygiene and Tropical Medicine,London School of Hygiene & Tropical Medicine,United Kingdom,GB,https://openalex.org/I4210089966,https://ror.org/00a0jsq62,manual,London School of Hygiene and Tropical Medicine,201-300,,127,False,False,True
+Newcastle University,Newcastle University,United Kingdom,GB,https://openalex.org/I84884186,https://ror.org/01kj2bm70,auto,Newcastle University,201-300,149,202,False,True,False
+Queen Mary University of London,Queen Mary University of London,United Kingdom,GB,https://openalex.org/I166337079,https://ror.org/026zzn846,auto,"Queen Mary University of London; Queen Mary, University of London",201-300,103,101,False,True,True
+Queen's University Belfast,Queen's University Belfast,United Kingdom,GB,https://openalex.org/I126231945,https://ror.org/00hswnk62,auto,Queen's University Belfast,301-400,174,241,False,True,False
+The London School of Economics and Political Science,London School of Economics and Political Science,United Kingdom,GB,https://openalex.org/I909854389,https://ror.org/0090zs177,manual,The London School of Economics and Political Science; The London School of Economics and Political Science (LSE),151-200,62,223,True,True,False
 The University of Edinburgh,University of Edinburgh,United Kingdom,GB,https://openalex.org/I98677209,https://ror.org/01nrxwf90,manual,The University of Edinburgh; University of Edinburgh,37,35,41,True,True,True
 The University of Manchester,University of Manchester,United Kingdom,GB,https://openalex.org/I28407311,https://ror.org/027m9bs27,manual,The University of Manchester; University of Manchester,46,40,68,True,True,True
 The University of Sheffield,University of Sheffield,United Kingdom,GB,https://openalex.org/I91136226,https://ror.org/05krs5044,manual,The University of Sheffield; University of Sheffield,151-200,82,186,True,True,True
 The University of Warwick,University of Warwick,United Kingdom,GB,https://openalex.org/I39555362,https://ror.org/01a77tt86,manual,The University of Warwick; University of Warwick,101-150,68,200,True,True,True
 University College London,University College London,United Kingdom,GB,https://openalex.org/I45129253,https://ror.org/02jx3x895,auto,UCL; University College London,14,8,9,True,True,True
-University of Bath,University of Bath,United Kingdom,GB,https://openalex.org/I51601045,https://ror.org/002h8g185,auto,University of Bath,,125,,False,True,False
+University of Bath,University of Bath,United Kingdom,GB,https://openalex.org/I51601045,https://ror.org/002h8g185,auto,University of Bath,401-500,125,386,False,True,False
 University of Birmingham,University of Birmingham,United Kingdom,GB,https://openalex.org/I79619799,https://ror.org/03angcq70,auto,University of Birmingham,151-200,68,97,True,True,True
 University of Bristol,University of Bristol,United Kingdom,GB,https://openalex.org/I36234482,https://ror.org/0524sp257,auto,University of Bristol,98,57,115,True,True,True
 University of Cambridge,University of Cambridge,United Kingdom,GB,https://openalex.org/I241749,https://ror.org/013meh722,auto,University of Cambridge,4,6,5,True,True,True
 University of Exeter,University of Exeter,United Kingdom,GB,https://openalex.org/I23923803,https://ror.org/03yghzc09,auto,University of Exeter,151-200,136,138,True,True,True
 University of Glasgow,University of Glasgow,United Kingdom,GB,https://openalex.org/I7882870,https://ror.org/00vtgdb53,auto,University of Glasgow,101-150,80,77,True,True,True
 University of Leeds,University of Leeds,United Kingdom,GB,https://openalex.org/I130828816,https://ror.org/024mrxd33,auto,University of Leeds,151-200,77,146,True,True,True
-University of Leicester,University of Leicester,United Kingdom,GB,https://openalex.org/I153648349,https://ror.org/04h699437,auto,University of Leicester,,,166,False,False,True
+University of Leicester,University of Leicester,United Kingdom,GB,https://openalex.org/I153648349,https://ror.org/04h699437,auto,University of Leicester,301-400,314,166,False,False,True
 University of Liverpool,University of Liverpool,United Kingdom,GB,https://openalex.org/I146655781,https://ror.org/04xs57h96,auto,University of Liverpool,101-150,139,169,True,True,True
 University of Nottingham,University of Nottingham,United Kingdom,GB,https://openalex.org/I142263535,https://ror.org/01ee9ar58,auto,University of Nottingham,101-150,97,155,True,True,True
 University of Oxford,University of Oxford,United Kingdom,GB,https://openalex.org/I40120149,https://ror.org/052gg0110,auto,University of Oxford,6,4,4,True,True,True
-University of Reading,University of Reading,United Kingdom,GB,https://openalex.org/I71052956,https://ror.org/05v62cm79,auto,University of Reading,,196,,False,True,False
+University of Reading,University of Reading,United Kingdom,GB,https://openalex.org/I71052956,https://ror.org/05v62cm79,auto,University of Reading,401-500,196,408,False,True,False
 University of Southampton,University of Southampton,United Kingdom,GB,https://openalex.org/I43439940,https://ror.org/01ryk1543,auto,University of Southampton,151-200,111,125,True,True,True
-University of St Andrews,University of St Andrews,United Kingdom,GB,https://openalex.org/I16835326,https://ror.org/02wn5qz54,auto,University of St Andrews,,115,,False,True,False
-University of York,University of York,United Kingdom,GB,https://openalex.org/I52099693,https://ror.org/04m01e293,auto,University of York,,158,,False,True,False
+University of St Andrews,University of St Andrews,United Kingdom,GB,https://openalex.org/I16835326,https://ror.org/02wn5qz54,auto,University of St Andrews,301-400,115,375,False,True,False
+University of York,University of York,United Kingdom,GB,https://openalex.org/I52099693,https://ror.org/04m01e293,auto,University of York,201-300,158,328,False,True,False
 City University of Hong Kong,City University of Hong Kong,"Hong Kong, China",HK,https://openalex.org/I168719708,https://ror.org/03q8dnn23,auto,City University Hong Kong; City University of Hong Kong; City University of Hong Kong (CityUHK),99,52,47,True,True,True
 The Chinese University of Hong Kong,Chinese University of Hong Kong,"Hong Kong, China",HK,https://openalex.org/I177725633,https://ror.org/00t33hh48,manual,Chinese University Hong Kong; The Chinese University of Hong Kong; The Chinese University of Hong Kong (CUHK),101-150,18,28,True,True,True
 The Hong Kong Polytechnic University,Hong Kong Polytechnic University,"Hong Kong, China",HK,https://openalex.org/I14243506,https://ror.org/0030zas98,manual,Hong Kong Polytechnic University; The Hong Kong Polytechnic University,151-200,50,52,True,True,True
-The Hong Kong University of Science and Technology,Hong Kong University of Science and Technology,"Hong Kong SAR, China",HK,https://openalex.org/I200769079,https://ror.org/00q4vv597,manual,Hong Kong University of Science and Technology; The Hong Kong University of Science and Technology,,33,82,False,True,True
+The Hong Kong University of Science and Technology,Hong Kong University of Science and Technology,"Hong Kong SAR, China",HK,https://openalex.org/I200769079,https://ror.org/00q4vv597,manual,Hong Kong University of Science and Technology; The Hong Kong University of Science and Technology,201-300,33,82,False,True,True
 The University of Hong Kong,University of Hong Kong,"Hong Kong, China",HK,https://openalex.org/I889458895,https://ror.org/02zhqgq86,manual,The University of Hong Kong; University of Hong Kong,67,11,40,True,True,True
-Universitas Indonesia,University of Indonesia,Indonesia,ID,https://openalex.org/I29617571,https://ror.org/0116zj450,auto,Universitas Indonesia,,191,,False,True,False
-"Trinity College Dublin, The University of Dublin",Trinity College Dublin,Ireland,IE,https://openalex.org/I205274468,https://ror.org/02tyrky19,auto,"Trinity College Dublin, The University of Dublin",,75,,False,True,False
-University College Dublin,University College Dublin,Ireland,IE,https://openalex.org/I100930933,https://ror.org/05m7pjf47,auto,University College Dublin,,100,,False,True,False
-Technion-Israel Institute of Technology,Technion – Israel Institute of Technology,Israel,IL,https://openalex.org/I174306211,https://ror.org/03qryx823,auto,Technion-Israel Institute of Technology,97,,,True,False,False
-Tel Aviv University,Tel Aviv University,Israel,IL,https://openalex.org/I16391192,https://ror.org/04mhzgx49,auto,Tel Aviv University,,,193,False,False,True
-The Hebrew University of Jerusalem,Hebrew University of Jerusalem,Israel,IL,https://openalex.org/I197251160,https://ror.org/03qxff017,manual,The Hebrew University of Jerusalem,88,,,True,False,False
+Universitas Indonesia,University of Indonesia,Indonesia,ID,https://openalex.org/I29617571,https://ror.org/0116zj450,auto,Universitas Indonesia,,191,727,False,True,False
+"Trinity College Dublin, The University of Dublin",Trinity College Dublin,Ireland,IE,https://openalex.org/I205274468,https://ror.org/02tyrky19,auto,"Trinity College Dublin, The University of Dublin",201-300,75,213,False,True,False
+University College Dublin,University College Dublin,Ireland,IE,https://openalex.org/I100930933,https://ror.org/05m7pjf47,auto,University College Dublin,301-400,100,258,False,True,False
+Technion-Israel Institute of Technology,Technion – Israel Institute of Technology,Israel,IL,https://openalex.org/I174306211,https://ror.org/03qryx823,auto,Technion-Israel Institute of Technology,97,334,394,True,False,False
+Tel Aviv University,Tel Aviv University,Israel,IL,https://openalex.org/I16391192,https://ror.org/04mhzgx49,auto,Tel Aviv University,201-300,208,193,False,False,True
+The Hebrew University of Jerusalem,Hebrew University of Jerusalem,Israel,IL,https://openalex.org/I197251160,https://ror.org/03qxff017,manual,The Hebrew University of Jerusalem,88,218,288,True,False,False
 Weizmann Institute of Science,Weizmann Institute of Science,Israel,IL,https://openalex.org/I53964585,https://ror.org/0316ej306,auto,Weizmann Institute of Science,71,,183,True,False,True
-Indian Institute of Technology Bombay (IITB),Indian Institute of Technology Bombay,India,IN,https://openalex.org/I162827531,https://ror.org/02qyf5152,manual,Indian Institute of Technology Bombay (IITB),,134,,False,True,False
-Indian Institute of Technology Delhi (IITD),Indian Institute of Technology Delhi,India,IN,https://openalex.org/I68891433,https://ror.org/049tgcd06,manual,Indian Institute of Technology Delhi (IITD),,118,,False,True,False
-Alma Mater Studiorum - Università di Bologna,University of Bologna,Italy,IT,https://openalex.org/I9360294,https://ror.org/01111rn36,auto,Alma Mater Studiorum - Università di Bologna; University of Bologna,,123,150,False,True,True
+Indian Institute of Technology Bombay (IITB),Indian Institute of Technology Bombay,India,IN,https://openalex.org/I162827531,https://ror.org/02qyf5152,manual,Indian Institute of Technology Bombay (IITB),801-900,134,657,False,True,False
+Indian Institute of Technology Delhi (IITD),Indian Institute of Technology Delhi,India,IN,https://openalex.org/I68891433,https://ror.org/049tgcd06,manual,Indian Institute of Technology Delhi (IITD),601-700,118,697,False,True,False
+Alma Mater Studiorum - Università di Bologna,University of Bologna,Italy,IT,https://openalex.org/I9360294,https://ror.org/01111rn36,auto,Alma Mater Studiorum - Università di Bologna; University of Bologna,201-300,123,150,False,True,True
 Politecnico di Milano,Politecnico di Milano,Italy,IT,https://openalex.org/I93860229,https://ror.org/01nffqt88,auto,Politecnico di Milano,,87,,False,True,False
 Sapienza University of Rome,Sapienza University of Rome,Italy,IT,https://openalex.org/I861853513,https://ror.org/02be6w209,auto,Sapienza University of Rome,101-150,111,155,True,True,True
-University of Milan,University of Milan,Italy,IT,https://openalex.org/I189158943,https://ror.org/00wjc7c48,auto,University of Milan,151-200,,160,True,False,True
+University of Milan,University of Milan,Italy,IT,https://openalex.org/I189158943,https://ror.org/00wjc7c48,auto,University of Milan,151-200,270,160,True,False,True
 University of Padua,University of Padua,Italy,IT,https://openalex.org/I138689650,https://ror.org/00240q980,auto,University of Padua,151-200,,175,True,False,True
-Hokkaido University,Hokkaido University,Japan,JP,https://openalex.org/I205349734,https://ror.org/02e16g702,auto,Hokkaido University,,179,,False,True,False
-Institute of Science Tokyo,Yomiuri Science and Technology College,Japan,JP,https://openalex.org/I4210123323,https://ror.org/0364rgm75,auto,Institute of Science Tokyo,101-150,97,,True,True,False
+Hokkaido University,Hokkaido University,Japan,JP,https://openalex.org/I205349734,https://ror.org/02e16g702,auto,Hokkaido University,201-300,179,405,False,True,False
+Institute of Science Tokyo,Yomiuri Science and Technology College,Japan,JP,https://openalex.org/I4210123323,https://ror.org/0364rgm75,auto,Institute of Science Tokyo,101-150,97,338,True,True,False
 Kyoto University,Kyoto University,Japan,JP,https://openalex.org/I22299242,https://ror.org/02kpeqv85,auto,Kyoto University,46,64,162,True,True,True
-Kyushu University,Kyushu University,Japan,JP,https://openalex.org/I135598925,https://ror.org/00p4k0j84,auto,Kyushu University,,171,,False,True,False
-Nagoya University,Nagoya University,Japan,JP,https://openalex.org/I60134161,https://ror.org/04chrp450,auto,Nagoya University,101-150,156,,True,True,False
-The University of Osaka,The University of Osaka,Japan,JP,https://openalex.org/I98285908,https://ror.org/035t8zc32,auto,The University of Osaka,,95,,False,True,False
+Kyushu University,Kyushu University,Japan,JP,https://openalex.org/I135598925,https://ror.org/00p4k0j84,auto,Kyushu University,201-300,171,331,False,True,False
+Nagoya University,Nagoya University,Japan,JP,https://openalex.org/I60134161,https://ror.org/04chrp450,auto,Nagoya University,101-150,156,328,True,True,False
+The University of Osaka,The University of Osaka,Japan,JP,https://openalex.org/I98285908,https://ror.org/035t8zc32,auto,The University of Osaka,201-300,95,264,False,True,False
 The University of Tokyo,The University of Tokyo,Japan,JP,https://openalex.org/I74801974,https://ror.org/057zh3y96,auto,The University of Tokyo; University of Tokyo,31,39,72,True,True,True
-Tohoku University,Tohoku University,Japan,JP,https://openalex.org/I201537933,https://ror.org/01dq60k83,auto,Tohoku University,,102,,False,True,False
-Hanyang University,Hanyang University,Republic of Korea,KR,https://openalex.org/I4575257,https://ror.org/046865y68,auto,Hanyang University,,155,,False,True,False
-KAIST,Korea Advanced Institute of Science and Technology,Republic of Korea,KR,https://openalex.org/I157485424,https://ror.org/05apxxy63,auto,KAIST,,65,,False,True,False
-Korea University,Korea University,Republic of Korea,KR,https://openalex.org/I197347611,https://ror.org/047dqcg40,auto,Korea University,,52,,False,True,False
-Pohang University of Science And Technology (POSTECH),Pohang University of Science and Technology,Republic of Korea,KR,https://openalex.org/I123900574,https://ror.org/04xysgw12,manual,Pohang University of Science And Technology (POSTECH),,106,,False,True,False
+Tohoku University,Tohoku University,Japan,JP,https://openalex.org/I201537933,https://ror.org/01dq60k83,auto,Tohoku University,201-300,102,268,False,True,False
+Hanyang University,Hanyang University,Republic of Korea,KR,https://openalex.org/I4575257,https://ror.org/046865y68,auto,Hanyang University,201-300,155,415,False,True,False
+KAIST,Korea Advanced Institute of Science and Technology,Republic of Korea,KR,https://openalex.org/I157485424,https://ror.org/05apxxy63,auto,KAIST,201-300,65,245,False,True,False
+Korea University,Korea University,Republic of Korea,KR,https://openalex.org/I197347611,https://ror.org/047dqcg40,auto,Korea University,201-300,52,255,False,True,False
+Pohang University of Science And Technology (POSTECH),Pohang University of Science and Technology,Republic of Korea,KR,https://openalex.org/I123900574,https://ror.org/04xysgw12,manual,Pohang University of Science And Technology (POSTECH),301-400,106,345,False,True,False
 Seoul National University,Seoul National University,South Korea,KR,https://openalex.org/I139264467,https://ror.org/04h9pn542,auto,Seoul National University,81,38,121,True,True,True
-Sungkyunkwan University,Sungkyunkwan University,South Korea,KR,https://openalex.org/I848706,https://ror.org/04q78tk20,auto,Sungkyunkwan University; Sungkyunkwan University (SKKU),151-200,108,,True,True,False
+Sungkyunkwan University,Sungkyunkwan University,South Korea,KR,https://openalex.org/I848706,https://ror.org/04q78tk20,auto,Sungkyunkwan University; Sungkyunkwan University (SKKU),151-200,108,244,True,True,False
 Yonsei University,Yonsei University,South Korea,KR,https://openalex.org/I193775966,https://ror.org/01wjejq96,auto,Yonsei University,151-200,42,135,True,True,True
 Al-Farabi Kazakh National University,Al-Farabi Kazakh National University,Kazakhstan,KZ,https://openalex.org/I185571130,https://ror.org/03q0vrn42,auto,Al-Farabi Kazakh National University,,177,,False,True,False
-Tecnológico de Monterrey,Tecnológico de Monterrey,Mexico,MX,https://openalex.org/I98461037,https://ror.org/03ayjn504,auto,Tecnológico de Monterrey,,188,,False,True,False
+Tecnológico de Monterrey,Tecnológico de Monterrey,Mexico,MX,https://openalex.org/I98461037,https://ror.org/03ayjn504,auto,Tecnológico de Monterrey,,188,603,False,True,False
 Universidad Nacional Autónoma de México (UNAM),Universidad Nacional Autónoma de México,Mexico,MX,https://openalex.org/I8961855,https://ror.org/01tmp8f25,manual,Universidad Nacional Autónoma de México (UNAM),,145,,False,True,False
-Universiti Kebangsaan Malaysia (UKM),National University of Malaysia,Malaysia,MY,https://openalex.org/I885383172,https://ror.org/00bw8d226,manual,Universiti Kebangsaan Malaysia (UKM),,130,,False,True,False
-Universiti Malaya (UM),University of Malaya,Malaysia,MY,https://openalex.org/I33849332,https://ror.org/00rzspn62,manual,Universiti Malaya (UM),,56,,False,True,False
-Universiti Putra Malaysia (UPM),Universiti Putra Malaysia,Malaysia,MY,https://openalex.org/I130343225,https://ror.org/02e91jd64,manual,Universiti Putra Malaysia (UPM),,138,,False,True,False
-Universiti Sains Malaysia (USM),Universiti Sains Malaysia,Malaysia,MY,https://openalex.org/I139322472,https://ror.org/02rgb2k63,manual,Universiti Sains Malaysia (USM),,128,,False,True,False
-Universiti Teknologi Malaysia,University of Technology Malaysia,Malaysia,MY,https://openalex.org/I4576418,https://ror.org/026w31v75,auto,Universiti Teknologi Malaysia,,158,,False,True,False
+Universiti Kebangsaan Malaysia (UKM),National University of Malaysia,Malaysia,MY,https://openalex.org/I885383172,https://ror.org/00bw8d226,manual,Universiti Kebangsaan Malaysia (UKM),701-800,130,546,False,True,False
+Universiti Malaya (UM),University of Malaya,Malaysia,MY,https://openalex.org/I33849332,https://ror.org/00rzspn62,manual,Universiti Malaya (UM),601-700,56,311,False,True,False
+Universiti Putra Malaysia (UPM),Universiti Putra Malaysia,Malaysia,MY,https://openalex.org/I130343225,https://ror.org/02e91jd64,manual,Universiti Putra Malaysia (UPM),,138,543,False,True,False
+Universiti Sains Malaysia (USM),Universiti Sains Malaysia,Malaysia,MY,https://openalex.org/I139322472,https://ror.org/02rgb2k63,manual,Universiti Sains Malaysia (USM),,128,378,False,True,False
+Universiti Teknologi Malaysia,University of Technology Malaysia,Malaysia,MY,https://openalex.org/I4576418,https://ror.org/026w31v75,auto,Universiti Teknologi Malaysia,,158,429,False,True,False
 Delft University of Technology,Delft University of Technology,Netherlands,NL,https://openalex.org/I98358874,https://ror.org/02e2c7k09,auto,Delft University of Technology,151-200,48,170,True,True,True
-Eindhoven University of Technology,Eindhoven University of Technology,Netherlands,NL,https://openalex.org/I83019370,https://ror.org/02c2kyt77,auto,Eindhoven University of Technology,,152,,False,True,False
+Eindhoven University of Technology,Eindhoven University of Technology,Netherlands,NL,https://openalex.org/I83019370,https://ror.org/02c2kyt77,auto,Eindhoven University of Technology,301-400,152,400,False,True,False
 Erasmus University Rotterdam,Erasmus University Rotterdam,Netherlands,NL,https://openalex.org/I913958620,https://ror.org/057w15z03,auto,Erasmus University Rotterdam,101-150,148,89,True,True,True
 Leiden University,Leiden University,Netherlands,NL,https://openalex.org/I121797337,https://ror.org/027bh9e22,auto,Leiden University,101-150,119,61,True,True,True
-Maastricht University,Maastricht University,Netherlands,NL,https://openalex.org/I34352273,https://ror.org/02jz4aj89,auto,Maastricht University,,,183,False,False,True
+Maastricht University,Maastricht University,Netherlands,NL,https://openalex.org/I34352273,https://ror.org/02jz4aj89,auto,Maastricht University,301-400,254,183,False,False,True
 Radboud University Nijmegen,Radboud University Nijmegen,Netherlands,NL,https://openalex.org/I145872427,https://ror.org/016xsfp80,auto,Radboud University Nijmegen,101-150,,142,True,False,True
 University of Amsterdam,University of Amsterdam,Netherlands,NL,https://openalex.org/I887064364,https://ror.org/04dkp9463,auto,University of Amsterdam,101-150,60,39,True,True,True
 University of Groningen,University of Groningen,Netherlands,NL,https://openalex.org/I169381384,https://ror.org/012p63287,auto,University of Groningen,73,157,77,True,True,True
 Utrecht University,Utrecht University,Netherlands,NL,https://openalex.org/I193662353,https://ror.org/04pp8hn57,auto,Utrecht University,56,113,54,True,True,True
 Vrije Universiteit Amsterdam,Vrije Universiteit Amsterdam,Netherlands,NL,https://openalex.org/I865915315,https://ror.org/008xxew50,auto,Vrije Universiteit Amsterdam,151-200,185,91,True,True,True
 Wageningen University and Research Center,Wageningen University & Research,Netherlands,NL,https://openalex.org/I913481162,https://ror.org/04qw24q55,auto,Wageningen University & Research; Wageningen University and Research Center,151-200,154,119,True,True,True
-NTNU - Norwegian University of Science and Technology,Norwegian University of Science and Technology,Norway,NO,https://openalex.org/I204778367,https://ror.org/05xg72x27,manual,NTNU - Norwegian University of Science and Technology,151-200,,,True,False,False
+NTNU - Norwegian University of Science and Technology,Norwegian University of Science and Technology,Norway,NO,https://openalex.org/I204778367,https://ror.org/05xg72x27,manual,NTNU - Norwegian University of Science and Technology,151-200,264,238,True,False,False
 University of Oslo,University of Oslo,Norway,NO,https://openalex.org/I184942183,https://ror.org/01xtthb56,auto,University of Oslo,83,131,105,True,True,True
-The University of Auckland,University of Auckland,New Zealand,NZ,https://openalex.org/I154130895,https://ror.org/03b94tp07,manual,The University of Auckland; University of Auckland,,67,117,False,True,True
-University of Otago,University of Otago,New Zealand,NZ,https://openalex.org/I80281795,https://ror.org/01jmxt844,auto,University of Otago,,198,,False,True,False
-Qatar University,Qatar University,Qatar,QA,https://openalex.org/I60342839,https://ror.org/00yhnba62,auto,Qatar University,,109,,False,True,False
+The University of Auckland,University of Auckland,New Zealand,NZ,https://openalex.org/I154130895,https://ror.org/03b94tp07,manual,The University of Auckland; University of Auckland,201-300,67,117,False,True,True
+University of Otago,University of Otago,New Zealand,NZ,https://openalex.org/I80281795,https://ror.org/01jmxt844,auto,University of Otago,401-500,198,290,False,True,False
+Qatar University,Qatar University,Qatar,QA,https://openalex.org/I60342839,https://ror.org/00yhnba62,auto,Qatar University,501-600,109,262,False,True,False
 Lomonosov Moscow State University,Lomonosov Moscow State University,Russia,RU,https://openalex.org/I19880235,https://ror.org/010pmpe69,auto,Lomonosov Moscow State University; Moscow State University,101-150,115,,True,True,False
-KFUPM,King Fahd University of Petroleum and Minerals,Saudi Arabia,SA,https://openalex.org/I134085113,https://ror.org/03yez3163,auto,KFUPM,,63,,False,True,False
-King Abdulaziz University (KAU),King Abdulaziz University,Saudi Arabia,SA,https://openalex.org/I185163786,https://ror.org/02ma4wv74,manual,King Abdulaziz University; King Abdulaziz University (KAU),,200,122,False,True,True
-King Abdullah University of Science and Technology,King Abdullah University of Science and Technology,Saudi Arabia,SA,https://openalex.org/I71920554,https://ror.org/01q3tbs38,auto,King Abdullah University of Science and Technology,,,103,False,False,True
+KFUPM,King Fahd University of Petroleum and Minerals,Saudi Arabia,SA,https://openalex.org/I134085113,https://ror.org/03yez3163,auto,KFUPM,701-800,63,322,False,True,False
+King Abdulaziz University (KAU),King Abdulaziz University,Saudi Arabia,SA,https://openalex.org/I185163786,https://ror.org/02ma4wv74,manual,King Abdulaziz University; King Abdulaziz University (KAU),501-600,200,122,False,True,True
+King Abdullah University of Science and Technology,King Abdullah University of Science and Technology,Saudi Arabia,SA,https://openalex.org/I71920554,https://ror.org/01q3tbs38,auto,King Abdullah University of Science and Technology,201-300,,103,False,False,True
 King Saud University,King Saud University,Saudi Arabia,SA,https://openalex.org/I28022161,https://ror.org/02f81g417,auto,King Saud University,101-150,107,139,True,True,True
-Chalmers University of Technology,Chalmers University of Technology,Sweden,SE,https://openalex.org/I66862912,https://ror.org/040wg7k59,auto,Chalmers University of Technology,,174,,False,True,False
-KTH Royal Institute of Technology,KTH Royal Institute of Technology,Sweden,SE,https://openalex.org/I86987016,https://ror.org/026vcq606,auto,KTH Royal Institute of Technology,,82,,False,True,False
+Chalmers University of Technology,Chalmers University of Technology,Sweden,SE,https://openalex.org/I66862912,https://ror.org/040wg7k59,auto,Chalmers University of Technology,301-400,174,348,False,True,False
+KTH Royal Institute of Technology,KTH Royal Institute of Technology,Sweden,SE,https://openalex.org/I86987016,https://ror.org/026vcq606,auto,KTH Royal Institute of Technology,201-300,82,,False,True,False
 Karolinska Institute,Karolinska Institutet,Sweden,SE,https://openalex.org/I28166907,https://ror.org/056d84691,auto,Karolinska Institute,50,,57,True,False,True
 Lund University,Lund University,Sweden,SE,https://openalex.org/I187531555,https://ror.org/012a77v79,auto,Lund University,101-150,71,124,True,True,True
 Stockholm University,Stockholm University,Sweden,SE,https://openalex.org/I161593684,https://ror.org/05f0yaq80,auto,Stockholm University,100,167,193,True,True,True
-University of Gothenburg,University of Gothenburg,Sweden,SE,https://openalex.org/I881427289,https://ror.org/01tm6cn81,auto,University of Gothenburg,151-200,,177,True,False,True
+University of Gothenburg,University of Gothenburg,Sweden,SE,https://openalex.org/I881427289,https://ror.org/01tm6cn81,auto,University of Gothenburg,151-200,225,177,True,False,True
 Uppsala University,Uppsala University,Sweden,SE,https://openalex.org/I123387679,https://ror.org/048a87296,auto,Uppsala University,93,87,146,True,True,True
 "Nanyang Technological University, Singapore (NTU Singapore)",Nanyang Technological University,Singapore,SG,https://openalex.org/I172675005,https://ror.org/02e7b5302,auto,"Nanyang Technological University; Nanyang Technological University, Singapore (NTU Singapore)",88,12,27,True,True,True
 National University of Singapore,National University of Singapore,Singapore,SG,https://openalex.org/I165932596,https://ror.org/01tgyzw49,auto,National University of Singapore; National University of Singapore (NUS),56,10,16,True,True,True
-National Cheng Kung University (NCKU),National Cheng Kung University,Taiwan,TW,https://openalex.org/I91807558,https://ror.org/01b8kcc49,manual,National Cheng Kung University (NCKU),,191,,False,True,False
-National Taiwan University (NTU),National Taiwan University,Taiwan,TW,https://openalex.org/I16733864,https://ror.org/05bqach95,manual,National Taiwan University (NTU),,54,,False,True,False
-National Tsing Hua University - NTHU,National Tsing Hua University,Taiwan,TW,https://openalex.org/I25846049,https://ror.org/00zdnkx70,manual,National Tsing Hua University - NTHU,,142,,False,True,False
-National Yang Ming Chiao Tung University (NYCU Taiwan),National Yang Ming Chiao Tung University,Taiwan,TW,https://openalex.org/I148366613,https://ror.org/00se2k293,manual,National Yang Ming Chiao Tung University (NYCU Taiwan),,177,,False,True,False
-Indian Institute of Technology Madras (IITM),"Indian Institute of Technology Madras, Zanzibar",India,TZ,https://openalex.org/I4405261081,https://ror.org/04rje7438,auto,Indian Institute of Technology Madras (IITM),,170,,False,True,False
+National Cheng Kung University (NCKU),National Cheng Kung University,Taiwan,TW,https://openalex.org/I91807558,https://ror.org/01b8kcc49,manual,National Cheng Kung University (NCKU),401-500,191,612,False,True,False
+National Taiwan University (NTU),National Taiwan University,Taiwan,TW,https://openalex.org/I16733864,https://ror.org/05bqach95,manual,National Taiwan University (NTU),201-300,54,233,False,True,False
+National Tsing Hua University - NTHU,National Tsing Hua University,Taiwan,TW,https://openalex.org/I25846049,https://ror.org/00zdnkx70,manual,National Tsing Hua University - NTHU,401-500,142,520,False,True,False
+National Yang Ming Chiao Tung University (NYCU Taiwan),National Yang Ming Chiao Tung University,Taiwan,TW,https://openalex.org/I148366613,https://ror.org/00se2k293,manual,National Yang Ming Chiao Tung University (NYCU Taiwan),401-500,177,596,False,True,False
+Indian Institute of Technology Madras (IITM),"Indian Institute of Technology Madras, Zanzibar",India,TZ,https://openalex.org/I4405261081,https://ror.org/04rje7438,auto,Indian Institute of Technology Madras (IITM),701-800,170,626,False,True,False
 Arizona State University--Tempe,Arizona State University,United States,US,https://openalex.org/I55732556,https://ror.org/03efmqc40,auto,Arizona State University; Arizona State University--Tempe,151-200,172,179,True,True,True
-Baylor College of Medicine,Baylor College of Medicine,United States,US,https://openalex.org/I181547552,https://ror.org/02pttbw34,manual,Baylor College of Medicine,,,144,False,False,True
+Baylor College of Medicine,Baylor College of Medicine,United States,US,https://openalex.org/I181547552,https://ror.org/02pttbw34,manual,Baylor College of Medicine,201-300,,144,False,False,True
 Boston University,Boston University,United States,US,https://openalex.org/I111088046,https://ror.org/05qwgg493,auto,Boston University,101-150,94,96,True,True,True
 Brown University,Brown University,United States,US,https://openalex.org/I27804330,https://ror.org/05gq02987,auto,Brown University,101-150,66,144,True,True,True
 California Institute of Technology,California Institute of Technology,United States,US,https://openalex.org/I122411786,https://ror.org/05dxps055,auto,California Institute of Technology; California Institute of Technology (Caltech),9,7,23,True,True,True
 Carnegie Mellon University,Carnegie Mellon University,United States,US,https://openalex.org/I74973139,https://ror.org/05x2bcf33,auto,Carnegie Mellon University,101-150,55,112,True,True,True
-Case Western Reserve University,Case Western Reserve University,United States,US,https://openalex.org/I58956616,https://ror.org/051fd9666,auto,Case Western Reserve University,151-200,,189,True,False,True
+Case Western Reserve University,Case Western Reserve University,United States,US,https://openalex.org/I58956616,https://ror.org/051fd9666,auto,Case Western Reserve University,151-200,326,189,True,False,True
 Columbia University,Columbia University,United States,US,https://openalex.org/I78577930,https://ror.org/00hj8s172,auto,Columbia University,8,43,10,True,True,True
 Cornell University,Cornell University,United States,US,https://openalex.org/I205783295,https://ror.org/05bnh6r87,auto,Cornell University,12,16,13,True,True,True
 Duke University,Duke University,United States,US,https://openalex.org/I170897317,https://ror.org/00py81415,auto,Duke University,46,70,30,True,True,True
@@ -236,54 +236,54 @@ Emory University,Emory University,United States,US,https://openalex.org/I1504686
 Georgia Institute of Technology,Georgia Institute of Technology,United States,US,https://openalex.org/I130701444,https://ror.org/01zkghx44,auto,Georgia Institute of Technology,151-200,142,94,True,True,True
 Harvard University,Harvard University,United States,US,https://openalex.org/I136199984,https://ror.org/03vek6s52,auto,Harvard University,1,5,1,True,True,True
 Icahn School of Medicine at Mount Sinai,Icahn School of Medicine at Mount Sinai,United States,US,https://openalex.org/I98704320,https://ror.org/04a9tmd77,auto,Icahn School of Medicine at Mount Sinai,101-150,,46,True,False,True
-"Indiana University, Bloomington",Indiana University Bloomington,United States,US,https://openalex.org/I4210119109,https://ror.org/02k40bc56,auto,"Indiana University Bloomington; Indiana University, Bloomington",101-150,,155,True,False,True
+"Indiana University, Bloomington",Indiana University Bloomington,United States,US,https://openalex.org/I4210119109,https://ror.org/02k40bc56,auto,"Indiana University Bloomington; Indiana University, Bloomington",101-150,360,155,True,False,True
 Johns Hopkins University,Johns Hopkins University,United States,US,https://openalex.org/I145311948,https://ror.org/00za53h95,auto,Johns Hopkins University,19,20,17,True,True,True
 Massachusetts Institute of Technology,Massachusetts Institute of Technology,United States,US,https://openalex.org/I63966007,https://ror.org/042nb2s44,auto,Massachusetts Institute of Technology; Massachusetts Institute of Technology (MIT),3,1,2,True,True,True
 "Mayo Clinic College of Medicine and Science, Minnesota",Mayo Clinic,United States,US,https://openalex.org/I1330342723,https://ror.org/02qp3tb03,manual,"Mayo Clinic College of Medicine and Science, Minnesota",101-150,,,True,False,False
 Michigan State University,Michigan State University,United States,US,https://openalex.org/I87216513,https://ror.org/05hs6h993,auto,Michigan State University,151-200,182,127,True,True,True
 New York University,New York University,United States,US,https://openalex.org/I57206974,https://ror.org/0190ak572,auto,New York University; New York University (NYU),28,58,36,True,True,True
 Northwestern University,Northwestern University,United States,US,https://openalex.org/I111979921,https://ror.org/000e0be47,auto,Northwestern University,31,45,26,True,True,True
-"Ohio State University, Columbus",The Ohio State University,United States,US,https://openalex.org/I52357470,https://ror.org/00rs6vg23,manual,"Ohio State University, Columbus; Ohio State University--Columbus",83,,64,True,False,True
+"Ohio State University, Columbus",The Ohio State University,United States,US,https://openalex.org/I52357470,https://ror.org/00rs6vg23,manual,"Ohio State University, Columbus; Ohio State University--Columbus",83,201,64,True,False,True
 "Pennsylvania State University, University Park",Pennsylvania State University,United States,US,https://openalex.org/I130769515,https://ror.org/04p491231,manual,"Pennsylvania State University; Pennsylvania State University, University Park; Pennsylvania State University--University Park",101-150,92,92,True,True,True
 Princeton University,Princeton University,United States,US,https://openalex.org/I20089843,https://ror.org/00hx57361,auto,Princeton University,7,27,14,True,True,True
 "Purdue University, West Lafayette",Purdue University West Lafayette,United States,US,https://openalex.org/I219193219,https://ror.org/02dqehb95,auto,"Purdue University; Purdue University, West Lafayette; Purdue University--West Lafayette",101-150,100,152,True,True,True
-Rice University,Rice University,United States,US,https://openalex.org/I74775410,https://ror.org/008zs3103,auto,Rice University,101-150,122,,True,True,False
+Rice University,Rice University,United States,US,https://openalex.org/I74775410,https://ror.org/008zs3103,auto,Rice University,101-150,122,201,True,True,False
 Rockefeller University,Rockefeller University,United States,US,https://openalex.org/I83399316,https://ror.org/0420db125,auto,Rockefeller University,29,,125,True,False,True
 "Rutgers, The State University of New Jersey - New Brunswick","Rutgers, The State University of New Jersey",United States,US,https://openalex.org/I102322142,https://ror.org/05vt9qd57,manual,"Rutgers, The State University of New Jersey - New Brunswick; Rutgers, The State University of New Jersey--New Brunswick",151-200,,155,True,False,True
 Stanford University,Stanford University,United States,US,https://openalex.org/I97018004,https://ror.org/00f54p054,auto,Stanford University,2,2,3,True,True,True
-Texas A&M University--College Station,Texas A&M University,United States of America,US,https://openalex.org/I91045830,https://ror.org/01f5ytq51,auto,Texas A&M University; Texas A&M University--College Station,,169,177,False,True,True
+Texas A&M University--College Station,Texas A&M University,United States of America,US,https://openalex.org/I91045830,https://ror.org/01f5ytq51,auto,Texas A&M University; Texas A&M University--College Station,201-300,169,177,False,True,True
 The University of Texas MD Anderson Cancer Center,The University of Texas MD Anderson Cancer Center,United States,US,https://openalex.org/I1343551460,https://ror.org/04twxam07,auto,The University of Texas MD Anderson Cancer Center,86,,,True,False,False
 The University of Texas at Austin,The University of Texas at Austin,United States,US,https://openalex.org/I86519309,https://ror.org/00hj54h04,auto,The University of Texas at Austin; University of Texas at Austin; University of Texas--Austin,49,72,56,True,True,True
-University of Alabama--Birmingham,University of Alabama at Birmingham,United States,US,https://openalex.org/I32389192,https://ror.org/008s83205,auto,University of Alabama--Birmingham,,,188,False,False,True
-University of Arizona,University of Arizona,United States,US,https://openalex.org/I138006243,https://ror.org/03m2x1q45,auto,University of Arizona,151-200,,102,True,False,True
+University of Alabama--Birmingham,University of Alabama at Birmingham,United States,US,https://openalex.org/I32389192,https://ror.org/008s83205,auto,University of Alabama--Birmingham,301-400,951-1000,188,False,False,True
+University of Arizona,University of Arizona,United States,US,https://openalex.org/I138006243,https://ror.org/03m2x1q45,auto,University of Arizona,151-200,313,102,True,False,True
 "University of California, Berkeley","University of California, Berkeley",United States,US,https://openalex.org/I95457486,https://ror.org/01an7q238,auto,"University of California, Berkeley; University of California, Berkeley (UCB); University of California--Berkeley",5,20,7,True,True,True
 "University of California, Davis","University of California, Davis",United States,US,https://openalex.org/I84218800,https://ror.org/05rrcem69,auto,"University of California, Davis; University of California--Davis",101-150,137,95,True,True,True
-"University of California, Irvine","University of California, Irvine",United States,US,https://openalex.org/I204250578,https://ror.org/04gyf1771,auto,"University of California, Irvine; University of California--Irvine",79,,99,True,False,True
+"University of California, Irvine","University of California, Irvine",United States,US,https://openalex.org/I204250578,https://ror.org/04gyf1771,auto,"University of California, Irvine; University of California--Irvine",79,252,99,True,False,True
 "University of California, Los Angeles","University of California, Los Angeles",United States,US,https://openalex.org/I161318765,https://ror.org/046rm7j60,auto,"University of California, Los Angeles; University of California, Los Angeles (UCLA); University of California--Los Angeles",16,49,11,True,True,True
 "University of California, San Diego",University of California San Diego,United States,US,https://openalex.org/I36258959,https://ror.org/0168r3w48,auto,"University of California, San Diego; University of California, San Diego (UCSD); University of California--San Diego",20,81,23,True,True,True
 "University of California, San Francisco","University of California, San Francisco",United States,US,https://openalex.org/I180670191,https://ror.org/043mz5j54,auto,"University of California, San Francisco; University of California--San Francisco",21,,22,True,False,True
 "University of California, Santa Barbara","University of California, Santa Barbara",United States,US,https://openalex.org/I154570441,https://ror.org/02t274463,auto,"University of California, Santa Barbara; University of California, Santa Barbara (UCSB); University of California--Santa Barbara",70,173,100,True,True,True
-"University of California, Santa Cruz","University of California, Santa Cruz",United States,US,https://openalex.org/I185103710,https://ror.org/03s65by71,auto,"University of California, Santa Cruz; University of California--Santa Cruz",151-200,,141,True,False,True
+"University of California, Santa Cruz","University of California, Santa Cruz",United States,US,https://openalex.org/I185103710,https://ror.org/03s65by71,auto,"University of California, Santa Cruz; University of California--Santa Cruz",151-200,458,141,True,False,True
 University of Chicago,University of Chicago,United States,US,https://openalex.org/I40347166,https://ror.org/024mw5h28,auto,University of Chicago,10,24,25,True,True,True
 University of Colorado Anschutz Medical Campus,University of Colorado Anschutz Medical Campus,United States,US,https://openalex.org/I51713134,https://ror.org/03wmf1y16,auto,University of Colorado Anschutz Medical Campus,,,193,False,False,True
-University of Colorado Boulder,University of Colorado Boulder,United States,US,https://openalex.org/I188538660,https://ror.org/02ttsq026,auto,University of Colorado Boulder; University of Colorado--Boulder,62,,105,True,False,True
-University of Florida,University of Florida,United States,US,https://openalex.org/I33213144,https://ror.org/02y3ad647,auto,University of Florida,151-200,,105,True,False,True
+University of Colorado Boulder,University of Colorado Boulder,United States,US,https://openalex.org/I188538660,https://ror.org/02ttsq026,auto,University of Colorado Boulder; University of Colorado--Boulder,62,320,105,True,False,True
+University of Florida,University of Florida,United States,US,https://openalex.org/I33213144,https://ror.org/02y3ad647,auto,University of Florida,151-200,228,105,True,False,True
 "University of Illinois Urbana, Champaign",University of Illinois Urbana-Champaign,United States,US,https://openalex.org/I157725225,https://ror.org/047426m28,auto,"University of Illinois Urbana, Champaign; University of Illinois Urbana-Champaign; University of Illinois--Urbana-Champaign",53,74,98,True,True,True
-"University of Maryland, College Park","University of Maryland, College Park",United States,US,https://openalex.org/I66946132,https://ror.org/047s2c258,auto,"University of Maryland, College Park; University of Maryland--College Park",55,,82,True,False,True
+"University of Maryland, College Park","University of Maryland, College Park",United States,US,https://openalex.org/I66946132,https://ror.org/047s2c258,auto,"University of Maryland, College Park; University of Maryland--College Park",55,252,82,True,False,True
 University of Massachusetts Chan Medical School,University of Massachusetts Chan Medical School,United States,US,https://openalex.org/I166722992,https://ror.org/0464eyp60,auto,University of Massachusetts Chan Medical School,151-200,,,True,False,False
-University of Massachusetts--Amherst,University of Massachusetts Amherst,United States,US,https://openalex.org/I24603500,https://ror.org/0072zz521,auto,University of Massachusetts--Amherst,,,160,False,False,True
+University of Massachusetts--Amherst,University of Massachusetts Amherst,United States,US,https://openalex.org/I24603500,https://ror.org/0072zz521,auto,University of Massachusetts--Amherst,201-300,260,160,False,False,True
 "University of Michigan, Ann Arbor",University of Michigan,United States,US,https://openalex.org/I27837315,https://ror.org/00jmfr291,auto,"University of Michigan, Ann Arbor; University of Michigan--Ann Arbor; University of Michigan-Ann Arbor",33,51,21,True,True,True
-"University of Minnesota, Twin Cities",University of Minnesota,United States,US,https://openalex.org/I130238516,https://ror.org/017zqws13,auto,"University of Minnesota, Twin Cities; University of Minnesota--Twin Cities",51,,76,True,False,True
+"University of Minnesota, Twin Cities",University of Minnesota,United States,US,https://openalex.org/I130238516,https://ror.org/017zqws13,auto,"University of Minnesota, Twin Cities; University of Minnesota--Twin Cities",51,255,76,True,False,True
 University of North Carolina at Chapel Hill,University of North Carolina at Chapel Hill,United States,US,https://openalex.org/I114027177,https://ror.org/0130frc33,auto,University of North Carolina at Chapel Hill; University of North Carolina--Chapel Hill,39,158,55,True,True,True
 University of Pennsylvania,University of Pennsylvania,United States,US,https://openalex.org/I79576946,https://ror.org/00b30xv10,auto,University of Pennsylvania,14,15,17,True,True,True
-University of Pittsburgh,University of Pittsburgh,United States,US,https://openalex.org/I170201317,https://ror.org/01an3r305,auto,University of Pittsburgh,88,,57,True,False,True
+University of Pittsburgh,University of Pittsburgh,United States,US,https://openalex.org/I170201317,https://ror.org/01an3r305,auto,University of Pittsburgh,88,279,57,True,False,True
 University of Southern California,University of Southern California,United States,US,https://openalex.org/I1174212,https://ror.org/03taz7m60,auto,University of Southern California,68,153,74,True,True,True
 University of Texas Southwestern Medical Center--Dallas,The University of Texas Southwestern Medical Center,United States,US,https://openalex.org/I867280407,https://ror.org/05byvp690,auto,University of Texas Southwestern Medical Center; University of Texas Southwestern Medical Center--Dallas,58,,113,True,False,True
-University of Utah,University of Utah,United States,US,https://openalex.org/I223532165,https://ror.org/03r0ha626,auto,University of Utah,151-200,,170,True,False,True
-University of Virginia,University of Virginia,United States,US,https://openalex.org/I51556381,https://ror.org/0153tk833,auto,University of Virginia,,,135,False,False,True
+University of Utah,University of Utah,United States,US,https://openalex.org/I223532165,https://ror.org/03r0ha626,auto,University of Utah,151-200,533,170,True,False,True
+University of Virginia,University of Virginia,United States,US,https://openalex.org/I51556381,https://ror.org/0153tk833,auto,University of Virginia,201-300,268,135,False,False,True
 University of Washington,University of Washington,United States,US,https://openalex.org/I201448701,https://ror.org/00cvxb145,auto,University of Washington,17,92,12,True,True,True
 "University of Wisconsin, Madison",University of Wisconsin–Madison,United States,US,https://openalex.org/I135310074,https://ror.org/01y2jtd41,auto,"University of Wisconsin, Madison; University of Wisconsin--Madison; University of Wisconsin-Madison",36,131,60,True,True,True
-Vanderbilt University,Vanderbilt University,United States,US,https://openalex.org/I200719446,https://ror.org/02vm5rt34,auto,Vanderbilt University,62,,68,True,False,True
+Vanderbilt University,Vanderbilt University,United States,US,https://openalex.org/I200719446,https://ror.org/02vm5rt34,auto,Vanderbilt University,62,265,68,True,False,True
 Washington University in St Louis,Washington University in St. Louis,United States,US,https://openalex.org/I204465549,https://ror.org/01yc7t268,auto,Washington University in St Louis; Washington University in St. Louis,26,162,32,True,True,True
 Yale University,Yale University,United States,US,https://openalex.org/I32971472,https://ror.org/03v76x132,auto,Yale University,11,16,8,True,True,True
-University of Cape Town,University of Cape Town,South Africa,ZA,https://openalex.org/I157614274,https://ror.org/03p74gp79,auto,University of Cape Town,,184,122,False,True,True
+University of Cape Town,University of Cape Town,South Africa,ZA,https://openalex.org/I157614274,https://ror.org/03p74gp79,auto,University of Cape Town,201-300,184,122,False,True,True

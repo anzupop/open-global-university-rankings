@@ -7,10 +7,10 @@ positions and scores from QS, ARWU, and US News are not used in final scoring.
 
 ## Current Status
 
-- ARWU 2025 top 200: parsed from ShanghaiRanking Nuxt payload.
-- QS 2027 top 200: parsed from the official QS Excel file.
-- US News 2026-2027 top 200: parsed from the JSON search endpoint after a browser session is established.
-- Candidate pool currently generated: 287 deduplicated OpenAlex institutions from ARWU + QS + US News.
+- ARWU 2025 top 200 candidate pool, with broader published-rank references parsed from the ShanghaiRanking Nuxt payload.
+- QS 2027 top 200 candidate pool, with broader published-rank references parsed from the official QS Excel file.
+- US News 2026-2027 top 200 candidate pool, with broader published-rank references from cached JSON search pages when available.
+- Candidate pool currently generated from deduplicated OpenAlex institutions in ARWU + QS + US News.
 
 ## Outputs
 

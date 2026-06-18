@@ -41,7 +41,7 @@ def build_data() -> dict[str, object]:
             "medical": row["has_medical_school_or_center"].lower() == "true",
             "openalex": row["openalex_id"],
             "ror": row["ror_id"],
-            "sources": {
+            "publishedRankings": {
                 "arwu2025": row["arwu_2025_rank"],
                 "qs2027": row["qs_2027_rank"],
                 "usnews2026_2027": row["usnews_2026_2027_rank"],
@@ -133,7 +133,7 @@ INDEX_HTML = """<!doctype html>
             <th>Score</th>
             <th>Works</th>
             <th>h-index</th>
-            <th>Sources</th>
+            <th>Published Rankings</th>
           </tr>
         </thead>
         <tbody id="ranking-body"></tbody>
@@ -360,7 +360,7 @@ function render() {
 }
 
 function rowTemplate(row) {
-  const sources = Object.entries(row.sources)
+  const rankings = Object.entries(row.publishedRankings || row.sources || {})
     .filter(([, value]) => value)
     .map(([key, value]) => `<span class="pill">${sourceLabel(key)} ${value}</span>`)
     .join("");
@@ -374,7 +374,7 @@ function rowTemplate(row) {
     <td>${row.score.toFixed(2)}</td>
     <td>${row.metrics.works2020_2024.toLocaleString()}</td>
     <td>${row.metrics.hIndex.toLocaleString()}</td>
-    <td>${sources}</td>
+    <td>${rankings}</td>
   </tr>`;
 }
 
