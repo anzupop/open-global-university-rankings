@@ -17,7 +17,7 @@ Current generated files use the ARWU 2025 top 200, QS 2027 top 200, and US News 
 US News was retrieved from the search JSON endpoint (`/education/best-global-universities/search?format=json&page=N`) after first establishing a browser session with `www.usnews.com`. The script reuses any cached `data/raw/usnews_search_page_N.json` files for display-only published ranks; missing pages simply leave unmatched US News reference badges blank. If the endpoint is blocked in a future run, cache more pages via browser or add `data/manual_usnews_2026_2027_top200.csv` with columns `rank,name,country`, then rerun:
 
 ```powershell
-python .\scripts\build_rankings.py --candidate-pool --match --metrics --score
+python .\scripts\build_rankings.py --candidate-pool --match --metrics --score --window 2020_2024
 ```
 
 ## Institution unit
@@ -28,7 +28,15 @@ Institutions are matched to ROR/OpenAlex IDs. Affiliated medical schools are not
 
 Final scores use OpenAlex/ROR data only. Google Scholar is excluded because it has no stable public API, institutional pages are affected by profile coverage, and bulk automated access is not a suitable reproducible pipeline.
 
-Publication window: 2020-2024. Included OpenAlex work types: `article,review,book,book-chapter`. Works are counted through `authorships.institutions.lineage`, so child institutions and known institutional lineage are included.
+Generated publication windows:
+
+- Default stable view: 5-year 2021-2025.
+- Legacy stable view: 5-year 2020-2024.
+- Annual trend snapshots: 2020, 2021, 2022, 2023, 2024, and 2025.
+
+Included OpenAlex work types: `article,review,book,book-chapter`. Works are counted through `authorships.institutions.lineage`, so child institutions and known institutional lineage are included.
+
+Annual snapshots are intended as trend and momentum views. They are more volatile than five-year views, and the latest annual snapshot can be affected by OpenAlex indexing lag.
 
 The current generated version uses work-level OpenAlex API aggregates where possible:
 
@@ -40,18 +48,18 @@ The current generated version uses work-level OpenAlex API aggregates where poss
 - Field breadth: Shannon entropy over `primary_topic.field.id`, plus active-field count.
 - SDG-linked research: works grouped by `sustainable_development_goals.id`.
 - Funder diversity: distinct `funders.id` groups observed in the work metadata.
-- Long-run influence: OpenAlex institution `summary_stats.h_index`.
+- Long-run influence: OpenAlex institution `summary_stats.h_index`. This h-index is all-time and does not vary by publication window.
 
 Indicators are winsorized at the 2.5th and 97.5th percentiles within the candidate pool, then mapped to 0-100. Volume indicators use `log1p` before winsorization. Each row in the web table exposes the raw metric value, normalized score, and weight.
 
 ## Indicators and weights
 
-- Publication scale: OpenAlex works from 2020-2024. Research weight 10%; Academic comprehensive weight 18%.
+- Publication scale: OpenAlex works in the selected publication window. Research weight 10%; Academic comprehensive weight 18%.
 - Top 10% papers: Works in OpenAlex's field/year-normalized top 10% citation percentile. Research weight 20%; Academic comprehensive weight 14%.
 - Top 1% papers: Works in OpenAlex's field/year-normalized top 1% citation percentile. Research weight 16%; Academic comprehensive weight 10%.
 - Top 10% share: Top 10% papers divided by total works. Research weight 12%; Academic comprehensive weight 8%.
 - Top 1% share: Top 1% papers divided by total works. Research weight 10%; Academic comprehensive weight 6%.
-- Institution h-index: OpenAlex institution h-index. Research weight 12%; Academic comprehensive weight 10%.
+- Institution h-index (all-time): OpenAlex institution all-time h-index; this does not vary by publication window. Research weight 12%; Academic comprehensive weight 10%.
 - Field breadth: Shannon entropy over OpenAlex primary-topic fields. Research weight 6%; Academic comprehensive weight 16%.
 - Active fields: OpenAlex fields with meaningful publication volume. Research weight 3%; Academic comprehensive weight 8%.
 - International collaboration: Works with affiliations from more than one country. Research weight 8%; Academic comprehensive weight 8%.

@@ -49,8 +49,6 @@ USNEWS_SEARCH_URL = "https://www.usnews.com/education/best-global-universities/s
 OPENALEX_BASE = "https://api.openalex.org"
 ROR_BASE = "https://api.ror.org/v2/organizations"
 
-WINDOW_START = 2020
-WINDOW_END = 2024
 WORK_TYPES = "article,review,book,book-chapter"
 OPENALEX_WORK_TYPE_FILTER = WORK_TYPES.replace(",", "|")
 PER_PAGE = 200
@@ -69,13 +67,40 @@ SOURCE_FLAGS = {
 SOURCE_RANK_FIELDNAMES = list(SOURCE_RANK_FIELDS.values())
 SOURCE_FLAG_FIELDNAMES = list(SOURCE_FLAGS.values())
 AMBIGUOUS_RANK = "__AMBIGUOUS__"
+
+
+@dataclass(frozen=True)
+class MetricWindow:
+    key: str
+    label: str
+    start: int
+    end: int
+    kind: str
+    note: str = ""
+
+    @property
+    def year_label(self) -> str:
+        return str(self.start) if self.start == self.end else f"{self.start}-{self.end}"
+
+    @property
+    def is_annual(self) -> bool:
+        return self.kind == "annual"
+
+
+WINDOWS = [
+    MetricWindow("2021_2025", "5-year 2021-2025", 2021, 2025, "five_year"),
+    MetricWindow("2020_2024", "5-year 2020-2024", 2020, 2024, "five_year"),
+    *[MetricWindow(str(year), f"Annual snapshot {year}", year, year, "annual") for year in range(2020, 2026)],
+]
+DEFAULT_WINDOW_KEY = "2021_2025"
+LEGACY_WINDOW_KEY = "2020_2024"
 METRIC_SPECS = [
     {
         "key": "scale",
         "score": "scale_score",
-        "source": "works_2020_2024",
+        "source": "works",
         "label": "Publication scale",
-        "description": "OpenAlex works from 2020-2024.",
+        "description": "OpenAlex works in the selected publication window.",
         "format": "integer",
         "log": True,
         "research_weight": 0.10,
@@ -129,8 +154,8 @@ METRIC_SPECS = [
         "key": "h_index",
         "score": "h_index_score",
         "source": "h_index",
-        "label": "Institution h-index",
-        "description": "OpenAlex institution h-index.",
+        "label": "Institution h-index (all-time)",
+        "description": "OpenAlex institution all-time h-index; this does not vary by publication window.",
         "format": "integer",
         "log": True,
         "research_weight": 0.12,
@@ -1049,13 +1074,44 @@ def merge_matched_duplicates(rows: list[dict[str, Any]]) -> list[dict[str, Any]]
     return merged
 
 
-def compute_metrics_light(refresh: bool = False) -> list[dict[str, Any]]:
+def window_by_key(key: str) -> MetricWindow:
+    for window in WINDOWS:
+        if window.key == key:
+            return window
+    raise ValueError(f"Unknown window key: {key}")
+
+
+def iter_windows(selected: str | None = None) -> list[MetricWindow]:
+    if not selected:
+        return list(WINDOWS)
+    keys = [part.strip() for part in selected.split(",") if part.strip()]
+    return [window_by_key(key) for key in keys]
+
+
+def metrics_filename(window: MetricWindow) -> str:
+    return f"open_metrics_{window.key}.csv"
+
+
+def research_filename(window: MetricWindow) -> str:
+    return f"world_universities_research_top200_{window.key}.csv"
+
+
+def comprehensive_filename(window: MetricWindow) -> str:
+    return f"world_universities_academic_comprehensive_top200_{window.key}.csv"
+
+
+def window_cache_name(prefix: str, window: MetricWindow, iid: str) -> str:
+    return f"{prefix}_{window.key}_{iid}.json"
+
+
+def compute_metrics_light(refresh: bool = False, window: MetricWindow | None = None) -> list[dict[str, Any]]:
+    window = window or window_by_key(LEGACY_WINDOW_KEY)
     candidate_path = PROCESSED / "candidate_pool.csv"
     if not candidate_path.exists():
         match_candidates(refresh=refresh)
     candidates = read_csv(candidate_path)
     candidates = enrich_reference_ranks(candidates, refresh=refresh)
-    out_path = PROCESSED / "open_metrics.csv"
+    out_path = PROCESSED / metrics_filename(window)
     rows: list[dict[str, Any]] = []
     existing: dict[str, dict[str, str]] = {}
     if out_path.exists() and not refresh:
@@ -1077,7 +1133,7 @@ def compute_metrics_light(refresh: bool = False) -> list[dict[str, Any]]:
             print(f"WARNING: institution fetch failed for {row.get('canonical_name')}: {exc}", file=sys.stderr)
             continue
         counts = inst.get("counts_by_year") or []
-        window_counts = [c for c in counts if WINDOW_START <= int(c.get("year", 0) or 0) <= WINDOW_END]
+        window_counts = [c for c in counts if window.start <= int(c.get("year", 0) or 0) <= window.end]
         works = sum(int(c.get("works_count", 0) or 0) for c in window_counts)
         oa = sum(int(c.get("oa_works_count", 0) or 0) for c in window_counts)
         citations = sum(int(c.get("cited_by_count", 0) or 0) for c in window_counts)
@@ -1114,7 +1170,11 @@ def compute_metrics_light(refresh: bool = False) -> list[dict[str, Any]]:
             {
                 **row,
                 "display_name": clean_text(row.get("matched_name")) or clean_text(row.get("canonical_name")),
-                "works_2020_2024": works,
+                "window_key": window.key,
+                "window_label": window.label,
+                "window_start": window.start,
+                "window_end": window.end,
+                "works": works,
                 "cited_by_proxy": citations,
                 "top10_count": citations,
                 "top1_count": h_index,
@@ -1171,12 +1231,12 @@ def get_institution_object(openalex_id: str, refresh: bool = False) -> dict[str,
     return api_json(f"{OPENALEX_BASE}/institutions/{iid}", cache_name=f"openalex_inst_{iid}.json", refresh=refresh)
 
 
-def build_base_filter(openalex_id: str) -> str:
+def build_base_filter(openalex_id: str, window: MetricWindow) -> str:
     iid = openalex_id.rstrip("/").split("/")[-1]
     return (
         f"authorships.institutions.lineage:{iid},"
-        f"from_publication_date:{WINDOW_START}-01-01,"
-        f"to_publication_date:{WINDOW_END}-12-31,"
+        f"from_publication_date:{window.start}-01-01,"
+        f"to_publication_date:{window.end}-12-31,"
         f"type:{OPENALEX_WORK_TYPE_FILTER}"
     )
 
@@ -1201,7 +1261,11 @@ def metrics_fieldnames() -> list[str]:
         "country_code",
         "openalex_id",
         "ror_id",
-        "works_2020_2024",
+        "window_key",
+        "window_label",
+        "window_start",
+        "window_end",
+        "works",
         "cited_by_proxy",
         "top10_count",
         "top1_count",
@@ -1250,7 +1314,13 @@ def enrich_candidate_metadata(rows: list[dict[str, Any]]) -> list[dict[str, Any]
     return enriched
 
 
-def compute_metrics(refresh: bool = False, limit: int | None = None, force: bool = False) -> list[dict[str, Any]]:
+def compute_metrics(
+    refresh: bool = False,
+    limit: int | None = None,
+    force: bool = False,
+    window: MetricWindow | None = None,
+) -> list[dict[str, Any]]:
+    window = window or window_by_key(LEGACY_WINDOW_KEY)
     candidate_path = PROCESSED / "candidate_pool.csv"
     if not candidate_path.exists():
         match_candidates(refresh=refresh)
@@ -1258,7 +1328,7 @@ def compute_metrics(refresh: bool = False, limit: int | None = None, force: bool
     candidates = enrich_reference_ranks(candidates, refresh=refresh)
     if limit:
         candidates = candidates[:limit]
-    out_path = PROCESSED / "open_metrics.csv"
+    out_path = PROCESSED / metrics_filename(window)
     existing: dict[str, dict[str, str]] = {}
     if out_path.exists() and not refresh and not force:
         for old in read_csv(out_path):
@@ -1277,41 +1347,41 @@ def compute_metrics(refresh: bool = False, limit: int | None = None, force: bool
             rows.append(cached)
             continue
         iid = oid.rstrip("/").split("/")[-1]
-        base = build_base_filter(oid)
+        base = build_base_filter(oid, window)
         try:
             inst = get_institution_object(oid, refresh=refresh)
-            works = openalex_count(base, cache_name=f"works_count_{iid}.json", refresh=refresh)
+            works = openalex_count(base, cache_name=window_cache_name("works_count", window, iid), refresh=refresh)
             top10 = openalex_count(
                 base + ",citation_normalized_percentile.is_in_top_10_percent:true",
-                cache_name=f"top10_count_{iid}.json",
+                cache_name=window_cache_name("top10_count", window, iid),
                 refresh=refresh,
             )
             top1 = openalex_count(
                 base + ",citation_normalized_percentile.is_in_top_1_percent:true",
-                cache_name=f"top1_count_{iid}.json",
+                cache_name=window_cache_name("top1_count", window, iid),
                 refresh=refresh,
             )
             international = openalex_count(
                 base + ",countries_distinct_count:>1",
-                cache_name=f"intl_count_{iid}.json",
+                cache_name=window_cache_name("intl_count", window, iid),
                 refresh=refresh,
             )
             core_source = openalex_count(
                 base + ",primary_location.source.is_core:true",
-                cache_name=f"core_source_count_{iid}.json",
+                cache_name=window_cache_name("core_source_count", window, iid),
                 refresh=refresh,
             )
             oa_groups = openalex_count(
                 base,
                 group_by="open_access.oa_status",
-                cache_name=f"oa_status_groups_{iid}.json",
+                cache_name=window_cache_name("oa_status_groups", window, iid),
                 refresh=refresh,
                 per_page=20,
             )
             fields = openalex_count(
                 base,
                 group_by="primary_topic.field.id",
-                cache_name=f"field_groups_{iid}.json",
+                cache_name=window_cache_name("field_groups", window, iid),
                 refresh=refresh,
                 per_page=200,
             )
@@ -1321,14 +1391,14 @@ def compute_metrics(refresh: bool = False, limit: int | None = None, force: bool
             sdg_groups = openalex_count(
                 base,
                 group_by="sustainable_development_goals.id",
-                cache_name=f"sdg_groups_{iid}.json",
+                cache_name=window_cache_name("sdg_groups", window, iid),
                 refresh=refresh,
                 per_page=200,
             )
             funder_groups = openalex_count(
                 base,
                 group_by="funders.id",
-                cache_name=f"funder_groups_{iid}.json",
+                cache_name=window_cache_name("funder_groups", window, iid),
                 refresh=refresh,
                 per_page=200,
             )
@@ -1348,7 +1418,11 @@ def compute_metrics(refresh: bool = False, limit: int | None = None, force: bool
                 {
                     **row,
                     "display_name": clean_text(row.get("matched_name")) or clean_text(row.get("canonical_name")),
-                    "works_2020_2024": works,
+                    "window_key": window.key,
+                    "window_label": window.label,
+                    "window_start": window.start,
+                    "window_end": window.end,
+                    "works": works,
                     "cited_by_proxy": top10,
                     "top10_count": top10,
                     "top1_count": top1,
@@ -1378,7 +1452,7 @@ def compute_metrics(refresh: bool = False, limit: int | None = None, force: bool
             )
         except Exception as exc:
             print(f"WARNING: metrics failed for {safe_log_text(row.get('canonical_name'))}: {exc}", file=sys.stderr)
-        print(f"metrics {i}/{len(candidates)} {safe_log_text(row.get('canonical_name'))}")
+        print(f"metrics {window.key} {i}/{len(candidates)} {safe_log_text(row.get('canonical_name'))}")
         if i % 10 == 0:
             write_csv(out_path, rows, metrics_fieldnames())
         time.sleep(SLEEP_SECONDS)
@@ -1489,8 +1563,19 @@ def percentile(values: list[float], p: float) -> float:
     return xs[f] * (c - k) + xs[c] * (k - f)
 
 
-def score_rankings() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    rows = read_csv(PROCESSED / "open_metrics.csv")
+def score_rankings(window: MetricWindow | None = None) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    window = window or window_by_key(LEGACY_WINDOW_KEY)
+    metrics_path = PROCESSED / metrics_filename(window)
+    if not metrics_path.exists() and window.key == LEGACY_WINDOW_KEY:
+        metrics_path = PROCESSED / "open_metrics.csv"
+    rows = read_csv(metrics_path)
+    for row in rows:
+        if not row.get("works") and row.get("works_2020_2024"):
+            row["works"] = row["works_2020_2024"]
+            row["window_key"] = window.key
+            row["window_label"] = window.label
+            row["window_start"] = window.start
+            row["window_end"] = window.end
     rows = enrich_candidate_metadata(rows)
     rows = enrich_reference_ranks(rows)
     score_cols: dict[str, dict[int, float]] = {}
@@ -1554,7 +1639,11 @@ def score_rankings() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
         "source_names",
         "country_code",
         "score",
-        "works_2020_2024",
+        "window_key",
+        "window_label",
+        "window_start",
+        "window_end",
+        "works",
         "top10_count",
         "top1_count",
         "top10_share",
@@ -1584,8 +1673,12 @@ def score_rankings() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
         "ror_id",
         *SOURCE_RANK_FIELDNAMES,
     ]
-    write_csv(PROCESSED / "world_universities_research_top200.csv", research, out_fields)
-    write_csv(PROCESSED / "world_universities_academic_comprehensive_top200.csv", comprehensive, out_fields)
+    write_csv(PROCESSED / research_filename(window), research, out_fields)
+    write_csv(PROCESSED / comprehensive_filename(window), comprehensive, out_fields)
+    if window.key == LEGACY_WINDOW_KEY:
+        write_csv(PROCESSED / "open_metrics.csv", rows, metrics_fieldnames())
+        write_csv(PROCESSED / "world_universities_research_top200.csv", research, out_fields)
+        write_csv(PROCESSED / "world_universities_academic_comprehensive_top200.csv", comprehensive, out_fields)
     return research, comprehensive
 
 
@@ -1638,7 +1731,7 @@ Current generated files use the ARWU 2025 top 200, QS 2027 top 200, and US News 
 US News was retrieved from the search JSON endpoint (`/education/best-global-universities/search?format=json&page=N`) after first establishing a browser session with `www.usnews.com`. The script reuses any cached `data/raw/usnews_search_page_N.json` files for display-only published ranks; missing pages simply leave unmatched US News reference badges blank. If the endpoint is blocked in a future run, cache more pages via browser or add `data/manual_usnews_2026_2027_top200.csv` with columns `rank,name,country`, then rerun:
 
 ```powershell
-python .\\scripts\\build_rankings.py --candidate-pool --match --metrics --score
+python .\\scripts\\build_rankings.py --candidate-pool --match --metrics --score --window 2020_2024
 ```
 
 ## Institution unit
@@ -1649,7 +1742,15 @@ Institutions are matched to ROR/OpenAlex IDs. Affiliated medical schools are not
 
 Final scores use OpenAlex/ROR data only. Google Scholar is excluded because it has no stable public API, institutional pages are affected by profile coverage, and bulk automated access is not a suitable reproducible pipeline.
 
-Publication window: {WINDOW_START}-{WINDOW_END}. Included OpenAlex work types: `{WORK_TYPES}`. Works are counted through `authorships.institutions.lineage`, so child institutions and known institutional lineage are included.
+Generated publication windows:
+
+- Default stable view: 5-year 2021-2025.
+- Legacy stable view: 5-year 2020-2024.
+- Annual trend snapshots: 2020, 2021, 2022, 2023, 2024, and 2025.
+
+Included OpenAlex work types: `{WORK_TYPES}`. Works are counted through `authorships.institutions.lineage`, so child institutions and known institutional lineage are included.
+
+Annual snapshots are intended as trend and momentum views. They are more volatile than five-year views, and the latest annual snapshot can be affected by OpenAlex indexing lag.
 
 The current generated version uses work-level OpenAlex API aggregates where possible:
 
@@ -1661,7 +1762,7 @@ The current generated version uses work-level OpenAlex API aggregates where poss
 - Field breadth: Shannon entropy over `primary_topic.field.id`, plus active-field count.
 - SDG-linked research: works grouped by `sustainable_development_goals.id`.
 - Funder diversity: distinct `funders.id` groups observed in the work metadata.
-- Long-run influence: OpenAlex institution `summary_stats.h_index`.
+- Long-run influence: OpenAlex institution `summary_stats.h_index`. This h-index is all-time and does not vary by publication window.
 
 Indicators are winsorized at the 2.5th and 97.5th percentiles within the candidate pool, then mapped to 0-100. Volume indicators use `log1p` before winsorization. Each row in the web table exposes the raw metric value, normalized score, and weight.
 
@@ -1688,9 +1789,15 @@ def main() -> None:
     parser.add_argument("--force-metrics", action="store_true")
     parser.add_argument("--score", action="store_true")
     parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument(
+        "--window",
+        default=None,
+        help="Comma-separated window keys to build, e.g. 2021_2025,2025. Defaults to all configured windows.",
+    )
     args = parser.parse_args()
 
     ensure_dirs()
+    selected_windows = iter_windows(args.window)
     if args.candidate_pool:
         rows = build_candidate_pool(refresh=args.refresh)
         print(f"candidate rows: {len(rows)}")
@@ -1698,14 +1805,17 @@ def main() -> None:
         rows = match_candidates(refresh=args.refresh)
         print(f"matched rows: {len(rows)}")
     if args.metrics:
-        rows = compute_metrics_light(refresh=args.refresh)
-        print(f"metric rows: {len(rows)}")
+        for window in selected_windows:
+            rows = compute_metrics_light(refresh=args.refresh, window=window)
+            print(f"metric rows {window.key}: {len(rows)}")
     if args.metrics_heavy:
-        rows = compute_metrics(refresh=args.refresh, limit=args.limit, force=args.force_metrics)
-        print(f"metric rows: {len(rows)}")
+        for window in selected_windows:
+            rows = compute_metrics(refresh=args.refresh, limit=args.limit, force=args.force_metrics, window=window)
+            print(f"metric rows {window.key}: {len(rows)}")
     if args.score:
-        research, comprehensive = score_rankings()
-        print(f"research rows: {len(research)} comprehensive rows: {len(comprehensive)}")
+        for window in selected_windows:
+            research, comprehensive = score_rankings(window=window)
+            print(f"research rows {window.key}: {len(research)} comprehensive rows: {len(comprehensive)}")
     write_methodology()
 
 

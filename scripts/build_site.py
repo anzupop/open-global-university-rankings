@@ -14,12 +14,12 @@ PROCESSED = ROOT / "data" / "processed"
 SITE = ROOT / "_site"
 
 METRIC_CATALOG = [
-    {"key": "scale", "label": "Publication scale", "description": "OpenAlex works from 2020-2024."},
+    {"key": "scale", "label": "Publication scale", "description": "OpenAlex works in the selected publication window."},
     {"key": "top10_volume", "label": "Top 10% papers", "description": "Field/year-normalized top 10% cited works."},
     {"key": "top1_volume", "label": "Top 1% papers", "description": "Field/year-normalized top 1% cited works."},
     {"key": "top10_rate", "label": "Top 10% share", "description": "Top 10% works divided by total works."},
     {"key": "top1_rate", "label": "Top 1% share", "description": "Top 1% works divided by total works."},
-    {"key": "h_index", "label": "Institution h-index", "description": "OpenAlex institution h-index."},
+    {"key": "h_index", "label": "Institution h-index (all-time)", "description": "OpenAlex institution all-time h-index; this does not vary by publication window."},
     {"key": "field_breadth", "label": "Field breadth", "description": "Shannon entropy across OpenAlex fields."},
     {"key": "active_fields", "label": "Active fields", "description": "Fields with meaningful publication volume."},
     {"key": "international_collab", "label": "International collaboration", "description": "Works with affiliations from more than one country."},
@@ -28,6 +28,17 @@ METRIC_CATALOG = [
     {"key": "sdg", "label": "SDG-linked research", "description": "Works tagged to at least one UN Sustainable Development Goal."},
     {"key": "funder_diversity", "label": "Funder diversity", "description": "Distinct OpenAlex funders observed in work metadata."},
 ]
+
+WINDOWS = [
+    {"key": "2021_2025", "label": "5-year 2021-2025", "start": 2021, "end": 2025, "kind": "five_year"},
+    {"key": "2020_2024", "label": "5-year 2020-2024", "start": 2020, "end": 2024, "kind": "five_year"},
+    *[
+        {"key": str(year), "label": f"Annual snapshot {year}", "start": year, "end": year, "kind": "annual"}
+        for year in range(2020, 2026)
+    ],
+]
+DEFAULT_WINDOW_KEY = "2021_2025"
+LEGACY_WINDOW_KEY = "2020_2024"
 
 
 def read_csv(name: str) -> list[dict[str, str]]:
@@ -41,13 +52,14 @@ def write(path: Path, content: str) -> None:
 
 
 def build_data() -> dict[str, object]:
-    research = read_csv("world_universities_research_top200.csv")
-    comprehensive = read_csv("world_universities_academic_comprehensive_top200.csv")
     candidates = read_csv("candidate_pool.csv")
-    metrics = read_csv("open_metrics.csv")
-    metric_by_id = {row["openalex_id"]: row for row in metrics}
+    available_windows = [window for window in WINDOWS if window_files_exist(window)]
+    if not available_windows:
+        available_windows = [{"key": LEGACY_WINDOW_KEY, "label": "5-year 2020-2024", "start": 2020, "end": 2024, "kind": "five_year"}]
 
-    def enrich(row: dict[str, str]) -> dict[str, object]:
+    default_window = DEFAULT_WINDOW_KEY if any(w["key"] == DEFAULT_WINDOW_KEY for w in available_windows) else available_windows[0]["key"]
+
+    def enrich(row: dict[str, str], metric_by_id: dict[str, dict[str, str]]) -> dict[str, object]:
         metric = metric_by_id.get(row["openalex_id"], {})
         aliases = []
         for name in [row.get("canonical_name", ""), row.get("matched_name", ""), row.get("source_names", "")]:
@@ -74,7 +86,7 @@ def build_data() -> dict[str, object]:
                 "usnews2026_2027": row["usnews_2026_2027_rank"],
             },
             "metrics": {
-                "works2020_2024": int(float(row["works_2020_2024"] or 0)),
+                "works": int(float(row.get("works") or row.get("works_2020_2024") or 0)),
                 "hIndex": int(float(row["h_index"] or 0)),
                 "fieldEntropy": round(float(row["field_entropy"] or 0), 3),
                 "activeFields": int(float(row["active_fields"] or 0)),
@@ -90,24 +102,88 @@ def build_data() -> dict[str, object]:
             "metricDetails": metric_details,
         }
 
+    window_payload: dict[str, object] = {}
+    for window in available_windows:
+        key = str(window["key"])
+        research = read_csv(ranking_filename("research", key))
+        comprehensive = read_csv(ranking_filename("comprehensive", key))
+        metrics = read_csv(metrics_filename(key))
+        metric_by_id = {row["openalex_id"]: row for row in metrics}
+        window_payload[key] = {
+            "meta": {
+                **window,
+                "window": year_label(window),
+                "isDefault": key == default_window,
+                "caveat": annual_caveat(window),
+            },
+            "method": method_payload(window),
+            "rankings": {
+                "research": [enrich(row, metric_by_id) for row in research],
+                "comprehensive": [enrich(row, metric_by_id) for row in comprehensive],
+            },
+        }
+
     return {
         "generated": "2026-06-18",
+        "defaultWindow": default_window,
+        "windows": available_windows,
         "summary": {
             "candidatePool": len(candidates),
             "arwu": sum(row["in_arwu_2025"].lower() == "true" for row in candidates),
             "qs": sum(row["in_qs_2027"].lower() == "true" for row in candidates),
             "usnews": sum(row["in_usnews_2026_2027"].lower() == "true" for row in candidates),
         },
-        "method": {
-            "window": "2020-2024",
-            "workTypes": "article, review, book, book chapter",
-            "normalization": "Each indicator is winsorized at the 2.5th and 97.5th percentiles within the candidate pool, then mapped to 0-100. Volume indicators use log1p before scaling.",
-            "catalog": METRIC_CATALOG,
-        },
-        "rankings": {
-            "research": [enrich(row) for row in research],
-            "comprehensive": [enrich(row) for row in comprehensive],
-        },
+        "windowData": window_payload,
+    }
+
+
+def window_files_exist(window: dict[str, object]) -> bool:
+    key = str(window["key"])
+    return all((PROCESSED / name).exists() for name in [metrics_filename(key), ranking_filename("research", key), ranking_filename("comprehensive", key)])
+
+
+def metrics_filename(key: str) -> str:
+    if key == LEGACY_WINDOW_KEY and not (PROCESSED / f"open_metrics_{key}.csv").exists():
+        return "open_metrics.csv"
+    return f"open_metrics_{key}.csv"
+
+
+def ranking_filename(kind: str, key: str) -> str:
+    if kind == "research":
+        modern = f"world_universities_research_top200_{key}.csv"
+        legacy = "world_universities_research_top200.csv"
+    else:
+        modern = f"world_universities_academic_comprehensive_top200_{key}.csv"
+        legacy = "world_universities_academic_comprehensive_top200.csv"
+    if key == LEGACY_WINDOW_KEY and not (PROCESSED / modern).exists():
+        return legacy
+    return modern
+
+
+def year_label(window: dict[str, object]) -> str:
+    start = int(window["start"])
+    end = int(window["end"])
+    return str(start) if start == end else f"{start}-{end}"
+
+
+def annual_caveat(window: dict[str, object]) -> str:
+    if window.get("kind") != "annual":
+        return ""
+    return "Annual snapshots are trend views and can be more volatile; the latest year may be affected by OpenAlex indexing lag."
+
+
+def method_payload(window: dict[str, object]) -> dict[str, object]:
+    label = str(window["label"])
+    caveat = annual_caveat(window)
+    return {
+        "window": year_label(window),
+        "label": label,
+        "kind": window["kind"],
+        "workTypes": "article, review, book, book chapter",
+        "normalization": "Each indicator is winsorized at the 2.5th and 97.5th percentiles within the candidate pool for the selected window, then mapped to 0-100. Volume indicators use log1p before scaling.",
+        "hIndexNote": "Institution h-index is OpenAlex all-time h-index and does not vary by publication window.",
+        "caveat": caveat,
+        "catalog": METRIC_CATALOG,
     }
 
 
@@ -157,6 +233,7 @@ INDEX_HTML = """<!doctype html>
         <button class="tab" data-ranking="comprehensive" type="button">Academic Comprehensive</button>
       </div>
       <div class="filters">
+        <select id="window"></select>
         <input id="search" type="search" placeholder="Search university or country">
         <select id="country">
           <option value="">All countries</option>
@@ -173,7 +250,7 @@ INDEX_HTML = """<!doctype html>
             <th>Country</th>
             <th>Score</th>
             <th>Works</th>
-            <th>h-index</th>
+            <th>h-index (all-time)</th>
             <th>Published Rankings</th>
           </tr>
         </thead>
@@ -287,6 +364,7 @@ main { padding: 24px clamp(16px, 4vw, 56px) 56px; }
 }
 .method h2 { margin: 0 0 8px; }
 .method p { max-width: 980px; }
+.note { color: var(--muted); }
 .method-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(180px, 1fr));
@@ -431,9 +509,11 @@ th {
 
 APP_JS = """let payload;
 let ranking = "research";
+let windowKey;
 let lastScoreButton;
 
 const body = document.getElementById("ranking-body");
+const windowSelect = document.getElementById("window");
 const search = document.getElementById("search");
 const country = document.getElementById("country");
 const modal = document.getElementById("score-modal");
@@ -446,8 +526,10 @@ fetch("data/rankings.json")
   .then((r) => r.json())
   .then((data) => {
     payload = data;
+    windowKey = data.defaultWindow;
     renderSummary(data.summary);
-    renderMethod(data.method);
+    populateWindows();
+    renderMethod(currentWindowData().method);
     populateCountries();
     render();
   })
@@ -462,6 +544,14 @@ document.querySelectorAll(".tab").forEach((button) => {
     ranking = button.dataset.ranking;
     render();
   });
+});
+
+windowSelect.addEventListener("change", () => {
+  windowKey = windowSelect.value;
+  renderMethod(currentWindowData().method);
+  populateCountries();
+  closeScoreModal();
+  render();
 });
 
 [search, country].forEach((el) => el.addEventListener("input", render));
@@ -507,10 +597,13 @@ function renderSummary(summary) {
 
 function renderMethod(method) {
   const catalog = (method && method.catalog ? method.catalog : []).slice(0, 6);
+  const caveat = method.caveat ? `<p class="note">${escapeHtml(method.caveat)}</p>` : "";
   document.getElementById("method").innerHTML = `
     <h2>Method</h2>
-    <p>The three published rankings define only the candidate pool. Final scores use open OpenAlex/ROR indicators over ${escapeHtml(method.window)} works: field-normalized top 10% and top 1% papers, publication scale, h-index, field breadth, international collaboration, core-source share, open access, SDG-linked research, and funder diversity.</p>
+    <p>The three published rankings define only the candidate pool. Final scores use open OpenAlex/ROR indicators over ${escapeHtml(method.label)} works: field-normalized top 10% and top 1% papers, publication scale, all-time h-index, field breadth, international collaboration, core-source share, open access, SDG-linked research, and funder diversity.</p>
     <p>${escapeHtml(method.normalization)}</p>
+    <p>${escapeHtml(method.hIndexNote)}</p>
+    ${caveat}
     <div class="method-grid">
       ${catalog.map((item) => `<div class="method-item"><b>${escapeHtml(item.label)}</b><span>${escapeHtml(item.description)}</span></div>`).join("")}
     </div>
@@ -518,15 +611,29 @@ function renderMethod(method) {
   `;
 }
 
+function populateWindows() {
+  windowSelect.innerHTML = "";
+  payload.windows.forEach((window) => {
+    const option = document.createElement("option");
+    option.value = window.key;
+    option.textContent = window.label;
+    windowSelect.appendChild(option);
+  });
+  windowSelect.value = windowKey;
+}
+
 function populateCountries() {
+  const previous = country.value;
   const countries = new Set();
-  Object.values(payload.rankings).flat().forEach((row) => countries.add(row.country));
+  Object.values(currentWindowData().rankings).flat().forEach((row) => countries.add(row.country));
+  country.innerHTML = '<option value="">All countries</option>';
   [...countries].sort().forEach((code) => {
     const option = document.createElement("option");
     option.value = code;
     option.textContent = code;
     country.appendChild(option);
   });
+  country.value = countries.has(previous) ? previous : "";
 }
 
 function render() {
@@ -550,7 +657,7 @@ function rowTemplate(row) {
     </td>
     <td>${row.country}</td>
     <td>${row.score.toFixed(2)}</td>
-    <td>${row.metrics.works2020_2024.toLocaleString()}</td>
+    <td>${row.metrics.works.toLocaleString()}</td>
     <td>${row.metrics.hIndex.toLocaleString()}</td>
     <td>${rankings}</td>
   </tr>`;
@@ -559,7 +666,7 @@ function rowTemplate(row) {
 function openScoreModal(row) {
   modalTitle.textContent = row.name;
   const aliases = row.aliases && row.aliases.length ? ` · ${row.aliases.join(" · ")}` : "";
-  modalMeta.textContent = `Rank ${row.rank} · ${row.country} · Score ${row.score.toFixed(2)}${aliases}`;
+  modalMeta.textContent = `${currentWindowData().meta.label} · Rank ${row.rank} · ${row.country} · Score ${row.score.toFixed(2)}${aliases}`;
   modalBody.innerHTML = metricDetailsTemplate(row);
   modal.hidden = false;
   document.body.classList.add("modal-open");
@@ -588,7 +695,7 @@ function findCurrentRows() {
   if (!payload) return [];
   const q = search.value.trim().toLowerCase();
   const c = country.value;
-  return payload.rankings[ranking].filter((row) => {
+  return currentWindowData().rankings[ranking].filter((row) => {
     if (c && row.country !== c) return false;
     if (!q) return true;
     const haystack = [row.name, row.country, ...(row.aliases || [])].join(" ").toLowerCase();
@@ -598,11 +705,15 @@ function findCurrentRows() {
 
 function fallbackMetricDetails(row) {
   return [
-    ["Publication scale", row.metrics.works2020_2024, "integer", "OpenAlex works from 2020-2024."],
-    ["Institution h-index", row.metrics.hIndex, "integer", "OpenAlex institution h-index."],
+    ["Publication scale", row.metrics.works, "integer", "OpenAlex works in the selected publication window."],
+    ["Institution h-index (all-time)", row.metrics.hIndex, "integer", "OpenAlex institution all-time h-index."],
     ["Field breadth", row.metrics.fieldEntropy, "decimal", "Shannon entropy across OpenAlex fields."],
     ["Open access share", row.metrics.openAccessShare, "percent", "OpenAlex open-access works divided by total works."],
   ].map(([label, value, format, description]) => ({ label, value, format, description, score: 0, research_weight: 0, comprehensive_weight: 0 }));
+}
+
+function currentWindowData() {
+  return payload.windowData[windowKey] || payload.windowData[payload.defaultWindow];
 }
 
 function formatMetricValue(value, format) {
