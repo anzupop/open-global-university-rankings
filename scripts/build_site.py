@@ -161,7 +161,6 @@ INDEX_HTML = """<!doctype html>
         <select id="country">
           <option value="">All countries</option>
         </select>
-        <label class="check"><input id="medical" type="checkbox"> Medical flag</label>
       </div>
     </section>
 
@@ -308,7 +307,6 @@ main { padding: 24px clamp(16px, 4vw, 56px) 56px; }
   color: #fff;
 }
 input { min-width: 260px; }
-.check { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
 
 .table-wrap { overflow: auto; }
 table { border-collapse: collapse; width: 100%; min-width: 1120px; }
@@ -363,7 +361,12 @@ th {
 }
 .detail-row td {
   background: #fbfcff;
-  padding: 0 12px 14px 64px;
+}
+.detail-row .detail-spacer {
+  padding: 0;
+}
+.detail-row .detail-cell {
+  padding: 0 12px 14px 12px;
 }
 .metrics-grid {
   display: grid;
@@ -393,7 +396,6 @@ const expanded = new Set();
 const body = document.getElementById("ranking-body");
 const search = document.getElementById("search");
 const country = document.getElementById("country");
-const medical = document.getElementById("medical");
 
 fetch("data/rankings.json")
   .then((r) => r.json())
@@ -414,7 +416,7 @@ document.querySelectorAll(".tab").forEach((button) => {
   });
 });
 
-[search, country, medical].forEach((el) => el.addEventListener("input", render));
+[search, country].forEach((el) => el.addEventListener("input", render));
 
 document.addEventListener("keydown", (event) => {
   if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey) return;
@@ -471,10 +473,8 @@ function render() {
   if (!payload) return;
   const q = search.value.trim().toLowerCase();
   const c = country.value;
-  const onlyMedical = medical.checked;
   const rows = payload.rankings[ranking].filter((row) => {
     if (c && row.country !== c) return false;
-    if (onlyMedical && !row.medical) return false;
     if (!q) return true;
     const haystack = [row.name, row.country, ...(row.aliases || [])].join(" ").toLowerCase();
     return haystack.includes(q);
@@ -495,8 +495,8 @@ function rowTemplate(row) {
     <td>
       <div class="uni">${escapeHtml(row.name)} ${row.medical ? '<span class="pill">medical</span>' : ''}</div>
       ${aliases ? `<div class="aliases">${aliases}</div>` : ""}
-      <button class="disclosure" type="button" data-toggle="${id}" aria-expanded="${isOpen}" title="Show metric scores" aria-label="Show metric scores"><span class="triangle" aria-hidden="true"></span></button>
       <div class="sub"><a href="${row.openalex}">OpenAlex</a>${row.ror ? ` · <a href="${row.ror}">ROR</a>` : ""}</div>
+      <button class="disclosure" type="button" data-toggle="${id}" aria-expanded="${isOpen}" title="Score Details" aria-label="Score Details"><span class="triangle" aria-hidden="true"></span></button>
     </td>
     <td>${row.country}</td>
     <td>${row.score.toFixed(2)}</td>
@@ -517,7 +517,7 @@ function detailRow(row) {
       <span>${escapeHtml(item.description || "")}</span>
     </div>
   `).join("");
-  return `<tr class="detail-row"><td colspan="7"><div class="metrics-grid">${metrics}</div></td></tr>`;
+  return `<tr class="detail-row"><td class="detail-spacer"></td><td class="detail-cell" colspan="6"><div class="metrics-grid">${metrics}</div></td></tr>`;
 }
 
 function fallbackMetricDetails(row) {
