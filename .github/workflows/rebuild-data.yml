@@ -11,6 +11,21 @@ on:
         options:
           - "true"
           - "false"
+      window:
+        description: "Metric window to rebuild"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - "all"
+          - "2021_2025"
+          - "2020_2024"
+          - "2020"
+          - "2021"
+          - "2022"
+          - "2023"
+          - "2024"
+          - "2025"
 
 permissions:
   contents: write
@@ -36,10 +51,14 @@ jobs:
 
       - name: Rebuild OpenAlex metrics and rankings
         run: |
+          WINDOW_ARG=""
+          if [ "${{ inputs.window }}" != "all" ]; then
+            WINDOW_ARG="--window ${{ inputs.window }}"
+          fi
           if [ "${{ inputs.force_metrics }}" = "true" ]; then
-            python scripts/build_rankings.py --metrics-heavy --force-metrics --score
+            python scripts/build_rankings.py --metrics-heavy --force-metrics --score $WINDOW_ARG
           else
-            python scripts/build_rankings.py --metrics-heavy --score
+            python scripts/build_rankings.py --metrics-heavy --score $WINDOW_ARG
           fi
 
       - name: Build static site
