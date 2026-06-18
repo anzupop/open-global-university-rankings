@@ -19,6 +19,7 @@ import sys
 import time
 import unicodedata
 import urllib.parse
+import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 import zipfile
@@ -53,6 +54,9 @@ WORK_TYPES = "article,review,book,book-chapter"
 OPENALEX_WORK_TYPE_FILTER = WORK_TYPES.replace(",", "|")
 PER_PAGE = 200
 SLEEP_SECONDS = 0.12
+OPENALEX_REQUEST_INTERVAL_SECONDS = float(os.environ.get("OPENALEX_REQUEST_INTERVAL_SECONDS", "0.2"))
+HTTP_MAX_ATTEMPTS = int(os.environ.get("OPENALEX_HTTP_MAX_ATTEMPTS", "8"))
+HTTP_RETRY_STATUSES = {429, 500, 502, 503, 504}
 CANDIDATE_RANK_LIMIT = 200
 SOURCE_RANK_FIELDS = {
     "ARWU 2025": "arwu_2025_rank",
@@ -67,6 +71,7 @@ SOURCE_FLAGS = {
 SOURCE_RANK_FIELDNAMES = list(SOURCE_RANK_FIELDS.values())
 SOURCE_FLAG_FIELDNAMES = list(SOURCE_FLAGS.values())
 AMBIGUOUS_RANK = "__AMBIGUOUS__"
+_last_openalex_request = 0.0
 
 
 @dataclass(frozen=True)
@@ -246,13 +251,59 @@ def ensure_dirs() -> None:
     PROCESSED.mkdir(parents=True, exist_ok=True)
 
 
+def throttle_openalex(url: str) -> None:
+    global _last_openalex_request
+    if not url.startswith(OPENALEX_BASE):
+        return
+    elapsed = time.monotonic() - _last_openalex_request
+    if elapsed < OPENALEX_REQUEST_INTERVAL_SECONDS:
+        time.sleep(OPENALEX_REQUEST_INTERVAL_SECONDS - elapsed)
+    _last_openalex_request = time.monotonic()
+
+
+def retry_delay(exc: urllib.error.HTTPError, attempt: int) -> float:
+    retry_after = exc.headers.get("Retry-After")
+    if retry_after:
+        try:
+            return min(300.0, max(1.0, float(retry_after)))
+        except ValueError:
+            pass
+    if exc.code == 429:
+        return min(180.0, 10.0 * (attempt + 1))
+    return min(60.0, 2.0 * (attempt + 1))
+
+
 def http_get(url: str, *, timeout: int = 60, accept: str | None = None) -> bytes:
     headers = {"User-Agent": USER_AGENT}
     if accept:
         headers["Accept"] = accept
     req = urllib.request.Request(url, headers=headers)
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read()
+    for attempt in range(HTTP_MAX_ATTEMPTS):
+        throttle_openalex(url)
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return resp.read()
+        except urllib.error.HTTPError as exc:
+            if exc.code not in HTTP_RETRY_STATUSES or attempt >= HTTP_MAX_ATTEMPTS - 1:
+                raise
+            delay = retry_delay(exc, attempt)
+            print(
+                f"WARNING: HTTP {exc.code} for {url}; retrying in {delay:.0f}s "
+                f"({attempt + 1}/{HTTP_MAX_ATTEMPTS})",
+                file=sys.stderr,
+            )
+            time.sleep(delay)
+        except urllib.error.URLError as exc:
+            if attempt >= HTTP_MAX_ATTEMPTS - 1:
+                raise
+            delay = min(60.0, 2.0 * (attempt + 1))
+            print(
+                f"WARNING: request failed for {url}: {exc}; retrying in {delay:.0f}s "
+                f"({attempt + 1}/{HTTP_MAX_ATTEMPTS})",
+                file=sys.stderr,
+            )
+            time.sleep(delay)
+    raise RuntimeError(f"HTTP request failed after {HTTP_MAX_ATTEMPTS} attempts: {url}")
 
 
 def cached_get(url: str, cache_name: str, *, timeout: int = 60, refresh: bool = False) -> str:
@@ -1328,6 +1379,7 @@ def compute_metrics(
     candidates = enrich_reference_ranks(candidates, refresh=refresh)
     if limit:
         candidates = candidates[:limit]
+    expected_rows = sum(1 for row in candidates if row.get("openalex_id"))
     out_path = PROCESSED / metrics_filename(window)
     existing: dict[str, dict[str, str]] = {}
     if out_path.exists() and not refresh and not force:
@@ -1335,6 +1387,7 @@ def compute_metrics(
             if old.get("openalex_id") and old.get("core_source_share"):
                 existing[old["openalex_id"]] = old
     rows: list[dict[str, Any]] = []
+    failures: list[str] = []
     for i, row in enumerate(candidates, start=1):
         oid = row.get("openalex_id", "")
         if not oid:
@@ -1451,12 +1504,20 @@ def compute_metrics(
                 }
             )
         except Exception as exc:
-            print(f"WARNING: metrics failed for {safe_log_text(row.get('canonical_name'))}: {exc}", file=sys.stderr)
+            name = safe_log_text(row.get("canonical_name"))
+            failures.append(f"{name}: {exc}")
+            print(f"WARNING: metrics failed for {name}: {exc}", file=sys.stderr)
         print(f"metrics {window.key} {i}/{len(candidates)} {safe_log_text(row.get('canonical_name'))}")
         if i % 10 == 0:
             write_csv(out_path, rows, metrics_fieldnames())
         time.sleep(SLEEP_SECONDS)
     write_csv(out_path, rows, metrics_fieldnames())
+    if len(rows) != expected_rows:
+        sample = "; ".join(failures[:8])
+        raise RuntimeError(
+            f"metrics window {window.key} incomplete: wrote {len(rows)} rows, expected {expected_rows}. "
+            f"Failures: {sample}"
+        )
     return rows
 
 

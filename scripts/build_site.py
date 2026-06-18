@@ -53,7 +53,8 @@ def write(path: Path, content: str) -> None:
 
 def build_data() -> dict[str, object]:
     candidates = read_csv("candidate_pool.csv")
-    available_windows = [window for window in WINDOWS if window_files_exist(window)]
+    expected_metric_rows = sum(1 for row in candidates if row.get("openalex_id"))
+    available_windows = [window for window in WINDOWS if window_files_complete(window, expected_metric_rows)]
     if not available_windows:
         available_windows = [{"key": LEGACY_WINDOW_KEY, "label": "5-year 2020-2024", "start": 2020, "end": 2024, "kind": "five_year"}]
 
@@ -137,9 +138,17 @@ def build_data() -> dict[str, object]:
     }
 
 
-def window_files_exist(window: dict[str, object]) -> bool:
+def window_files_complete(window: dict[str, object], expected_metric_rows: int) -> bool:
     key = str(window["key"])
-    return all((PROCESSED / name).exists() for name in [metrics_filename(key), ranking_filename("research", key), ranking_filename("comprehensive", key)])
+    required = [metrics_filename(key), ranking_filename("research", key), ranking_filename("comprehensive", key)]
+    if not all((PROCESSED / name).exists() for name in required):
+        return False
+    metrics = read_csv(metrics_filename(key))
+    research = read_csv(ranking_filename("research", key))
+    comprehensive = read_csv(ranking_filename("comprehensive", key))
+    if len(metrics) < expected_metric_rows:
+        return False
+    return len(research) >= 200 and len(comprehensive) >= 200
 
 
 def metrics_filename(key: str) -> str:
