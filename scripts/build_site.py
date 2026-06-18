@@ -177,10 +177,22 @@ INDEX_HTML = """<!doctype html>
             <th>Published Rankings</th>
           </tr>
         </thead>
-        <tbody id="ranking-body"></tbody>
+        <tbody id="ranking-body">
+          <tr class="loading-row"><td colspan="7">Loading rankings...</td></tr>
+        </tbody>
       </table>
     </section>
   </main>
+
+  <div class="modal-backdrop" id="score-modal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="score-modal-title">
+      <button class="modal-close" id="score-modal-close" type="button" aria-label="Close score details">&times;</button>
+      <p class="modal-kicker">Score Details</p>
+      <h2 id="score-modal-title"></h2>
+      <p class="modal-meta" id="score-modal-meta"></p>
+      <div class="metrics-grid modal-metrics" id="score-modal-body"></div>
+    </section>
+  </div>
 
   <script src="assets/app.js"></script>
 </body>
@@ -325,6 +337,18 @@ th {
 }
 .rank { font-weight: 800; }
 .uni { font-weight: 700; }
+.uni-button {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0;
+  text-align: left;
+}
+.uni-button:hover { color: var(--accent); text-decoration: underline; }
+.uni-button:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
 .sub { color: var(--muted); font-size: 12px; }
 .aliases { margin-top: 2px; color: var(--muted); font-size: 12px; max-width: 420px; }
 .pill {
@@ -335,39 +359,7 @@ th {
   color: var(--muted);
   font-size: 12px;
 }
-.disclosure {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  margin-top: 4px;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-}
-.disclosure:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
-.triangle {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-left: 7px solid var(--muted);
-}
-.disclosure[aria-expanded="true"] .triangle {
-  transform: rotate(90deg);
-}
-.detail-row td {
-  background: #fbfcff;
-}
-.detail-row .detail-spacer {
-  padding: 0;
-}
-.detail-row .detail-cell {
-  padding: 0 12px 14px 12px;
-}
+.loading-row td { color: var(--muted); padding: 28px 12px; text-align: center; }
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(180px, 1fr));
@@ -379,6 +371,54 @@ th {
 }
 .metric-line b { display: block; font-size: 13px; }
 .metric-line span { color: var(--muted); font-size: 12px; }
+.modal-open { overflow: hidden; }
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 24, 40, .48);
+  padding: 24px;
+}
+.modal-backdrop[hidden] { display: none; }
+.modal {
+  position: relative;
+  width: min(1040px, 100%);
+  max-height: min(86vh, 900px);
+  overflow: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(16, 24, 40, .24);
+  padding: 22px;
+}
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 22px;
+  line-height: 1;
+}
+.modal-close:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+.modal-kicker {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.modal h2 { margin: 0; padding-right: 44px; }
+.modal-meta { margin: 6px 0 0; color: var(--muted); }
+.modal-metrics { margin-top: 18px; }
 
 @media (max-width: 760px) {
   .site-header, .controls { flex-direction: column; }
@@ -391,11 +431,16 @@ th {
 
 APP_JS = """let payload;
 let ranking = "research";
-const expanded = new Set();
+let lastScoreButton;
 
 const body = document.getElementById("ranking-body");
 const search = document.getElementById("search");
 const country = document.getElementById("country");
+const modal = document.getElementById("score-modal");
+const modalTitle = document.getElementById("score-modal-title");
+const modalMeta = document.getElementById("score-modal-meta");
+const modalBody = document.getElementById("score-modal-body");
+const modalClose = document.getElementById("score-modal-close");
 
 fetch("data/rankings.json")
   .then((r) => r.json())
@@ -405,6 +450,9 @@ fetch("data/rankings.json")
     renderMethod(data.method);
     populateCountries();
     render();
+  })
+  .catch(() => {
+    body.innerHTML = `<tr class="loading-row"><td colspan="7">Unable to load rankings.</td></tr>`;
   });
 
 document.querySelectorAll(".tab").forEach((button) => {
@@ -419,6 +467,11 @@ document.querySelectorAll(".tab").forEach((button) => {
 [search, country].forEach((el) => el.addEventListener("input", render));
 
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !modal.hidden) {
+    closeScoreModal();
+    return;
+  }
+  if (!modal.hidden) return;
   if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey) return;
   const target = event.target;
   if (target && ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)) return;
@@ -428,13 +481,20 @@ document.addEventListener("keydown", (event) => {
 });
 
 body.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-toggle]");
+  const button = event.target.closest("[data-score-details]");
   if (!button) return;
-  const id = button.dataset.toggle;
-  if (expanded.has(id)) expanded.delete(id);
-  else expanded.add(id);
-  render();
+  const row = findCurrentRows().find((item) => item.openalex === button.dataset.scoreDetails);
+  if (row) {
+    lastScoreButton = button;
+    openScoreModal(row);
+  }
 });
+
+modal.addEventListener("click", (event) => {
+  if (event.target === modal) closeScoreModal();
+});
+
+modalClose.addEventListener("click", closeScoreModal);
 
 function renderSummary(summary) {
   document.getElementById("summary").innerHTML = [
@@ -471,14 +531,7 @@ function populateCountries() {
 
 function render() {
   if (!payload) return;
-  const q = search.value.trim().toLowerCase();
-  const c = country.value;
-  const rows = payload.rankings[ranking].filter((row) => {
-    if (c && row.country !== c) return false;
-    if (!q) return true;
-    const haystack = [row.name, row.country, ...(row.aliases || [])].join(" ").toLowerCase();
-    return haystack.includes(q);
-  });
+  const rows = findCurrentRows();
   body.innerHTML = rows.map(rowTemplate).join("");
 }
 
@@ -487,37 +540,60 @@ function rowTemplate(row) {
     .filter(([, value]) => value)
     .map(([key, value]) => `<span class="pill">${sourceLabel(key)} ${value}</span>`)
     .join("");
-  const id = `${ranking}-${row.openalex.split("/").pop()}`;
-  const isOpen = expanded.has(id);
   const aliases = (row.aliases || []).map(escapeHtml).join(" · ");
   return `<tr>
     <td class="rank">${row.rank}</td>
     <td>
-      <div class="uni">${escapeHtml(row.name)} ${row.medical ? '<span class="pill">medical</span>' : ''}</div>
+      <div class="uni"><button class="uni-button" type="button" data-score-details="${escapeHtml(row.openalex)}" title="Score Details">${escapeHtml(row.name)}</button> ${row.medical ? '<span class="pill">medical</span>' : ''}</div>
       ${aliases ? `<div class="aliases">${aliases}</div>` : ""}
       <div class="sub"><a href="${row.openalex}">OpenAlex</a>${row.ror ? ` · <a href="${row.ror}">ROR</a>` : ""}</div>
-      <button class="disclosure" type="button" data-toggle="${id}" aria-expanded="${isOpen}" title="Score Details" aria-label="Score Details"><span class="triangle" aria-hidden="true"></span></button>
     </td>
     <td>${row.country}</td>
     <td>${row.score.toFixed(2)}</td>
     <td>${row.metrics.works2020_2024.toLocaleString()}</td>
     <td>${row.metrics.hIndex.toLocaleString()}</td>
     <td>${rankings}</td>
-  </tr>
-  ${isOpen ? detailRow(row) : ""}`;
+  </tr>`;
 }
 
-function detailRow(row) {
+function openScoreModal(row) {
+  modalTitle.textContent = row.name;
+  const aliases = row.aliases && row.aliases.length ? ` · ${row.aliases.join(" · ")}` : "";
+  modalMeta.textContent = `Rank ${row.rank} · ${row.country} · Score ${row.score.toFixed(2)}${aliases}`;
+  modalBody.innerHTML = metricDetailsTemplate(row);
+  modal.hidden = false;
+  document.body.classList.add("modal-open");
+  modalClose.focus();
+}
+
+function closeScoreModal() {
+  modal.hidden = true;
+  document.body.classList.remove("modal-open");
+  if (lastScoreButton) lastScoreButton.focus();
+}
+
+function metricDetailsTemplate(row) {
   const activeWeight = ranking === "research" ? "research_weight" : "comprehensive_weight";
   const details = row.metricDetails && row.metricDetails.length ? row.metricDetails : fallbackMetricDetails(row);
-  const metrics = details.map((item) => `
+  return details.map((item) => `
     <div class="metric-line">
       <b>${escapeHtml(item.label)} · ${formatMetricValue(item.value, item.format)}</b>
       <span>Score ${Number(item.score || 0).toFixed(2)} · Weight ${formatWeight(item[activeWeight])}</span>
       <span>${escapeHtml(item.description || "")}</span>
     </div>
   `).join("");
-  return `<tr class="detail-row"><td class="detail-spacer"></td><td class="detail-cell" colspan="6"><div class="metrics-grid">${metrics}</div></td></tr>`;
+}
+
+function findCurrentRows() {
+  if (!payload) return [];
+  const q = search.value.trim().toLowerCase();
+  const c = country.value;
+  return payload.rankings[ranking].filter((row) => {
+    if (c && row.country !== c) return false;
+    if (!q) return true;
+    const haystack = [row.name, row.country, ...(row.aliases || [])].join(" ").toLowerCase();
+    return haystack.includes(q);
+  });
 }
 
 function fallbackMetricDetails(row) {
