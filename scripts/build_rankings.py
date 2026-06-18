@@ -52,6 +52,7 @@ ROR_BASE = "https://api.ror.org/v2/organizations"
 WINDOW_START = 2020
 WINDOW_END = 2024
 WORK_TYPES = "article,review,book,book-chapter"
+OPENALEX_WORK_TYPE_FILTER = WORK_TYPES.replace(",", "|")
 PER_PAGE = 200
 SLEEP_SECONDS = 0.12
 CANDIDATE_RANK_LIMIT = 200
@@ -68,6 +69,151 @@ SOURCE_FLAGS = {
 SOURCE_RANK_FIELDNAMES = list(SOURCE_RANK_FIELDS.values())
 SOURCE_FLAG_FIELDNAMES = list(SOURCE_FLAGS.values())
 AMBIGUOUS_RANK = "__AMBIGUOUS__"
+METRIC_SPECS = [
+    {
+        "key": "scale",
+        "score": "scale_score",
+        "source": "works_2020_2024",
+        "label": "Publication scale",
+        "description": "OpenAlex works from 2020-2024.",
+        "format": "integer",
+        "log": True,
+        "research_weight": 0.10,
+        "comprehensive_weight": 0.18,
+    },
+    {
+        "key": "top10_volume",
+        "score": "top10_volume_score",
+        "source": "top10_count",
+        "label": "Top 10% papers",
+        "description": "Works in OpenAlex's field/year-normalized top 10% citation percentile.",
+        "format": "integer",
+        "log": True,
+        "research_weight": 0.20,
+        "comprehensive_weight": 0.14,
+    },
+    {
+        "key": "top1_volume",
+        "score": "top1_volume_score",
+        "source": "top1_count",
+        "label": "Top 1% papers",
+        "description": "Works in OpenAlex's field/year-normalized top 1% citation percentile.",
+        "format": "integer",
+        "log": True,
+        "research_weight": 0.16,
+        "comprehensive_weight": 0.10,
+    },
+    {
+        "key": "top10_rate",
+        "score": "top10_rate_score",
+        "source": "top10_share",
+        "label": "Top 10% share",
+        "description": "Top 10% papers divided by total works.",
+        "format": "percent",
+        "log": False,
+        "research_weight": 0.12,
+        "comprehensive_weight": 0.08,
+    },
+    {
+        "key": "top1_rate",
+        "score": "top1_rate_score",
+        "source": "top1_share",
+        "label": "Top 1% share",
+        "description": "Top 1% papers divided by total works.",
+        "format": "percent",
+        "log": False,
+        "research_weight": 0.10,
+        "comprehensive_weight": 0.06,
+    },
+    {
+        "key": "h_index",
+        "score": "h_index_score",
+        "source": "h_index",
+        "label": "Institution h-index",
+        "description": "OpenAlex institution h-index.",
+        "format": "integer",
+        "log": True,
+        "research_weight": 0.12,
+        "comprehensive_weight": 0.10,
+    },
+    {
+        "key": "field_breadth",
+        "score": "field_breadth_score",
+        "source": "field_entropy",
+        "label": "Field breadth",
+        "description": "Shannon entropy over OpenAlex primary-topic fields.",
+        "format": "decimal",
+        "log": False,
+        "research_weight": 0.06,
+        "comprehensive_weight": 0.16,
+    },
+    {
+        "key": "active_fields",
+        "score": "active_fields_score",
+        "source": "active_fields",
+        "label": "Active fields",
+        "description": "OpenAlex fields with meaningful publication volume.",
+        "format": "integer",
+        "log": False,
+        "research_weight": 0.03,
+        "comprehensive_weight": 0.08,
+    },
+    {
+        "key": "international_collab",
+        "score": "international_collab_score",
+        "source": "international_collab_share",
+        "label": "International collaboration",
+        "description": "Works with affiliations from more than one country.",
+        "format": "percent",
+        "log": False,
+        "research_weight": 0.08,
+        "comprehensive_weight": 0.08,
+    },
+    {
+        "key": "core_source",
+        "score": "core_source_score",
+        "source": "core_source_share",
+        "label": "Core-source share",
+        "description": "Works whose primary source is marked core by OpenAlex.",
+        "format": "percent",
+        "log": False,
+        "research_weight": 0.06,
+        "comprehensive_weight": 0.05,
+    },
+    {
+        "key": "open_access",
+        "score": "open_access_score",
+        "source": "oa_share",
+        "label": "Open access share",
+        "description": "OpenAlex open-access works divided by total works.",
+        "format": "percent",
+        "log": False,
+        "research_weight": 0.03,
+        "comprehensive_weight": 0.03,
+    },
+    {
+        "key": "sdg",
+        "score": "sdg_score",
+        "source": "sdg_share",
+        "label": "SDG-linked research",
+        "description": "Works tagged to at least one UN Sustainable Development Goal.",
+        "format": "percent",
+        "log": False,
+        "research_weight": 0.02,
+        "comprehensive_weight": 0.02,
+    },
+    {
+        "key": "funder_diversity",
+        "score": "funder_diversity_score",
+        "source": "funder_count",
+        "label": "Funder diversity",
+        "description": "Distinct funders observed in OpenAlex work metadata.",
+        "format": "integer",
+        "log": True,
+        "research_weight": 0.02,
+        "comprehensive_weight": 0.02,
+    },
+]
 
 
 def ensure_dirs() -> None:
@@ -177,6 +323,10 @@ def clean_text(value: Any) -> str:
     text = html.unescape(str(value))
     text = re.sub(r"\s+", " ", text)
     return text.strip()
+
+
+def safe_log_text(value: Any) -> str:
+    return clean_text(value).encode("ascii", "replace").decode("ascii")
 
 
 def rank_upper_bound(rank: str) -> int | None:
@@ -941,7 +1091,21 @@ def compute_metrics_light(refresh: bool = False) -> list[dict[str, Any]]:
                 "top1_share": mean_2yr,
                 "h_index": h_index,
                 "oa_share": safe_div(oa, works),
+                "oa_count": oa,
+                "oa_gold_count": "",
+                "oa_hybrid_count": "",
+                "oa_green_count": "",
+                "oa_bronze_count": "",
+                "oa_diamond_count": "",
+                "closed_count": "",
                 "international_collab_proxy_share": collab_proxy,
+                "international_collab_count": "",
+                "international_collab_share": collab_proxy,
+                "core_source_count": "",
+                "core_source_share": "",
+                "sdg_count": "",
+                "sdg_share": "",
+                "funder_count": "",
                 "field_entropy": entropy,
                 "active_fields": active_fields,
                 "has_medical_school_or_center": has_medical,
@@ -949,60 +1113,19 @@ def compute_metrics_light(refresh: bool = False) -> list[dict[str, Any]]:
         )
         if i % 25 == 0:
             print(f"light metrics {i}/{len(candidates)}")
-            write_csv(
-                out_path,
-                rows,
-                [
-                    "canonical_name",
-                    "matched_name",
-                    "country_code",
-                    "openalex_id",
-                    "ror_id",
-                    "works_2020_2024",
-                    "cited_by_proxy",
-                    "top10_count",
-                    "top1_count",
-                    "top10_share",
-                    "top1_share",
-                    "h_index",
-                    "oa_share",
-                    "international_collab_proxy_share",
-                    "field_entropy",
-                    "active_fields",
-                    "has_medical_school_or_center",
-                    *SOURCE_RANK_FIELDNAMES,
-                ],
-            )
-    write_csv(
-        out_path,
-        rows,
-        [
-            "canonical_name",
-            "display_name",
-            "matched_name",
-            "country_code",
-            "openalex_id",
-            "ror_id",
-            "works_2020_2024",
-            "cited_by_proxy",
-            "top10_count",
-            "top1_count",
-            "top10_share",
-            "top1_share",
-            "h_index",
-            "oa_share",
-            "international_collab_proxy_share",
-            "field_entropy",
-            "active_fields",
-            "has_medical_school_or_center",
-            *SOURCE_RANK_FIELDNAMES,
-        ],
-    )
+            write_csv(out_path, rows, metrics_fieldnames())
+    write_csv(out_path, rows, metrics_fieldnames())
     return rows
 
 
-def openalex_count(filters: str, group_by: str | None = None, cache_name: str | None = None, refresh: bool = False) -> Any:
-    params = {"filter": filters, "per-page": "1"}
+def openalex_count(
+    filters: str,
+    group_by: str | None = None,
+    cache_name: str | None = None,
+    refresh: bool = False,
+    per_page: int = 1,
+) -> Any:
+    params = {"filter": filters, "per-page": str(per_page)}
     if group_by:
         params["group_by"] = group_by
     url = f"{OPENALEX_BASE}/works?{urllib.parse.urlencode(params)}"
@@ -1020,14 +1143,83 @@ def get_institution_object(openalex_id: str, refresh: bool = False) -> dict[str,
 def build_base_filter(openalex_id: str) -> str:
     iid = openalex_id.rstrip("/").split("/")[-1]
     return (
-        f"institutions.lineage:{iid},"
+        f"authorships.institutions.lineage:{iid},"
         f"from_publication_date:{WINDOW_START}-01-01,"
         f"to_publication_date:{WINDOW_END}-12-31,"
-        f"type:{WORK_TYPES}"
+        f"type:{OPENALEX_WORK_TYPE_FILTER}"
     )
 
 
-def compute_metrics(refresh: bool = False, limit: int | None = None) -> list[dict[str, Any]]:
+def group_count(groups: list[dict[str, Any]], key: str) -> int:
+    for group in groups:
+        if str(group.get("key", "")) == key:
+            return int(group.get("count", 0) or 0)
+    return 0
+
+
+def count_any_group(groups: list[dict[str, Any]]) -> int:
+    return sum(int(group.get("count", 0) or 0) for group in groups if group.get("key"))
+
+
+def metrics_fieldnames() -> list[str]:
+    return [
+        "canonical_name",
+        "display_name",
+        "matched_name",
+        "source_names",
+        "country_code",
+        "openalex_id",
+        "ror_id",
+        "works_2020_2024",
+        "cited_by_proxy",
+        "top10_count",
+        "top1_count",
+        "top10_share",
+        "top1_share",
+        "h_index",
+        "field_entropy",
+        "active_fields",
+        "international_collab_count",
+        "international_collab_share",
+        "core_source_count",
+        "core_source_share",
+        "oa_count",
+        "oa_share",
+        "oa_gold_count",
+        "oa_hybrid_count",
+        "oa_green_count",
+        "oa_bronze_count",
+        "oa_diamond_count",
+        "closed_count",
+        "sdg_count",
+        "sdg_share",
+        "funder_count",
+        "has_medical_school_or_center",
+        *SOURCE_RANK_FIELDNAMES,
+    ]
+
+
+def enrich_candidate_metadata(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    candidate_path = PROCESSED / "candidate_pool.csv"
+    if not candidate_path.exists():
+        return rows
+    by_id = {row.get("openalex_id", ""): row for row in read_csv(candidate_path) if row.get("openalex_id")}
+    enriched: list[dict[str, Any]] = []
+    for row in rows:
+        out = dict(row)
+        candidate = by_id.get(str(out.get("openalex_id", "")), {})
+        if candidate:
+            for field in ["source_names", "canonical_name", "matched_name", "country_code", "ror_id"]:
+                if not out.get(field) and candidate.get(field):
+                    out[field] = candidate[field]
+            for field in SOURCE_RANK_FIELDNAMES:
+                if not out.get(field) and candidate.get(field):
+                    out[field] = candidate[field]
+        enriched.append(out)
+    return enriched
+
+
+def compute_metrics(refresh: bool = False, limit: int | None = None, force: bool = False) -> list[dict[str, Any]]:
     candidate_path = PROCESSED / "candidate_pool.csv"
     if not candidate_path.exists():
         match_candidates(refresh=refresh)
@@ -1035,102 +1227,131 @@ def compute_metrics(refresh: bool = False, limit: int | None = None) -> list[dic
     candidates = enrich_reference_ranks(candidates, refresh=refresh)
     if limit:
         candidates = candidates[:limit]
+    out_path = PROCESSED / "open_metrics.csv"
+    existing: dict[str, dict[str, str]] = {}
+    if out_path.exists() and not refresh and not force:
+        for old in read_csv(out_path):
+            if old.get("openalex_id") and old.get("core_source_share"):
+                existing[old["openalex_id"]] = old
     rows: list[dict[str, Any]] = []
     for i, row in enumerate(candidates, start=1):
         oid = row.get("openalex_id", "")
         if not oid:
+            continue
+        if oid in existing:
+            cached = dict(existing[oid])
+            for field in SOURCE_RANK_FIELDNAMES:
+                cached[field] = row.get(field, cached.get(field, ""))
+            cached["source_names"] = row.get("source_names", cached.get("source_names", ""))
+            rows.append(cached)
             continue
         iid = oid.rstrip("/").split("/")[-1]
         base = build_base_filter(oid)
         try:
             inst = get_institution_object(oid, refresh=refresh)
             works = openalex_count(base, cache_name=f"works_count_{iid}.json", refresh=refresh)
-            cited_sum = 0
-            year_groups = openalex_count(
-                base,
-                group_by="publication_year",
-                cache_name=f"year_groups_{iid}.json",
-                refresh=refresh,
-            )
-            for g in year_groups:
-                cited_sum += int(g.get("cited_by_count", 0) or 0)
             top10 = openalex_count(
-                base + ",citation_normalized_percentile.value:>0.9",
+                base + ",citation_normalized_percentile.is_in_top_10_percent:true",
                 cache_name=f"top10_count_{iid}.json",
                 refresh=refresh,
             )
             top1 = openalex_count(
-                base + ",citation_normalized_percentile.value:>0.99",
+                base + ",citation_normalized_percentile.is_in_top_1_percent:true",
                 cache_name=f"top1_count_{iid}.json",
                 refresh=refresh,
             )
             international = openalex_count(
-                base + ",institutions.is_global_south:false",
-                cache_name=f"intl_proxy_count_{iid}.json",
+                base + ",countries_distinct_count:>1",
+                cache_name=f"intl_count_{iid}.json",
                 refresh=refresh,
             )
-            oa = openalex_count(
-                base + ",is_oa:true",
-                cache_name=f"oa_count_{iid}.json",
+            core_source = openalex_count(
+                base + ",primary_location.source.is_core:true",
+                cache_name=f"core_source_count_{iid}.json",
                 refresh=refresh,
+            )
+            oa_groups = openalex_count(
+                base,
+                group_by="open_access.oa_status",
+                cache_name=f"oa_status_groups_{iid}.json",
+                refresh=refresh,
+                per_page=20,
             )
             fields = openalex_count(
                 base,
-                group_by="primary_topic.field.display_name",
+                group_by="primary_topic.field.id",
                 cache_name=f"field_groups_{iid}.json",
                 refresh=refresh,
+                per_page=200,
             )
             field_counts = [int(g.get("count", 0) or 0) for g in fields if g.get("key")]
             entropy = shannon_entropy(field_counts)
-            active_fields = sum(1 for c in field_counts if c >= max(10, works * 0.005))
+            active_fields = sum(1 for c in field_counts if c >= max(100, works * 0.01))
+            sdg_groups = openalex_count(
+                base,
+                group_by="sustainable_development_goals.id",
+                cache_name=f"sdg_groups_{iid}.json",
+                refresh=refresh,
+                per_page=200,
+            )
+            funder_groups = openalex_count(
+                base,
+                group_by="funders.id",
+                cache_name=f"funder_groups_{iid}.json",
+                refresh=refresh,
+                per_page=200,
+            )
             summary = inst.get("summary_stats") or {}
-            h_index = summary.get("h_index", 0) or 0
+            h_index = int(summary.get("h_index", 0) or 0)
             has_medical = detect_medical_school(row, inst)
+            oa_gold = group_count(oa_groups, "gold")
+            oa_hybrid = group_count(oa_groups, "hybrid")
+            oa_green = group_count(oa_groups, "green")
+            oa_bronze = group_count(oa_groups, "bronze")
+            oa_diamond = group_count(oa_groups, "diamond")
+            closed = group_count(oa_groups, "closed")
+            oa = max(0, works - closed)
+            sdg_count = count_any_group(sdg_groups)
+            funder_count = len([g for g in funder_groups if g.get("key")])
             rows.append(
                 {
                     **row,
+                    "display_name": clean_text(row.get("matched_name")) or clean_text(row.get("canonical_name")),
                     "works_2020_2024": works,
-                    "cited_by_proxy": cited_sum,
+                    "cited_by_proxy": top10,
                     "top10_count": top10,
                     "top1_count": top1,
                     "top10_share": safe_div(top10, works),
                     "top1_share": safe_div(top1, works),
                     "h_index": h_index,
+                    "oa_count": oa,
                     "oa_share": safe_div(oa, works),
+                    "oa_gold_count": oa_gold,
+                    "oa_hybrid_count": oa_hybrid,
+                    "oa_green_count": oa_green,
+                    "oa_bronze_count": oa_bronze,
+                    "oa_diamond_count": oa_diamond,
+                    "closed_count": closed,
+                    "international_collab_count": international,
+                    "international_collab_share": safe_div(international, works),
                     "international_collab_proxy_share": safe_div(international, works),
+                    "core_source_count": core_source,
+                    "core_source_share": safe_div(core_source, works),
+                    "sdg_count": sdg_count,
+                    "sdg_share": safe_div(sdg_count, works),
+                    "funder_count": funder_count,
                     "field_entropy": entropy,
                     "active_fields": active_fields,
                     "has_medical_school_or_center": has_medical,
                 }
             )
         except Exception as exc:
-            print(f"WARNING: metrics failed for {row.get('canonical_name')}: {exc}", file=sys.stderr)
-        print(f"metrics {i}/{len(candidates)} {row.get('canonical_name')}")
+            print(f"WARNING: metrics failed for {safe_log_text(row.get('canonical_name'))}: {exc}", file=sys.stderr)
+        print(f"metrics {i}/{len(candidates)} {safe_log_text(row.get('canonical_name'))}")
+        if i % 10 == 0:
+            write_csv(out_path, rows, metrics_fieldnames())
         time.sleep(SLEEP_SECONDS)
-    write_csv(
-        PROCESSED / "open_metrics.csv",
-        rows,
-        [
-            "canonical_name",
-            "matched_name",
-            "country_code",
-            "openalex_id",
-            "ror_id",
-            "works_2020_2024",
-            "cited_by_proxy",
-            "top10_count",
-            "top1_count",
-            "top10_share",
-            "top1_share",
-            "h_index",
-            "oa_share",
-            "international_collab_proxy_share",
-            "field_entropy",
-            "active_fields",
-            "has_medical_school_or_center",
-            *SOURCE_RANK_FIELDNAMES,
-        ],
-    )
+    write_csv(out_path, rows, metrics_fieldnames())
     return rows
 
 
@@ -1239,57 +1460,47 @@ def percentile(values: list[float], p: float) -> float:
 
 def score_rankings() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     rows = read_csv(PROCESSED / "open_metrics.csv")
+    rows = enrich_candidate_metadata(rows)
     rows = enrich_reference_ranks(rows)
-    metrics = {
-        "scale_score": ("works_2020_2024", True),
-        "top_output_score": ("top10_count", True),
-        "elite_output_score": ("top1_count", True),
-        "top_rate_score": ("top10_share", False),
-        "elite_rate_score": ("top1_share", False),
-        "h_index_score": ("h_index", True),
-        "breadth_entropy_score": ("field_entropy", False),
-        "breadth_active_fields_score": ("active_fields", False),
-        "international_score": ("international_collab_proxy_share", False),
-        "open_access_score": ("oa_share", False),
-    }
     score_cols: dict[str, dict[int, float]] = {}
-    for col, (src, log) in metrics.items():
-        score_cols[col] = winsorized_scores(rows, src, log=log)
+    for spec in METRIC_SPECS:
+        score_cols[spec["score"]] = winsorized_scores(rows, spec["source"], log=bool(spec["log"]))
 
     scored: list[dict[str, Any]] = []
     for i, row in enumerate(rows):
         enriched = dict(row)
-        for col, values in score_cols.items():
-            enriched[col] = values.get(i, 0.0)
-        enriched["top_volume_component"] = 0.75 * enriched["top_output_score"] + 0.25 * enriched["elite_output_score"]
-        enriched["top_rate_component"] = 0.75 * enriched["top_rate_score"] + 0.25 * enriched["elite_rate_score"]
-        enriched["breadth_component"] = 0.65 * enriched["breadth_entropy_score"] + 0.35 * enriched["breadth_active_fields_score"]
-        enriched["research_score"] = (
-            0.30 * enriched["top_volume_component"]
-            + 0.20 * enriched["top_rate_component"]
-            + 0.20 * enriched["h_index_score"]
-            + 0.15 * enriched["scale_score"]
-            + 0.10 * enriched["breadth_component"]
-            + 0.03 * enriched["international_score"]
-            + 0.02 * enriched["open_access_score"]
-        )
-        enriched["academic_comprehensive_score"] = (
-            0.20 * enriched["scale_score"]
-            + 0.20 * enriched["breadth_component"]
-            + 0.20 * enriched["top_volume_component"]
-            + 0.15 * enriched["top_rate_component"]
-            + 0.15 * enriched["h_index_score"]
-            + 0.06 * enriched["international_score"]
-            + 0.04 * enriched["open_access_score"]
-        )
+        details: list[dict[str, Any]] = []
+        research_score = 0.0
+        comprehensive_score = 0.0
+        for spec in METRIC_SPECS:
+            score = score_cols[spec["score"]].get(i, 0.0)
+            enriched[spec["score"]] = score
+            research_score += float(spec["research_weight"]) * score
+            comprehensive_score += float(spec["comprehensive_weight"]) * score
+            details.append(
+                {
+                    "key": spec["key"],
+                    "label": spec["label"],
+                    "description": spec["description"],
+                    "source": spec["source"],
+                    "format": spec["format"],
+                    "value": row.get(str(spec["source"]), ""),
+                    "score": f"{score:.2f}",
+                    "research_weight": f"{float(spec['research_weight']):.4f}",
+                    "comprehensive_weight": f"{float(spec['comprehensive_weight']):.4f}",
+                }
+            )
+        enriched["research_score"] = research_score
+        enriched["academic_comprehensive_score"] = comprehensive_score
+        enriched["metric_details_json"] = json.dumps(details, ensure_ascii=False, separators=(",", ":"))
         scored.append(enriched)
 
     research = sorted(
         scored,
         key=lambda r: (
             -r["research_score"],
-            -r["top_volume_component"],
-            -r["top_rate_component"],
+            -r["top10_volume_score"],
+            -r["top1_volume_score"],
             r["canonical_name"],
         ),
     )
@@ -1297,8 +1508,8 @@ def score_rankings() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
         scored,
         key=lambda r: (
             -r["academic_comprehensive_score"],
-            -r["top_volume_component"],
-            -r["top_rate_component"],
+            -r["top10_volume_score"],
+            -r["top1_volume_score"],
             r["canonical_name"],
         ),
     )
@@ -1309,6 +1520,7 @@ def score_rankings() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
         "display_name",
         "canonical_name",
         "matched_name",
+        "source_names",
         "country_code",
         "score",
         "works_2020_2024",
@@ -1319,8 +1531,23 @@ def score_rankings() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
         "h_index",
         "field_entropy",
         "active_fields",
-        "international_collab_proxy_share",
+        "international_collab_count",
+        "international_collab_share",
+        "core_source_count",
+        "core_source_share",
+        "oa_count",
         "oa_share",
+        "oa_gold_count",
+        "oa_hybrid_count",
+        "oa_green_count",
+        "oa_bronze_count",
+        "oa_diamond_count",
+        "closed_count",
+        "sdg_count",
+        "sdg_share",
+        "funder_count",
+        *[spec["score"] for spec in METRIC_SPECS],
+        "metric_details_json",
         "has_medical_school_or_center",
         "openalex_id",
         "ror_id",
@@ -1341,8 +1568,12 @@ def add_rank(rows: list[dict[str, Any]], score_key: str) -> list[dict[str, Any]]
             "top10_share",
             "top1_share",
             "oa_share",
+            "international_collab_share",
             "international_collab_proxy_share",
+            "core_source_share",
+            "sdg_share",
             "field_entropy",
+            *[spec["score"] for spec in METRIC_SPECS],
         ]:
             if key in r:
                 r[key] = f"{to_float(r, key):.6f}"
@@ -1351,6 +1582,12 @@ def add_rank(rows: list[dict[str, Any]], score_key: str) -> list[dict[str, Any]]
 
 
 def write_methodology() -> None:
+    metric_lines = "\n".join(
+        f"- {spec['label']}: {spec['description']} "
+        f"Research weight {float(spec['research_weight']) * 100:.0f}%; "
+        f"Academic comprehensive weight {float(spec['comprehensive_weight']) * 100:.0f}%."
+        for spec in METRIC_SPECS
+    )
     text = f"""# Open-Data World University Ranking Methodology
 
 Generated on 2026-06-18.
@@ -1381,45 +1618,30 @@ Institutions are matched to ROR/OpenAlex IDs. Affiliated medical schools are not
 
 Final scores use OpenAlex/ROR data only. Google Scholar is excluded because it has no stable public API, institutional pages are affected by profile coverage, and bulk automated access is not a suitable reproducible pipeline.
 
-Publication window: {WINDOW_START}-{WINDOW_END}. Included OpenAlex work types: `{WORK_TYPES}`.
+Publication window: {WINDOW_START}-{WINDOW_END}. Included OpenAlex work types: `{WORK_TYPES}`. Works are counted through `authorships.institutions.lineage`, so child institutions and known institutional lineage are included.
 
-This generated version uses institution-level OpenAlex fields:
+The current generated version uses work-level OpenAlex API aggregates where possible:
 
-- Works and open-access works from `counts_by_year` for 2020-2024.
-- Citation proxy from `counts_by_year.cited_by_count` for 2020-2024.
-- Long-run influence from `summary_stats.h_index`.
-- Recent citation intensity from `summary_stats.2yr_mean_citedness`.
-- Field breadth from the institution `topics` field distribution.
+- Total works: all included works in the publication window.
+- Top 10% and top 1% papers: OpenAlex `citation_normalized_percentile.is_in_top_10_percent` and `citation_normalized_percentile.is_in_top_1_percent`.
+- International collaboration: `countries_distinct_count:>1`.
+- Core-source share: `primary_location.source.is_core:true`.
+- Open access share and OA status breakdown: `open_access.oa_status`.
+- Field breadth: Shannon entropy over `primary_topic.field.id`, plus active-field count.
+- SDG-linked research: works grouped by `sustainable_development_goals.id`.
+- Funder diversity: distinct `funders.id` groups observed in the work metadata.
+- Long-run influence: OpenAlex institution `summary_stats.h_index`.
 
-Indicators are winsorized at the 2.5th and 97.5th percentiles within the candidate pool, then mapped to 0-100. Volume indicators use `log1p`.
+Indicators are winsorized at the 2.5th and 97.5th percentiles within the candidate pool, then mapped to 0-100. Volume indicators use `log1p` before winsorization. Each row in the web table exposes the raw metric value, normalized score, and weight.
 
-## Weights
+## Indicators and weights
 
-Research ranking:
-
-- Citation/influence volume proxy: 30%
-- Citation intensity proxy: 20%
-- h-index: 20%
-- Publication scale: 15%
-- Field breadth: 10%
-- International collaboration proxy: 3%
-- Open access share: 2%
-
-Academic comprehensive ranking:
-
-- Publication scale: 20%
-- Field breadth: 20%
-- Citation/influence volume proxy: 20%
-- Citation intensity proxy: 15%
-- h-index: 15%
-- International collaboration proxy: 6%
-- Open access share: 4%
+{metric_lines}
 
 ## Current caveats
 
 - US News is wired to the `search?format=json&page=N` endpoint; in this environment it required first loading `https://www.usnews.com/` in a browser session, then caching the JSON pages.
-- The current international collaboration field is a transparent proxy from topic breadth and recent citation intensity until replaced with an exact multi-country-affiliation query or CWTS Leiden Open Edition indicator.
-- Exact top 1% / top 10% field-normalized paper counts are not used in the generated lightweight version; the script keeps a heavier query path for later enhancement.
+- OpenAlex SDG and funder metadata are useful open indicators but are not complete for all fields and countries.
 - OpenAlex coverage and institution lineage are transparent and reproducible, but not identical to Web of Science, Scopus, Google Scholar, QS, ARWU, or US News bibliometric universes.
 """
     (ROOT / "docs" / "methodology.md").write_text(text, encoding="utf-8")
@@ -1432,6 +1654,7 @@ def main() -> None:
     parser.add_argument("--match", action="store_true")
     parser.add_argument("--metrics", action="store_true")
     parser.add_argument("--metrics-heavy", action="store_true")
+    parser.add_argument("--force-metrics", action="store_true")
     parser.add_argument("--score", action="store_true")
     parser.add_argument("--limit", type=int, default=None)
     args = parser.parse_args()
@@ -1447,7 +1670,7 @@ def main() -> None:
         rows = compute_metrics_light(refresh=args.refresh)
         print(f"metric rows: {len(rows)}")
     if args.metrics_heavy:
-        rows = compute_metrics(refresh=args.refresh, limit=args.limit)
+        rows = compute_metrics(refresh=args.refresh, limit=args.limit, force=args.force_metrics)
         print(f"metric rows: {len(rows)}")
     if args.score:
         research, comprehensive = score_rankings()

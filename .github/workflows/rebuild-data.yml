@@ -1,0 +1,74 @@
+name: Rebuild Data and Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_metrics:
+        description: "Recompute all OpenAlex heavy metrics instead of reusing committed output"
+        required: false
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: rebuild-data
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Rebuild OpenAlex metrics and rankings
+        run: |
+          if [ "${{ inputs.force_metrics }}" = "true" ]; then
+            python scripts/build_rankings.py --metrics-heavy --force-metrics --score
+          else
+            python scripts/build_rankings.py --metrics-heavy --score
+          fi
+
+      - name: Build static site
+        run: python scripts/build_site.py
+
+      - name: Commit generated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/processed docs/methodology.md
+          if git diff --cached --quiet; then
+            echo "No generated data changes."
+          else
+            git commit -m "Rebuild heavy ranking data"
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: rebuild
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

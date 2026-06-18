@@ -28,43 +28,40 @@ Institutions are matched to ROR/OpenAlex IDs. Affiliated medical schools are not
 
 Final scores use OpenAlex/ROR data only. Google Scholar is excluded because it has no stable public API, institutional pages are affected by profile coverage, and bulk automated access is not a suitable reproducible pipeline.
 
-Publication window: 2020-2024. Included OpenAlex work types: `article,review,book,book-chapter`.
+Publication window: 2020-2024. Included OpenAlex work types: `article,review,book,book-chapter`. Works are counted through `authorships.institutions.lineage`, so child institutions and known institutional lineage are included.
 
-This generated version uses institution-level OpenAlex fields:
+The current generated version uses work-level OpenAlex API aggregates where possible:
 
-- Works and open-access works from `counts_by_year` for 2020-2024.
-- Citation proxy from `counts_by_year.cited_by_count` for 2020-2024.
-- Long-run influence from `summary_stats.h_index`.
-- Recent citation intensity from `summary_stats.2yr_mean_citedness`.
-- Field breadth from the institution `topics` field distribution.
+- Total works: all included works in the publication window.
+- Top 10% and top 1% papers: OpenAlex `citation_normalized_percentile.is_in_top_10_percent` and `citation_normalized_percentile.is_in_top_1_percent`.
+- International collaboration: `countries_distinct_count:>1`.
+- Core-source share: `primary_location.source.is_core:true`.
+- Open access share and OA status breakdown: `open_access.oa_status`.
+- Field breadth: Shannon entropy over `primary_topic.field.id`, plus active-field count.
+- SDG-linked research: works grouped by `sustainable_development_goals.id`.
+- Funder diversity: distinct `funders.id` groups observed in the work metadata.
+- Long-run influence: OpenAlex institution `summary_stats.h_index`.
 
-Indicators are winsorized at the 2.5th and 97.5th percentiles within the candidate pool, then mapped to 0-100. Volume indicators use `log1p`.
+Indicators are winsorized at the 2.5th and 97.5th percentiles within the candidate pool, then mapped to 0-100. Volume indicators use `log1p` before winsorization. Each row in the web table exposes the raw metric value, normalized score, and weight.
 
-## Weights
+## Indicators and weights
 
-Research ranking:
-
-- Citation/influence volume proxy: 30%
-- Citation intensity proxy: 20%
-- h-index: 20%
-- Publication scale: 15%
-- Field breadth: 10%
-- International collaboration proxy: 3%
-- Open access share: 2%
-
-Academic comprehensive ranking:
-
-- Publication scale: 20%
-- Field breadth: 20%
-- Citation/influence volume proxy: 20%
-- Citation intensity proxy: 15%
-- h-index: 15%
-- International collaboration proxy: 6%
-- Open access share: 4%
+- Publication scale: OpenAlex works from 2020-2024. Research weight 10%; Academic comprehensive weight 18%.
+- Top 10% papers: Works in OpenAlex's field/year-normalized top 10% citation percentile. Research weight 20%; Academic comprehensive weight 14%.
+- Top 1% papers: Works in OpenAlex's field/year-normalized top 1% citation percentile. Research weight 16%; Academic comprehensive weight 10%.
+- Top 10% share: Top 10% papers divided by total works. Research weight 12%; Academic comprehensive weight 8%.
+- Top 1% share: Top 1% papers divided by total works. Research weight 10%; Academic comprehensive weight 6%.
+- Institution h-index: OpenAlex institution h-index. Research weight 12%; Academic comprehensive weight 10%.
+- Field breadth: Shannon entropy over OpenAlex primary-topic fields. Research weight 6%; Academic comprehensive weight 16%.
+- Active fields: OpenAlex fields with meaningful publication volume. Research weight 3%; Academic comprehensive weight 8%.
+- International collaboration: Works with affiliations from more than one country. Research weight 8%; Academic comprehensive weight 8%.
+- Core-source share: Works whose primary source is marked core by OpenAlex. Research weight 6%; Academic comprehensive weight 5%.
+- Open access share: OpenAlex open-access works divided by total works. Research weight 3%; Academic comprehensive weight 3%.
+- SDG-linked research: Works tagged to at least one UN Sustainable Development Goal. Research weight 2%; Academic comprehensive weight 2%.
+- Funder diversity: Distinct funders observed in OpenAlex work metadata. Research weight 2%; Academic comprehensive weight 2%.
 
 ## Current caveats
 
 - US News is wired to the `search?format=json&page=N` endpoint; in this environment it required first loading `https://www.usnews.com/` in a browser session, then caching the JSON pages.
-- The current international collaboration field is a transparent proxy from topic breadth and recent citation intensity until replaced with an exact multi-country-affiliation query or CWTS Leiden Open Edition indicator.
-- Exact top 1% / top 10% field-normalized paper counts are not used in the generated lightweight version; the script keeps a heavier query path for later enhancement.
+- OpenAlex SDG and funder metadata are useful open indicators but are not complete for all fields and countries.
 - OpenAlex coverage and institution lineage are transparent and reproducible, but not identical to Web of Science, Scopus, Google Scholar, QS, ARWU, or US News bibliometric universes.

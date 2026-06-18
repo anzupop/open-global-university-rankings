@@ -13,6 +13,22 @@ ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "data" / "processed"
 SITE = ROOT / "_site"
 
+METRIC_CATALOG = [
+    {"key": "scale", "label": "Publication scale", "description": "OpenAlex works from 2020-2024."},
+    {"key": "top10_volume", "label": "Top 10% papers", "description": "Field/year-normalized top 10% cited works."},
+    {"key": "top1_volume", "label": "Top 1% papers", "description": "Field/year-normalized top 1% cited works."},
+    {"key": "top10_rate", "label": "Top 10% share", "description": "Top 10% works divided by total works."},
+    {"key": "top1_rate", "label": "Top 1% share", "description": "Top 1% works divided by total works."},
+    {"key": "h_index", "label": "Institution h-index", "description": "OpenAlex institution h-index."},
+    {"key": "field_breadth", "label": "Field breadth", "description": "Shannon entropy across OpenAlex fields."},
+    {"key": "active_fields", "label": "Active fields", "description": "Fields with meaningful publication volume."},
+    {"key": "international_collab", "label": "International collaboration", "description": "Works with affiliations from more than one country."},
+    {"key": "core_source", "label": "Core-source share", "description": "Works whose primary source is marked core by OpenAlex."},
+    {"key": "open_access", "label": "Open access share", "description": "OpenAlex open-access works divided by total works."},
+    {"key": "sdg", "label": "SDG-linked research", "description": "Works tagged to at least one UN Sustainable Development Goal."},
+    {"key": "funder_diversity", "label": "Funder diversity", "description": "Distinct OpenAlex funders observed in work metadata."},
+]
+
 
 def read_csv(name: str) -> list[dict[str, str]]:
     with (PROCESSED / name).open("r", encoding="utf-8", newline="") as f:
@@ -33,9 +49,20 @@ def build_data() -> dict[str, object]:
 
     def enrich(row: dict[str, str]) -> dict[str, object]:
         metric = metric_by_id.get(row["openalex_id"], {})
+        aliases = []
+        for name in [row.get("canonical_name", ""), row.get("matched_name", ""), row.get("source_names", "")]:
+            for part in str(name).split("; "):
+                part = part.strip()
+                if part and part not in aliases and part != row["display_name"]:
+                    aliases.append(part)
+        try:
+            metric_details = json.loads(row.get("metric_details_json") or metric.get("metric_details_json") or "[]")
+        except json.JSONDecodeError:
+            metric_details = []
         return {
             "rank": int(row["rank"]),
             "name": row["display_name"],
+            "aliases": aliases,
             "country": row["country_code"],
             "score": float(row["score"]),
             "medical": row["has_medical_school_or_center"].lower() == "true",
@@ -52,8 +79,15 @@ def build_data() -> dict[str, object]:
                 "fieldEntropy": round(float(row["field_entropy"] or 0), 3),
                 "activeFields": int(float(row["active_fields"] or 0)),
                 "openAccessShare": round(float(row["oa_share"] or 0), 4),
+                "internationalCollabShare": round(float(row.get("international_collab_share") or 0), 4),
+                "coreSourceShare": round(float(row.get("core_source_share") or 0), 4),
+                "top10Share": round(float(row["top10_share"] or 0), 4),
+                "top1Share": round(float(row["top1_share"] or 0), 4),
+                "sdgShare": round(float(row.get("sdg_share") or 0), 4),
+                "funderCount": int(float(row.get("funder_count") or 0)),
                 "citationProxy": int(float(metric.get("cited_by_proxy", 0) or 0)),
             },
+            "metricDetails": metric_details,
         }
 
     return {
@@ -63,6 +97,12 @@ def build_data() -> dict[str, object]:
             "arwu": sum(row["in_arwu_2025"].lower() == "true" for row in candidates),
             "qs": sum(row["in_qs_2027"].lower() == "true" for row in candidates),
             "usnews": sum(row["in_usnews_2026_2027"].lower() == "true" for row in candidates),
+        },
+        "method": {
+            "window": "2020-2024",
+            "workTypes": "article, review, book, book chapter",
+            "normalization": "Each indicator is winsorized at the 2.5th and 97.5th percentiles within the candidate pool, then mapped to 0-100. Volume indicators use log1p before scaling.",
+            "catalog": METRIC_CATALOG,
         },
         "rankings": {
             "research": [enrich(row) for row in research],
@@ -109,6 +149,8 @@ INDEX_HTML = """<!doctype html>
   <main>
     <section class="summary" id="summary"></section>
 
+    <section class="method" id="method"></section>
+
     <section class="controls" aria-label="Ranking controls">
       <div class="tabs" role="tablist">
         <button class="tab active" data-ranking="research" type="button">Research</button>
@@ -134,17 +176,11 @@ INDEX_HTML = """<!doctype html>
             <th>Works</th>
             <th>h-index</th>
             <th>Published Rankings</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="ranking-body"></tbody>
       </table>
-    </section>
-
-    <section class="method">
-      <h2>Method</h2>
-      <p>The source rankings define only the candidate pool. Final scores use open OpenAlex/ROR data: 2020-2024 works, citation proxy, h-index, topic breadth, open access share, and a transparent collaboration proxy.</p>
-      <p>Affiliated medical schools are not ranked separately; universities with medical schools or medical centers are flagged in the table.</p>
-      <p><a href="https://github.com/anzupop/open-global-university-rankings/blob/main/docs/methodology.md">Read the full methodology</a></p>
     </section>
   </main>
 
@@ -235,6 +271,21 @@ main { padding: 24px clamp(16px, 4vw, 56px) 56px; }
 .stat b { display: block; font-size: 26px; }
 .stat span { color: var(--muted); }
 
+.method {
+  margin-bottom: 16px;
+  padding: 18px;
+}
+.method h2 { margin: 0 0 8px; }
+.method p { max-width: 980px; }
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 10px 16px;
+  margin-top: 12px;
+}
+.method-item b { display: block; }
+.method-item span { color: var(--muted); font-size: 13px; }
+
 .controls {
   display: flex;
   justify-content: space-between;
@@ -261,7 +312,7 @@ input { min-width: 260px; }
 .check { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
 
 .table-wrap { overflow: auto; }
-table { border-collapse: collapse; width: 100%; min-width: 980px; }
+table { border-collapse: collapse; width: 100%; min-width: 1120px; }
 th, td {
   border-bottom: 1px solid var(--line);
   padding: 10px 12px;
@@ -278,6 +329,7 @@ th {
 .rank { font-weight: 800; }
 .uni { font-weight: 700; }
 .sub { color: var(--muted); font-size: 12px; }
+.aliases { margin-top: 2px; color: var(--muted); font-size: 12px; max-width: 420px; }
 .pill {
   display: inline-block;
   margin: 2px 4px 2px 0;
@@ -286,12 +338,35 @@ th {
   color: var(--muted);
   font-size: 12px;
 }
-.method { margin-top: 18px; padding: 18px; max-width: 980px; }
-.method h2 { margin-top: 0; }
+.toggle {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+}
+.toggle[aria-expanded="true"] { background: #eef2f7; }
+.detail-row td {
+  background: #fbfcff;
+  padding: 0 12px 14px 64px;
+}
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 8px 14px;
+}
+.metric-line {
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+.metric-line b { display: block; font-size: 13px; }
+.metric-line span { color: var(--muted); font-size: 12px; }
 
 @media (max-width: 760px) {
   .site-header, .controls { flex-direction: column; }
   .summary { grid-template-columns: repeat(2, 1fr); }
+  .method-grid, .metrics-grid { grid-template-columns: 1fr; }
   input { width: 100%; min-width: 0; }
 }
 """
@@ -299,6 +374,7 @@ th {
 
 APP_JS = """let payload;
 let ranking = "research";
+const expanded = new Set();
 
 const body = document.getElementById("ranking-body");
 const search = document.getElementById("search");
@@ -310,6 +386,7 @@ fetch("data/rankings.json")
   .then((data) => {
     payload = data;
     renderSummary(data.summary);
+    renderMethod(data.method);
     populateCountries();
     render();
   });
@@ -325,6 +402,24 @@ document.querySelectorAll(".tab").forEach((button) => {
 
 [search, country, medical].forEach((el) => el.addEventListener("input", render));
 
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey) return;
+  const target = event.target;
+  if (target && ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)) return;
+  event.preventDefault();
+  search.focus();
+  search.select();
+});
+
+body.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-toggle]");
+  if (!button) return;
+  const id = button.dataset.toggle;
+  if (expanded.has(id)) expanded.delete(id);
+  else expanded.add(id);
+  render();
+});
+
 function renderSummary(summary) {
   document.getElementById("summary").innerHTML = [
     ["Candidate Pool", summary.candidatePool],
@@ -332,6 +427,19 @@ function renderSummary(summary) {
     ["QS 2027", summary.qs],
     ["US News 2026-2027", summary.usnews],
   ].map(([label, value]) => `<div class="stat"><b>${value}</b><span>${label}</span></div>`).join("");
+}
+
+function renderMethod(method) {
+  const catalog = (method && method.catalog ? method.catalog : []).slice(0, 6);
+  document.getElementById("method").innerHTML = `
+    <h2>Method</h2>
+    <p>The three published rankings define only the candidate pool. Final scores use open OpenAlex/ROR indicators over ${escapeHtml(method.window)} works: field-normalized top 10% and top 1% papers, publication scale, h-index, field breadth, international collaboration, core-source share, open access, SDG-linked research, and funder diversity.</p>
+    <p>${escapeHtml(method.normalization)}</p>
+    <div class="method-grid">
+      ${catalog.map((item) => `<div class="method-item"><b>${escapeHtml(item.label)}</b><span>${escapeHtml(item.description)}</span></div>`).join("")}
+    </div>
+    <p><a href="https://github.com/anzupop/open-global-university-rankings/blob/main/docs/methodology.md">Read the full methodology</a></p>
+  `;
 }
 
 function populateCountries() {
@@ -354,7 +462,8 @@ function render() {
     if (c && row.country !== c) return false;
     if (onlyMedical && !row.medical) return false;
     if (!q) return true;
-    return row.name.toLowerCase().includes(q) || row.country.toLowerCase().includes(q);
+    const haystack = [row.name, row.country, ...(row.aliases || [])].join(" ").toLowerCase();
+    return haystack.includes(q);
   });
   body.innerHTML = rows.map(rowTemplate).join("");
 }
@@ -364,10 +473,14 @@ function rowTemplate(row) {
     .filter(([, value]) => value)
     .map(([key, value]) => `<span class="pill">${sourceLabel(key)} ${value}</span>`)
     .join("");
+  const id = `${ranking}-${row.openalex.split("/").pop()}`;
+  const isOpen = expanded.has(id);
+  const aliases = (row.aliases || []).map(escapeHtml).join(" · ");
   return `<tr>
     <td class="rank">${row.rank}</td>
     <td>
       <div class="uni">${escapeHtml(row.name)} ${row.medical ? '<span class="pill">medical</span>' : ''}</div>
+      ${aliases ? `<div class="aliases">${aliases}</div>` : ""}
       <div class="sub"><a href="${row.openalex}">OpenAlex</a>${row.ror ? ` · <a href="${row.ror}">ROR</a>` : ""}</div>
     </td>
     <td>${row.country}</td>
@@ -375,7 +488,42 @@ function rowTemplate(row) {
     <td>${row.metrics.works2020_2024.toLocaleString()}</td>
     <td>${row.metrics.hIndex.toLocaleString()}</td>
     <td>${rankings}</td>
-  </tr>`;
+    <td><button class="toggle" type="button" data-toggle="${id}" aria-expanded="${isOpen}" title="Show metric scores">${isOpen ? "^" : "v"}</button></td>
+  </tr>
+  ${isOpen ? detailRow(row) : ""}`;
+}
+
+function detailRow(row) {
+  const activeWeight = ranking === "research" ? "research_weight" : "comprehensive_weight";
+  const details = row.metricDetails && row.metricDetails.length ? row.metricDetails : fallbackMetricDetails(row);
+  const metrics = details.map((item) => `
+    <div class="metric-line">
+      <b>${escapeHtml(item.label)} · ${formatMetricValue(item.value, item.format)}</b>
+      <span>Score ${Number(item.score || 0).toFixed(2)} · Weight ${formatWeight(item[activeWeight])}</span>
+      <span>${escapeHtml(item.description || "")}</span>
+    </div>
+  `).join("");
+  return `<tr class="detail-row"><td colspan="8"><div class="metrics-grid">${metrics}</div></td></tr>`;
+}
+
+function fallbackMetricDetails(row) {
+  return [
+    ["Publication scale", row.metrics.works2020_2024, "integer", "OpenAlex works from 2020-2024."],
+    ["Institution h-index", row.metrics.hIndex, "integer", "OpenAlex institution h-index."],
+    ["Field breadth", row.metrics.fieldEntropy, "decimal", "Shannon entropy across OpenAlex fields."],
+    ["Open access share", row.metrics.openAccessShare, "percent", "OpenAlex open-access works divided by total works."],
+  ].map(([label, value, format, description]) => ({ label, value, format, description, score: 0, research_weight: 0, comprehensive_weight: 0 }));
+}
+
+function formatMetricValue(value, format) {
+  const number = Number(value || 0);
+  if (format === "percent") return `${(number * 100).toFixed(1)}%`;
+  if (format === "decimal") return number.toFixed(3);
+  return Math.round(number).toLocaleString();
+}
+
+function formatWeight(value) {
+  return `${(Number(value || 0) * 100).toFixed(0)}%`;
 }
 
 function sourceLabel(key) {
