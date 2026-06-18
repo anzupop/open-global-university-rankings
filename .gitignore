@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# Reproducible HTTP/browser caches. Processed outputs are committed.
+data/raw/

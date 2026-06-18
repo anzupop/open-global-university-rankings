@@ -1,0 +1,95 @@
+
+## Arizona State University--Tempe
+QUERY Arizona State University
+https://openalex.org/I55732556 | Arizona State University | US | education | https://ror.org/03efmqc40 | works=194962
+https://openalex.org/I203172682 | Northern Arizona University | US | education | https://ror.org/0272j5188 | works=30794
+
+## London School of Hygiene and Tropical Medicine
+QUERY London School of Hygiene & Tropical Medicine
+https://openalex.org/I4210089966 | London School of Hygiene & Tropical Medicine | GB | education | https://ror.org/00a0jsq62 | works=114440
+
+## PSL Research University Paris (ComUE)
+QUERY Université Paris Sciences et Lettres
+https://openalex.org/I2746051580 | Université Paris Sciences et Lettres | FR | education | https://ror.org/013cjyk83 | works=44816
+https://openalex.org/I4405267979 | Université de recherche Paris Sciences et Lettres COMUE | FR | education | https://ror.org/058djva95 | works=0
+QUERY PSL University
+https://openalex.org/I2746051580 | Université Paris Sciences et Lettres | FR | education | https://ror.org/013cjyk83 | works=44816
+https://openalex.org/I70768539 | École Nationale Supérieure des Mines de Paris | FR | education | https://ror.org/04y8cs423 | works=18857
+https://openalex.org/I4210088322 | Centre de Gestion Scientifique | FR | facility | https://ror.org/003y0kg83 | works=6420
+https://openalex.org/I4210115519 | Centre de Recherche en Informatique | FR | facility | https://ror.org/020cdve92 | works=11590
+https://openalex.org/I56435720 | Université Paris Dauphine-PSL | FR | education | https://ror.org/052bz7812 | works=21672
+
+## Sorbonne Universite
+QUERY Sorbonne University
+https://openalex.org/I39804081 | Sorbonne Université | FR | education | https://ror.org/02en5vm52 | works=390836
+https://openalex.org/I4210141120 | Sorbonne University Abu Dhabi | AE | education | https://ror.org/03e1ymy32 | works=2740
+https://openalex.org/I51101395 | Université Paris 1 Panthéon-Sorbonne | FR | education | https://ror.org/002t25c44 | works=56574
+https://openalex.org/I4210091279 | Université Sorbonne Paris Nord | FR | education | https://ror.org/0199hds37 | works=36306
+https://openalex.org/I182627622 | Université Sorbonne Nouvelle | FR | education | https://ror.org/03z6jp965 | works=28919
+QUERY Sorbonne Université
+https://openalex.org/I39804081 | Sorbonne Université | FR | education | https://ror.org/02en5vm52 | works=390836
+https://openalex.org/I4210091279 | Université Sorbonne Paris Nord | FR | education | https://ror.org/0199hds37 | works=36306
+https://openalex.org/I51101395 | Université Paris 1 Panthéon-Sorbonne | FR | education | https://ror.org/002t25c44 | works=56574
+https://openalex.org/I182627622 | Université Sorbonne Nouvelle | FR | education | https://ror.org/03z6jp965 | works=28919
+https://openalex.org/I4210091437 | Sorbonne Paris Cité | FR | other | https://ror.org/001z21q04 | works=55439
+
+## Texas A&M University--College Station
+QUERY Texas A&M University
+https://openalex.org/I91045830 | Texas A&M University | US | education | https://ror.org/01f5ytq51 | works=242882
+https://openalex.org/I173268674 | Texas A&M University System | US | education | https://ror.org/0034eay46 | works=11459
+https://openalex.org/I58152225 | Texas A&M University at Qatar | QA | education | https://ror.org/03vb4dm14 | works=8756
+https://openalex.org/I164185940 | Texas A&M University at Galveston | US | education | https://ror.org/00w0k4e67 | works=5296
+https://openalex.org/I181414168 | Texas A&M University – Kingsville | US | education | https://ror.org/05abs3w97 | works=7644
+
+## Universite Paris Saclay
+QUERY Université Paris-Saclay
+https://openalex.org/I277688954 | Université Paris-Saclay | FR | education | https://ror.org/03xjwb503 | works=163028
+https://openalex.org/I88467170 | Université d'Évry Val-d'Essonne | FR | education | https://ror.org/00e96v939 | works=9428
+https://openalex.org/I4210148430 | Unité d'Appui et de Recherche OSUPS | FR | facility | https://ror.org/040bzgy82 | works=845
+https://openalex.org/I4405256294 | Centre Inria de l'Université Paris-Saclay | FR | facility | https://ror.org/040753f36 | works=0
+https://openalex.org/I4405254866 | Unité d'Appui et de Recherche OSUPS | FR | facility | https://ror.org/02b6c0m75 | works=0
+QUERY Paris-Saclay University
+https://openalex.org/I277688954 | Université Paris-Saclay | FR | education | https://ror.org/03xjwb503 | works=163028
+https://openalex.org/I88467170 | Université d'Évry Val-d'Essonne | FR | education | https://ror.org/00e96v939 | works=9428
+
+## University of Queensland Australia
+QUERY University of Queensland
+https://openalex.org/I165143802 | The University of Queensland | AU | education | https://ror.org/00rqy9422 | works=275631
+https://openalex.org/I160993911 | Queensland University of Technology | AU | education | https://ror.org/03pnv4752 | works=100448
+https://openalex.org/I185523456 | University of Southern Queensland | AU | education | https://ror.org/04sjbnx57 | works=25117
+
+## University of Science & Technology of China, CAS
+QUERY University of Science and Technology of China
+https://openalex.org/I126520041 | University of Science and Technology of China | CN | education | https://ror.org/04c4dkn09 | works=204711
+https://openalex.org/I150229711 | University of Electronic Science and Technology of China | CN | education | https://ror.org/04qr3zq92 | works=142298
+https://openalex.org/I143593769 | East China University of Science and Technology | CN | education | https://ror.org/01vyrm377 | works=70288
+https://openalex.org/I137506752 | North China University of Science and Technology | CN | education | https://ror.org/04z4wmb81 | works=18131
+https://openalex.org/I3045169105 | Southern University of Science and Technology | CN | education | https://ror.org/049tv2d57 | works=61444
+
+## University of Texas Southwestern Medical Center--Dallas
+QUERY University of Texas Southwestern Medical Center
+https://openalex.org/I867280407 | The University of Texas Southwestern Medical Center | US | healthcare | https://ror.org/05byvp690 | works=143200
+
+## Wageningen University and Research Center
+QUERY Wageningen University & Research
+https://openalex.org/I913481162 | Wageningen University & Research | NL | education | https://ror.org/04qw24q55 | works=124510
+
+## Autonomous University of Barcelona
+QUERY Autonomous University of Barcelona
+https://openalex.org/I123044942 | Universitat Autònoma de Barcelona | ES | education | https://ror.org/052g8jq94 | works=153643
+
+## Baylor College of Medicine
+QUERY Baylor College of Medicine
+https://openalex.org/I181547552 | Baylor College of Medicine | US | education | https://ror.org/02pttbw34 | works=164334
+https://openalex.org/I4210141908 | Children's Nutrition Research Center at Baylor College of Medicine | US | government | https://ror.org/03s936v76 | works=4762
+https://openalex.org/I4210103694 | Baylor College of Medicine Children’s Foundation | UG | nonprofit | https://ror.org/01e6deg73 | works=424
+https://openalex.org/I4390039366 | Dan L Duncan Comprehensive Cancer Center | None | healthcare | https://ror.org/02nre0x31 | works=348
+
+## Deakin University
+QUERY Deakin University
+https://openalex.org/I149704539 | Deakin University | AU | education | https://ror.org/02czsnj07 | works=94891
+
+## Eberhard Karls University, Tübingen
+QUERY University of Tübingen
+https://openalex.org/I8087733 | University of Tübingen | DE | education | https://ror.org/03a1kwz48 | works=151723
+https://openalex.org/I4387156290 | Zentrum für Datenverarbeitung | None | facility | https://ror.org/01kkkw551 | works=55

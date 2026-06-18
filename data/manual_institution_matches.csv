@@ -1,0 +1,61 @@
+canonical_name,openalex_id,note
+"NTNU - Norwegian University of Science and Technology",https://openalex.org/I204778367,alias confirmed by OpenAlex search
+"Ohio State University, Columbus",https://openalex.org/I52357470,campus naming
+"Pennsylvania State University, University Park",https://openalex.org/I130769515,campus naming
+"Rutgers, The State University of New Jersey - New Brunswick",https://openalex.org/I102322142,campus naming
+"Soochow University (China)",https://openalex.org/I3923682,disambiguate from Taiwan institution
+"The Australian National University",https://openalex.org/I118347636,leading The
+"The Chinese University of Hong Kong",https://openalex.org/I177725633,leading The
+"The Hebrew University of Jerusalem",https://openalex.org/I197251160,leading The
+"The Hong Kong Polytechnic University",https://openalex.org/I14243506,leading The
+"The London School of Economics and Political Science",https://openalex.org/I909854389,leading The
+"The University of Calgary",https://openalex.org/I168635309,leading The
+"The University of Edinburgh",https://openalex.org/I98677209,leading The
+"The University of Manchester",https://openalex.org/I28407311,leading The
+"The University of New South Wales",https://openalex.org/I31746571,UNSW Sydney
+"The University of Sheffield",https://openalex.org/I91136226,leading The
+"The University of Warwick",https://openalex.org/I39555362,leading The
+"University of Goettingen",https://openalex.org/I74656192,English spelling for Gottingen
+"University of Tuebingen",https://openalex.org/I8087733,English spelling for Tubingen
+"Universit茅 Grenoble Alpes",https://openalex.org/I899635006,encoding variant for Universite Grenoble Alpes
+"Universit茅 Paris Cit茅",https://openalex.org/I204730241,encoding variant for Universite Paris Cite
+"Universit茅 libre de Bruxelles (ULB)",https://openalex.org/I132053463,encoding variant for Universite libre de Bruxelles
+"EPFL – École polytechnique fédérale de Lausanne",https://openalex.org/I5124864,official abbreviation
+"Freie Universitaet Berlin",https://openalex.org/I75951250,ASCII spelling
+"Indian Institute of Technology Bombay (IITB)",https://openalex.org/I162827531,official abbreviation
+"Indian Institute of Technology Delhi (IITD)",https://openalex.org/I68891433,official abbreviation
+"King Abdulaziz University (KAU)",https://openalex.org/I185163786,official abbreviation
+"Macquarie University (Sydney, Australia)",https://openalex.org/I99043593,location suffix
+"Nanyang Technological University, Singapore (NTU Singapore)",https://openalex.org/I172675005,official abbreviation
+"National Taiwan University (NTU)",https://openalex.org/I16733864,official abbreviation
+"National Tsing Hua University - NTHU",https://openalex.org/I25846049,official abbreviation
+"National Yang Ming Chiao Tung University (NYCU Taiwan)",https://openalex.org/I148366613,official abbreviation
+"Pohang University of Science And Technology (POSTECH)",https://openalex.org/I123900574,official abbreviation
+"Pontificia Universidad Católica de Chile (UC)",https://openalex.org/I162148367,official abbreviation
+"The University of Auckland",https://openalex.org/I154130895,leading The
+"Universidad de Buenos Aires (UBA)",https://openalex.org/I24354313,official abbreviation
+"Universiti Malaya (UM)",https://openalex.org/I33849332,official abbreviation
+"Universiti Putra Malaysia (UPM)",https://openalex.org/I130343225,official abbreviation
+"Universiti Sains Malaysia (USM)",https://openalex.org/I139322472,official abbreviation
+"National Cheng Kung University (NCKU)",https://openalex.org/I91807558,avoid hospital match
+"Universiti Kebangsaan Malaysia (UKM)",https://openalex.org/I885383172,avoid medical centre match
+"The Hong Kong University of Science and Technology",https://openalex.org/I200769079,avoid Guangzhou campus
+"The University of Hong Kong",https://openalex.org/I889458895,avoid HKUST Guangzhou
+"University of Munich",https://openalex.org/I8204097,LMU rather than TUM
+"Arizona State University--Tempe",https://openalex.org/I55732556,US News campus suffix
+"London School of Hygiene and Tropical Medicine",https://openalex.org/I4210089966,US News spelling
+"PSL Research University Paris (ComUE)",https://openalex.org/I2746051580,US News legacy name
+"Sorbonne Universite",https://openalex.org/I39804081,US News ASCII spelling
+"Texas A&M University--College Station",https://openalex.org/I91045830,US News campus suffix
+"Universite Paris Saclay",https://openalex.org/I277688954,US News ASCII spelling
+"University of Queensland Australia",https://openalex.org/I165143802,US News country suffix
+"University of Science & Technology of China, CAS",https://openalex.org/I126520041,US News CAS suffix
+"University of Texas Southwestern Medical Center--Dallas",https://openalex.org/I867280407,US News location suffix
+"Wageningen University and Research Center",https://openalex.org/I913481162,US News legacy name
+"Autonomous University of Barcelona",https://openalex.org/I123044942,US News English name
+"Baylor College of Medicine",https://openalex.org/I181547552,US News medical institution
+"Deakin University",https://openalex.org/I149704539,US News-only candidate
+"Eberhard Karls University, Tübingen",https://openalex.org/I8087733,US News formal name
+"Universidad Nacional Autónoma de México (UNAM)",https://openalex.org/I8961855,avoid matching a UNAM faculty
+"Universidad de Chile",https://openalex.org/I69737025,avoid matching Pontificia Universidad Católica de Chile
+"Mayo Clinic College of Medicine and Science, Minnesota",https://openalex.org/I1330342723,ARWU medical college mapped to Mayo Clinic main OpenAlex institution

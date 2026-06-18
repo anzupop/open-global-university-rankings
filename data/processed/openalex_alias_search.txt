@@ -1,0 +1,253 @@
+
+## Mayo Clinic College of Medicine and Science, Minnesota
+QUERY Mayo Clinic College of Medicine and Science
+QUERY Mayo Clinic Alix School of Medicine
+
+## NTNU - Norwegian University of Science and Technology
+QUERY Norwegian University of Science and Technology
+https://openalex.org/I204778367 | Norwegian University of Science and Technology | NO | education | https://ror.org/05xg72x27 | works=136187
+QUERY NTNU
+https://openalex.org/I204778367 | Norwegian University of Science and Technology | NO | education | https://ror.org/05xg72x27 | works=136187
+https://openalex.org/I134161618 | National Taiwan Normal University | TW | education | https://ror.org/059dkdx38 | works=24345
+https://openalex.org/I4210165875 | NTNU Samfunnsforskning | NO | facility | https://ror.org/05pv30e80 | works=3940
+https://openalex.org/I4210156731 | NTNU Technology Transfer (Norway) | NO | company | https://ror.org/04fzjj956 | works=36
+
+## Soochow University (China)
+QUERY Soochow University China
+QUERY Soochow University Suzhou
+https://openalex.org/I4392738115 | The Fourth Affiliated Hospital of Soochow University (Suzhou Dushu Lake Hospital) | None | healthcare | https://ror.org/04n3e7v86 | works=503
+https://openalex.org/I4403386725 | Suzhou City University | None | education | https://ror.org/025jsyk19 | works=684
+
+## The Australian National University
+QUERY Australian National University
+https://openalex.org/I118347636 | Australian National University | AU | education | https://ror.org/019wvm592 | works=190915
+
+## The Chinese University of Hong Kong
+QUERY Chinese University of Hong Kong
+https://openalex.org/I177725633 | Chinese University of Hong Kong | HK | education | https://ror.org/00t33hh48 | works=195990
+https://openalex.org/I4210116924 | Chinese University of Hong Kong, Shenzhen | CN | education | https://ror.org/02d5ks197 | works=21207
+
+## The Hebrew University of Jerusalem
+QUERY Hebrew University of Jerusalem
+https://openalex.org/I197251160 | Hebrew University of Jerusalem | IL | education | https://ror.org/03qxff017 | works=147444
+
+## The Hong Kong Polytechnic University
+QUERY Hong Kong Polytechnic University
+https://openalex.org/I14243506 | Hong Kong Polytechnic University | HK | education | https://ror.org/0030zas98 | works=151443
+
+## The London School of Economics and Political Science
+QUERY London School of Economics and Political Science
+https://openalex.org/I909854389 | London School of Economics and Political Science | GB | education | https://ror.org/0090zs177 | works=72813
+QUERY LSE
+https://openalex.org/I909854389 | London School of Economics and Political Science | GB | education | https://ror.org/0090zs177 | works=72813
+https://openalex.org/I4210105383 | Laboratoire Sols et Environnement | FR | facility | https://ror.org/01e8etd40 | works=2141
+https://openalex.org/I27589593 | Lahore School of Economics | PK | education | https://ror.org/0175kt397 | works=1405
+https://openalex.org/I4210096419 | Maison des Sciences sociales et des Humanités - Lyon St-Étienne | FR | facility | https://ror.org/00rawf147 | works=9971
+https://openalex.org/I4210161993 | Laser Scan Engineering (United Kingdom) | GB | company | https://ror.org/05rg8s453 | works=868
+
+## The University of Calgary
+QUERY University of Calgary
+https://openalex.org/I168635309 | University of Calgary | CA | education | https://ror.org/03yjb2x39 | works=196695
+https://openalex.org/I4210109633 | University of Calgary in Qatar | QA | education | https://ror.org/01k999n94 | works=399
+
+## The University of Edinburgh
+QUERY University of Edinburgh
+https://openalex.org/I98677209 | University of Edinburgh | GB | education | https://ror.org/01nrxwf90 | works=279519
+https://openalex.org/I4210158570 | Zhejiang University-University of Edinburgh Institute | CN | education | https://ror.org/04jth1r26 | works=3488
+https://openalex.org/I2802581871 | Edinburgh Cancer Research | GB | facility | https://ror.org/05a7t9b67 | works=5877
+
+## The University of Manchester
+QUERY University of Manchester
+https://openalex.org/I28407311 | University of Manchester | GB | education | https://ror.org/027m9bs27 | works=312088
+https://openalex.org/I179093154 | University of New Hampshire at Manchester | US | education | https://ror.org/04pvpk743 | works=16556
+https://openalex.org/I165678365 | University of Greater Manchester | GB | education | https://ror.org/01t884y44 | works=5412
+https://openalex.org/I2800360054 | University Dental Hospital of Manchester | GB | healthcare | https://ror.org/019bxes45 | works=3043
+
+## The University of New South Wales
+QUERY University of New South Wales
+https://openalex.org/I31746571 | UNSW Sydney | AU | education | https://ror.org/03r8z3t63 | works=271235
+https://openalex.org/I4394709116 | UNSW Canberra | None | education | https://ror.org/0125wpx05 | works=2581
+https://openalex.org/I4210100878 | Australian Federation of Graduate Women New South Wales | AU | other | https://ror.org/014ngq634 | works=1069
+QUERY UNSW Sydney
+https://openalex.org/I31746571 | UNSW Sydney | AU | education | https://ror.org/03r8z3t63 | works=271235
+
+## The University of Sheffield
+QUERY University of Sheffield
+https://openalex.org/I91136226 | University of Sheffield | GB | education | https://ror.org/05krs5044 | works=189519
+
+## The University of Warwick
+QUERY University of Warwick
+https://openalex.org/I39555362 | University of Warwick | GB | education | https://ror.org/01a77tt86 | works=138939
+https://openalex.org/I91023776 | University of Warwick Science Park | GB | archive | https://ror.org/057tdt975 | works=439
+
+## University of Goettingen
+QUERY University of Göttingen
+https://openalex.org/I74656192 | University of Göttingen | DE | education | https://ror.org/01y9bpm73 | works=164982
+https://openalex.org/I4210089959 | University of Applied Sciences and Arts Hildesheim/Holzminden/Göttingen | DE | education | https://ror.org/00f5q5839 | works=1499
+https://openalex.org/I4210109289 | PFH Private University of Applied Sciences | DE | education | https://ror.org/01we8bn75 | works=438
+QUERY University of Gottingen
+QUERY Georg August University of Göttingen
+https://openalex.org/I74656192 | University of Göttingen | DE | education | https://ror.org/01y9bpm73 | works=164982
+
+## University of Tuebingen
+QUERY University of Tübingen
+https://openalex.org/I8087733 | University of Tübingen | DE | education | https://ror.org/03a1kwz48 | works=151723
+https://openalex.org/I4387156290 | Zentrum für Datenverarbeitung | None | facility | https://ror.org/01kkkw551 | works=55
+QUERY University of Tubingen
+QUERY Eberhard Karls University of Tübingen
+https://openalex.org/I8087733 | University of Tübingen | DE | education | https://ror.org/03a1kwz48 | works=151723
+
+## Université Grenoble Alpes
+QUERY Université Grenoble Alpes
+https://openalex.org/I899635006 | Université Grenoble Alpes | FR | education | https://ror.org/02rx3b187 | works=157935
+https://openalex.org/I4210101348 | Centre Inria de l'Université Grenoble Alpes | FR | facility | https://ror.org/00n8d6z93 | works=5732
+https://openalex.org/I4392738279 | Communauté Université Grenoble Alpes | FR | education | https://ror.org/05v727m31 | works=22
+QUERY University Grenoble Alpes
+https://openalex.org/I899635006 | Université Grenoble Alpes | FR | education | https://ror.org/02rx3b187 | works=157935
+https://openalex.org/I4392738279 | Communauté Université Grenoble Alpes | FR | education | https://ror.org/05v727m31 | works=22
+
+## Université Paris Cité
+QUERY Université Paris Cité
+https://openalex.org/I204730241 | Université Paris Cité | FR | education | https://ror.org/05f82e368 | works=356288
+https://openalex.org/I4210091437 | Sorbonne Paris Cité | FR | other | https://ror.org/001z21q04 | works=55439
+QUERY Paris Cité University
+https://openalex.org/I204730241 | Université Paris Cité | FR | education | https://ror.org/05f82e368 | works=356288
+
+## Université libre de Bruxelles (ULB)
+QUERY Université libre de Bruxelles
+https://openalex.org/I132053463 | Université Libre de Bruxelles | BE | education | https://ror.org/01r9htc13 | works=101526
+QUERY Free University of Brussels ULB
+
+## EPFL – École polytechnique fédérale de Lausanne
+QUERY EPFL
+https://openalex.org/I5124864 | École Polytechnique Fédérale de Lausanne | CH | education | https://ror.org/02s376052 | works=162976
+https://openalex.org/I4210100659 | Formation Continue UNIL-EPFL | CH | education | https://ror.org/016fqsx25 | works=154
+QUERY École polytechnique fédérale de Lausanne
+https://openalex.org/I5124864 | École Polytechnique Fédérale de Lausanne | CH | education | https://ror.org/02s376052 | works=162976
+
+## Freie Universitaet Berlin
+QUERY Freie Universität Berlin
+https://openalex.org/I75951250 | Freie Universität Berlin | DE | education | https://ror.org/046ak2485 | works=144959
+QUERY Free University of Berlin
+https://openalex.org/I75951250 | Freie Universität Berlin | DE | education | https://ror.org/046ak2485 | works=144959
+
+## Indian Institute of Technology Bombay (IITB)
+QUERY Indian Institute of Technology Bombay
+https://openalex.org/I162827531 | Indian Institute of Technology Bombay | IN | education | https://ror.org/02qyf5152 | works=65038
+
+## Indian Institute of Technology Delhi (IITD)
+QUERY Indian Institute of Technology Delhi
+https://openalex.org/I68891433 | Indian Institute of Technology Delhi | IN | education | https://ror.org/049tgcd06 | works=71582
+https://openalex.org/I4405254772 | Indian Institute of Technology Delhi Abu Dhabi | AE | education | https://ror.org/027jdar49 | works=0
+
+## King Abdulaziz University (KAU)
+QUERY King Abdulaziz University
+https://openalex.org/I185163786 | King Abdulaziz University | SA | education | https://ror.org/02ma4wv74 | works=95802
+https://openalex.org/I185203018 | King Saud bin Abdulaziz University for Health Sciences | SA | education | https://ror.org/0149jvn88 | works=18312
+
+## Macquarie University (Sydney, Australia)
+QUERY Macquarie University
+https://openalex.org/I99043593 | Macquarie University | AU | education | https://ror.org/01sf06y89 | works=100806
+https://openalex.org/I4405260382 | Australian Astronomical Optics | AU | facility | https://ror.org/03nw31086 | works=0
+
+## Nanyang Technological University, Singapore (NTU Singapore)
+QUERY Nanyang Technological University
+https://openalex.org/I172675005 | Nanyang Technological University | SG | education | https://ror.org/02e7b5302 | works=192604
+
+## National Taiwan University (NTU)
+QUERY National Taiwan University
+https://openalex.org/I16733864 | National Taiwan University | TW | education | https://ror.org/05bqach95 | works=170641
+https://openalex.org/I4210131804 | National Taiwan University Hospital | TW | healthcare | https://ror.org/03nteze27 | works=50877
+https://openalex.org/I154864474 | National Taiwan University of Science and Technology | TW | education | https://ror.org/00q09pe49 | works=38210
+https://openalex.org/I134161618 | National Taiwan Normal University | TW | education | https://ror.org/059dkdx38 | works=24345
+https://openalex.org/I153512688 | National Taiwan Ocean University | TW | education | https://ror.org/03bvvnt49 | works=20225
+
+## National Tsing Hua University - NTHU
+QUERY National Tsing Hua University
+https://openalex.org/I25846049 | National Tsing Hua University | TW | education | https://ror.org/00zdnkx70 | works=72911
+
+## National Yang Ming Chiao Tung University (NYCU Taiwan)
+QUERY National Yang Ming Chiao Tung University
+https://openalex.org/I148366613 | National Yang Ming Chiao Tung University | TW | education | https://ror.org/00se2k293 | works=130450
+https://openalex.org/I4394709121 | Disaster Prevention & Water Environment Research Center | None | education | https://ror.org/01e7m5196 | works=148
+
+## Pohang University of Science And Technology (POSTECH)
+QUERY Pohang University of Science and Technology
+https://openalex.org/I123900574 | Pohang University of Science and Technology | KR | education | https://ror.org/04xysgw12 | works=55272
+QUERY POSTECH
+https://openalex.org/I123900574 | Pohang University of Science and Technology | KR | education | https://ror.org/04xysgw12 | works=55272
+https://openalex.org/I4210148695 | Korea Foundation for Max Planck POSTECH | KR | nonprofit | https://ror.org/04hmt0j25 | works=360
+https://openalex.org/I4387153779 | Max-Planck-POSTECH Center for Complex Phase Material | None | facility | https://ror.org/05267d168 | works=47
+
+## Pontificia Universidad Católica de Chile (UC)
+QUERY Pontificia Universidad Católica de Chile
+https://openalex.org/I162148367 | Pontificia Universidad Católica de Chile | CL | education | https://ror.org/04teye511 | works=81275
+
+## The University of Auckland
+QUERY University of Auckland
+https://openalex.org/I154130895 | University of Auckland | NZ | education | https://ror.org/03b94tp07 | works=141124
+https://openalex.org/I39854758 | Auckland University of Technology | NZ | education | https://ror.org/01zvqw119 | works=34704
+
+## Universidad de Buenos Aires (UBA)
+QUERY Universidad de Buenos Aires
+https://openalex.org/I24354313 | Universidad de Buenos Aires | AR | education | https://ror.org/0081fs513 | works=128792
+https://openalex.org/I3130805194 | Universidad Nacional del Centro de la Provincia de Buenos Aires | AR | education | https://ror.org/011gakh74 | works=8689
+https://openalex.org/I29406707 | Pontificia Universidad Católica Argentina | AR | education | https://ror.org/0422kzb24 | works=7158
+https://openalex.org/I3130568980 | National University of Northwestern Buenos Aires | AR | education | https://ror.org/00c8e6e47 | works=1100
+https://openalex.org/I4387155800 | Universidad de la Ciudad de Buenos Aires | None | education | https://ror.org/00g2qdz89 | works=24
+
+## Universiti Malaya (UM)
+QUERY Universiti Malaya
+https://openalex.org/I33849332 | University of Malaya | MY | education | https://ror.org/00rzspn62 | works=109199
+https://openalex.org/I165932596 | National University of Singapore | SG | education | https://ror.org/01tgyzw49 | works=276389
+QUERY University of Malaya
+https://openalex.org/I33849332 | University of Malaya | MY | education | https://ror.org/00rzspn62 | works=109199
+https://openalex.org/I165932596 | National University of Singapore | SG | education | https://ror.org/01tgyzw49 | works=276389
+
+## Universiti Putra Malaysia (UPM)
+QUERY Universiti Putra Malaysia
+https://openalex.org/I130343225 | Universiti Putra Malaysia | MY | education | https://ror.org/02e91jd64 | works=84525
+
+## Universiti Sains Malaysia (USM)
+QUERY Universiti Sains Malaysia
+https://openalex.org/I139322472 | Universiti Sains Malaysia | MY | education | https://ror.org/02rgb2k63 | works=78795
+https://openalex.org/I4210089400 | Hospital Universiti Sains Malaysia | MY | healthcare | https://ror.org/0090j2029 | works=28548
+https://openalex.org/I112982808 | Universiti Sains Islam Malaysia | MY | education | https://ror.org/020ast312 | works=10820
+https://openalex.org/I157696592 | Universiti Malaysia Terengganu | MY | education | https://ror.org/02474f074 | works=19922
+https://openalex.org/I4210147344 | Malaysia University of Science and Technology | MY | education | https://ror.org/04frcff47 | works=9385
+
+## National Cheng Kung University (NCKU)
+QUERY National Cheng Kung University
+https://openalex.org/I91807558 | National Cheng Kung University | TW | education | https://ror.org/01b8kcc49 | works=98567
+https://openalex.org/I4210158999 | National Cheng Kung University Hospital | TW | healthcare | https://ror.org/04zx3rq17 | works=14561
+
+## Universiti Kebangsaan Malaysia (UKM)
+QUERY Universiti Kebangsaan Malaysia
+https://openalex.org/I885383172 | National University of Malaysia | MY | education | https://ror.org/00bw8d226 | works=89575
+https://openalex.org/I2801594805 | University Kebangsaan Malaysia Medical Centre | MY | healthcare | https://ror.org/01590nj79 | works=12146
+QUERY National University of Malaysia
+https://openalex.org/I885383172 | National University of Malaysia | MY | education | https://ror.org/00bw8d226 | works=89575
+https://openalex.org/I55141112 | National Defence University of Malaysia | MY | education | https://ror.org/00t53pv34 | works=6759
+
+## The Hong Kong University of Science and Technology
+QUERY Hong Kong University of Science and Technology
+https://openalex.org/I200769079 | Hong Kong University of Science and Technology | HK | education | https://ror.org/00q4vv597 | works=93704
+https://openalex.org/I4405261251 | The Hong Kong University of Science and Technology (Guangzhou) | CN | education | https://ror.org/050h0vm43 | works=0
+
+## The University of Hong Kong
+QUERY University of Hong Kong
+https://openalex.org/I889458895 | University of Hong Kong | HK | education | https://ror.org/02zhqgq86 | works=227495
+https://openalex.org/I177725633 | Chinese University of Hong Kong | HK | education | https://ror.org/00t33hh48 | works=195990
+https://openalex.org/I168719708 | City University of Hong Kong | HK | education | https://ror.org/03q8dnn23 | works=115019
+https://openalex.org/I4210116924 | Chinese University of Hong Kong, Shenzhen | CN | education | https://ror.org/02d5ks197 | works=21207
+https://openalex.org/I200769079 | Hong Kong University of Science and Technology | HK | education | https://ror.org/00q4vv597 | works=93704
+
+## University of Munich
+QUERY Ludwig Maximilian University of Munich
+https://openalex.org/I8204097 | Ludwig-Maximilians-Universität München | DE | education | https://ror.org/05591te55 | works=273376
+QUERY Ludwig-Maximilians-Universität München
+https://openalex.org/I8204097 | Ludwig-Maximilians-Universität München | DE | education | https://ror.org/05591te55 | works=273376
+https://openalex.org/I4405254827 | LMU Open Science Center | DE | education | https://ror.org/029e6qe04 | works=0
+https://openalex.org/I4405258533 | Physiologisches Institut | DE | education | https://ror.org/00v8kcx92 | works=0
+https://openalex.org/I4405261922 | Institut für deutsche Kultur und Geschichte Südosteuropas | DE | education | https://ror.org/00a8v8w71 | works=0
+https://openalex.org/I4405258122 | Institut für Chirurgische Forschung | DE | facility | https://ror.org/005506478 | works=0

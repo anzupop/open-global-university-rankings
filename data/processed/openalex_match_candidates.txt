@@ -1,0 +1,91 @@
+
+## Mayo Clinic College of Medicine and Science, Minnesota file openalex_search_Mayo_Clinic_College_of_Medicine_and_Science_Minnesota.json exists True
+
+## NTNU - Norwegian University of Science and Technology file openalex_search_NTNU_Norwegian_University_of_Science_and_Technology.json exists True
+
+## Soochow University (China) file openalex_search_Soochow_University_China_.json exists True
+
+## The Australian National University file openalex_search_The_Australian_National_University.json exists True
+
+## The Chinese University of Hong Kong file openalex_search_The_Chinese_University_of_Hong_Kong.json exists True
+
+## The Hebrew University of Jerusalem file openalex_search_The_Hebrew_University_of_Jerusalem.json exists True
+
+## The Hong Kong Polytechnic University file openalex_search_The_Hong_Kong_Polytechnic_University.json exists True
+
+## The London School of Economics and Political Science file openalex_search_The_London_School_of_Economics_and_Political_Science.json exists True
+
+## The University of Calgary file openalex_search_The_University_of_Calgary.json exists True
+
+## The University of Edinburgh file openalex_search_The_University_of_Edinburgh.json exists True
+
+## The University of Manchester file openalex_search_The_University_of_Manchester.json exists True
+
+## The University of New South Wales file openalex_search_The_University_of_New_South_Wales.json exists True
+
+## The University of Sheffield file openalex_search_The_University_of_Sheffield.json exists True
+
+## The University of Warwick file openalex_search_The_University_of_Warwick.json exists True
+
+## University of Goettingen file openalex_search_University_of_Goettingen.json exists True
+
+## University of Tuebingen file openalex_search_University_of_Tuebingen.json exists True
+
+## Universit茅 Grenoble Alpes file openalex_search_Universit_Grenoble_Alpes.json exists True
+
+## Universit茅 Paris Cit茅 file openalex_search_Universit_Paris_Cit_.json exists True
+
+## Universit茅 libre de Bruxelles (ULB) file openalex_search_Universit_libre_de_Bruxelles_ULB_.json exists True
+
+## EPFL – École polytechnique fédérale de Lausanne file openalex_search_EPFL_cole_polytechnique_f_d_rale_de_Lausanne.json exists True
+
+## Freie Universitaet Berlin file openalex_search_Freie_Universitaet_Berlin.json exists True
+
+## Indian Institute of Technology Bombay (IITB) file openalex_search_Indian_Institute_of_Technology_Bombay_IITB_.json exists True
+
+## Indian Institute of Technology Delhi (IITD) file openalex_search_Indian_Institute_of_Technology_Delhi_IITD_.json exists True
+
+## King Abdulaziz University (KAU) file openalex_search_King_Abdulaziz_University_KAU_.json exists True
+
+## Macquarie University (Sydney, Australia) file openalex_search_Macquarie_University_Sydney_Australia_.json exists True
+
+## Nanyang Technological University, Singapore (NTU Singapore) file openalex_search_Nanyang_Technological_University_Singapore_NTU_Singapore_.json exists True
+
+## National Taiwan University (NTU) file openalex_search_National_Taiwan_University_NTU_.json exists True
+
+## National Tsing Hua University - NTHU file openalex_search_National_Tsing_Hua_University_NTHU.json exists True
+
+## National Yang Ming Chiao Tung University (NYCU Taiwan) file openalex_search_National_Yang_Ming_Chiao_Tung_University_NYCU_Taiwan_.json exists True
+
+## Pohang University of Science And Technology (POSTECH) file openalex_search_Pohang_University_of_Science_And_Technology_POSTECH_.json exists True
+
+## Pontificia Universidad Católica de Chile (UC) file openalex_search_Pontificia_Universidad_Cat_lica_de_Chile_UC_.json exists True
+
+## The University of Auckland file openalex_search_The_University_of_Auckland.json exists True
+
+## Universidad de Buenos Aires (UBA) file openalex_search_Universidad_de_Buenos_Aires_UBA_.json exists True
+
+## Universiti Malaya (UM) file openalex_search_Universiti_Malaya_UM_.json exists True
+
+## Universiti Putra Malaysia (UPM) file openalex_search_Universiti_Putra_Malaysia_UPM_.json exists True
+
+## Universiti Sains Malaysia (USM) file openalex_search_Universiti_Sains_Malaysia_USM_.json exists True
+
+## National Cheng Kung University (NCKU) file openalex_search_National_Cheng_Kung_University_NCKU_.json exists True
+https://openalex.org/I4210158999 | National Cheng Kung University Hospital | TW | healthcare | https://ror.org/04zx3rq17
+
+## Universiti Kebangsaan Malaysia (UKM) file openalex_search_Universiti_Kebangsaan_Malaysia_UKM_.json exists True
+https://openalex.org/I2801594805 | University Kebangsaan Malaysia Medical Centre | MY | healthcare | https://ror.org/01590nj79
+
+## The Hong Kong University of Science and Technology file openalex_search_The_Hong_Kong_University_of_Science_and_Technology.json exists True
+https://openalex.org/I4405261251 | The Hong Kong University of Science and Technology (Guangzhou) | CN | education | https://ror.org/050h0vm43
+
+## The University of Hong Kong file openalex_search_The_University_of_Hong_Kong.json exists True
+https://openalex.org/I4405261251 | The Hong Kong University of Science and Technology (Guangzhou) | CN | education | https://ror.org/050h0vm43
+
+## University of Munich file openalex_search_University_of_Munich.json exists True
+https://openalex.org/I62916508 | Technical University of Munich | DE | education | https://ror.org/02kkvpp62
+https://openalex.org/I8204097 | Ludwig-Maximilians-Universität München | DE | education | https://ror.org/05591te55
+https://openalex.org/I4210144923 | Leibniz-Institute for Food Systems Biology at the Technical University of Munich | DE | facility | https://ror.org/04sy7nb49
+https://openalex.org/I174004417 | Munich University of Applied Sciences | DE | education | https://ror.org/012k1v959
+https://openalex.org/I40527276 | Universität der Bundeswehr München | DE | education | https://ror.org/05kkv3f82
