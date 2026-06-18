@@ -717,13 +717,43 @@ def dedupe_source_entries(entries: Iterable[SourceEntry]) -> list[SourceEntry]:
     return out
 
 
-def build_reference_rank_index(refresh: bool = False) -> dict[str, dict[str, str]]:
+def committed_reference_entries() -> list[SourceEntry]:
+    entries: list[SourceEntry] = []
+    paths = [
+        PROCESSED / "candidate_pool.csv",
+        PROCESSED / "world_universities_research_top200.csv",
+        PROCESSED / "world_universities_academic_comprehensive_top200.csv",
+    ]
+    for path in paths:
+        if not path.exists():
+            continue
+        for row in read_csv(path):
+            names = [
+                row.get("canonical_name", ""),
+                row.get("matched_name", ""),
+                row.get("display_name", ""),
+            ]
+            names.extend(x for x in clean_text(row.get("source_names", "")).split("; ") if x)
+            for name in names:
+                name = clean_text(name)
+                if not name:
+                    continue
+                for source, field in SOURCE_RANK_FIELDS.items():
+                    rank = clean_text(row.get(field, ""))
+                    if rank:
+                        entries.append(SourceEntry(name=name, country=row.get("country_code", ""), source=source, source_rank=rank))
+    return dedupe_source_entries(entries)
+
+
+def build_reference_rank_index(refresh: bool = False, allow_network: bool = False) -> dict[str, dict[str, str]]:
     """Build a conservative name index for display-only published ranks."""
-    source_entries = (
-        fetch_arwu_all(refresh=refresh, rank_limit=None)
-        + fetch_qs_all(refresh=refresh, rank_limit=None)
-        + fetch_usnews_all(refresh=refresh, rank_limit=None)
-    )
+    source_entries = committed_reference_entries()
+    if allow_network:
+        source_entries.extend(
+            fetch_arwu_all(refresh=refresh, rank_limit=None)
+            + fetch_qs_all(refresh=refresh, rank_limit=None)
+            + fetch_usnews_all(refresh=refresh, rank_limit=None)
+        )
     index: dict[str, dict[str, str]] = {}
     owner: dict[tuple[str, str], str] = {}
     for entry in source_entries:
@@ -750,9 +780,10 @@ def enrich_reference_ranks(
     rows: list[dict[str, Any]],
     refresh: bool = False,
     index: dict[str, dict[str, str]] | None = None,
+    allow_network: bool = False,
 ) -> list[dict[str, Any]]:
     if index is None:
-        index = build_reference_rank_index(refresh=refresh)
+        index = build_reference_rank_index(refresh=refresh, allow_network=allow_network)
     enriched: list[dict[str, Any]] = []
     for row in rows:
         out = dict(row)
@@ -918,7 +949,7 @@ def match_candidates(refresh: bool = False) -> list[dict[str, Any]]:
     if manual_path.exists():
         for row in read_csv(manual_path):
             manual[norm_key(row.get("canonical_name", ""))] = row
-    reference_index = build_reference_rank_index(refresh=refresh)
+    reference_index = build_reference_rank_index(refresh=refresh, allow_network=True)
 
     for i, row in enumerate(rows, start=1):
         name = row["canonical_name"]
@@ -950,7 +981,7 @@ def match_candidates(refresh: bool = False) -> list[dict[str, Any]]:
             )
         if i % 25 == 0:
             print(f"matched {i}/{len(rows)}")
-            partial = enrich_reference_ranks(out, refresh=refresh, index=reference_index)
+            partial = enrich_reference_ranks(out, refresh=refresh, index=reference_index, allow_network=True)
             write_csv(
                 out_path,
                 partial,
@@ -969,7 +1000,7 @@ def match_candidates(refresh: bool = False) -> list[dict[str, Any]]:
             )
         time.sleep(SLEEP_SECONDS)
     out = merge_matched_duplicates(out)
-    out = enrich_reference_ranks(out, refresh=refresh, index=reference_index)
+    out = enrich_reference_ranks(out, refresh=refresh, index=reference_index, allow_network=True)
     write_csv(
         out_path,
         out,
