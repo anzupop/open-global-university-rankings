@@ -5,3 +5,6 @@ __pycache__/
 
 # Reproducible HTTP/browser caches. Processed outputs are committed.
 data/raw/
+
+# Generated Pages artifact.
+_site/
