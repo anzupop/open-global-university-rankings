@@ -176,7 +176,6 @@ INDEX_HTML = """<!doctype html>
             <th>Works</th>
             <th>h-index</th>
             <th>Published Rankings</th>
-            <th></th>
           </tr>
         </thead>
         <tbody id="ranking-body"></tbody>
@@ -338,15 +337,30 @@ th {
   color: var(--muted);
   font-size: 12px;
 }
-.toggle {
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--line);
-  background: #fff;
-  color: var(--ink);
+.disclosure {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-top: 4px;
+  border: 0;
+  background: transparent;
+  padding: 0;
   cursor: pointer;
 }
-.toggle[aria-expanded="true"] { background: #eef2f7; }
+.disclosure:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+.triangle {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid var(--muted);
+}
+.disclosure[aria-expanded="true"] .triangle {
+  transform: rotate(90deg);
+}
 .detail-row td {
   background: #fbfcff;
   padding: 0 12px 14px 64px;
@@ -481,6 +495,7 @@ function rowTemplate(row) {
     <td>
       <div class="uni">${escapeHtml(row.name)} ${row.medical ? '<span class="pill">medical</span>' : ''}</div>
       ${aliases ? `<div class="aliases">${aliases}</div>` : ""}
+      <button class="disclosure" type="button" data-toggle="${id}" aria-expanded="${isOpen}" title="Show metric scores" aria-label="Show metric scores"><span class="triangle" aria-hidden="true"></span></button>
       <div class="sub"><a href="${row.openalex}">OpenAlex</a>${row.ror ? ` · <a href="${row.ror}">ROR</a>` : ""}</div>
     </td>
     <td>${row.country}</td>
@@ -488,7 +503,6 @@ function rowTemplate(row) {
     <td>${row.metrics.works2020_2024.toLocaleString()}</td>
     <td>${row.metrics.hIndex.toLocaleString()}</td>
     <td>${rankings}</td>
-    <td><button class="toggle" type="button" data-toggle="${id}" aria-expanded="${isOpen}" title="Show metric scores">${isOpen ? "^" : "v"}</button></td>
   </tr>
   ${isOpen ? detailRow(row) : ""}`;
 }
@@ -503,7 +517,7 @@ function detailRow(row) {
       <span>${escapeHtml(item.description || "")}</span>
     </div>
   `).join("");
-  return `<tr class="detail-row"><td colspan="8"><div class="metrics-grid">${metrics}</div></td></tr>`;
+  return `<tr class="detail-row"><td colspan="7"><div class="metrics-grid">${metrics}</div></td></tr>`;
 }
 
 function fallbackMetricDetails(row) {
