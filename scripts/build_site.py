@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import csv
+import html
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -40,10 +42,77 @@ WINDOWS = [
 DEFAULT_WINDOW_KEY = "2021_2025"
 LEGACY_WINDOW_KEY = "2020_2024"
 
+MOJIBAKE_ENCODINGS = ("gbk", "cp949", "latin1")
+MOJIBAKE_LITERAL_REPLACEMENTS = {
+    "Universit\u0132": "Universit\u00e9",
+    "universit\u0133": "universit\u00e9",
+    "Cit\u0132": "Cit\u00e9",
+    "cit\u0133": "cit\u00e9",
+}
+MOJIBAKE_ADJACENT_REPLACEMENTS = {
+    "\u8305": "\u00e9",
+    "\u8121": "\u00c9",
+    "\u813f": "\u00e0",
+    "\u732b": "\u00e8",
+    "\u83bd": "\u00e7",
+    "\ucc55": "\u00e9",
+    "\ucc54": "\u00c9",
+    "\u0132": "\u00e9",
+    "\u0133": "\u00e9",
+}
+MOJIBAKE_SUSPICIOUS_CHARS = set("\u8305\u8121\u813f\u732b\u83bd\ucc55\ucc54\u0132\u0133\u00c3\u00c2\ufffd")
+
+
+def mojibake_score(text: str) -> int:
+    return sum(text.count(ch) for ch in MOJIBAKE_SUSPICIOUS_CHARS)
+
+
+def repair_mojibake(text: str) -> str:
+    for bad, good in MOJIBAKE_LITERAL_REPLACEMENTS.items():
+        text = text.replace(bad, good)
+    if ";" in text and mojibake_score(text) > 0:
+        return "; ".join(repair_mojibake(part.strip()) for part in text.split(";") if part.strip())
+    best = text
+    best_score = mojibake_score(best)
+    if best_score == 0:
+        return best
+    for encoding in MOJIBAKE_ENCODINGS:
+        try:
+            candidate = text.encode(encoding).decode("utf-8")
+        except UnicodeError:
+            continue
+        for bad, good in MOJIBAKE_LITERAL_REPLACEMENTS.items():
+            candidate = candidate.replace(bad, good)
+        candidate_score = mojibake_score(candidate)
+        if candidate_score < best_score:
+            best = candidate
+            best_score = candidate_score
+    candidate = replace_adjacent_mojibake_chars(best)
+    candidate_score = mojibake_score(candidate)
+    if candidate_score < best_score:
+        best = candidate
+    return best
+
+
+def replace_adjacent_mojibake_chars(text: str) -> str:
+    for bad, good in MOJIBAKE_ADJACENT_REPLACEMENTS.items():
+        pattern = rf"(?<=[A-Za-z]){re.escape(bad)}|{re.escape(bad)}(?=[A-Za-z])"
+        text = re.sub(pattern, good, text)
+    return text
+
+
+def clean_text(value: object) -> str:
+    if value is None:
+        return ""
+    text = html.unescape(str(value))
+    text = repair_mojibake(text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
 
 def read_csv(name: str) -> list[dict[str, str]]:
     with (PROCESSED / name).open("r", encoding="utf-8", newline="") as f:
-        return list(csv.DictReader(f))
+        return [{key: clean_text(value) for key, value in row.items()} for row in csv.DictReader(f)]
 
 
 def write(path: Path, content: str) -> None:

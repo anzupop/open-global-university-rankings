@@ -22,7 +22,7 @@ University of Wollongong,University of Wollongong,Australia,AU,https://openalex.
 Ghent University,Ghent University,Belgium,BE,https://openalex.org/I32597200,https://ror.org/00cv9y106,auto,Ghent University,91,150,104,True,True,True
 KU Leuven,KU Leuven,Belgium,BE,https://openalex.org/I99464096,https://ror.org/05f950310,auto,KU Leuven,76,59,48,True,True,True
 Université catholique de Louvain (UCLouvain),UCLouvain,Belgium,BE,https://openalex.org/I95674353,https://ror.org/02495e989,auto,Université catholique de Louvain (UCLouvain),,196,,False,True,False
-Universit茅 libre de Bruxelles (ULB),Université Libre de Bruxelles,Belgium,BE,https://openalex.org/I132053463,https://ror.org/01r9htc13,manual,Universit茅 libre de Bruxelles (ULB),101-150,248,275,True,False,False
+Université libre de Bruxelles (ULB),Université Libre de Bruxelles,Belgium,BE,https://openalex.org/I132053463,https://ror.org/01r9htc13,manual,Université libre de Bruxelles (ULB),101-150,248,275,True,False,False
 Universidade de São Paulo,Universidade de São Paulo,Brazil,BR,https://openalex.org/I17974374,https://ror.org/036rp1748,auto,Universidade de São Paulo; University of Sao Paulo,101-150,133,134,True,True,True
 McGill University,McGill University,Canada,CA,https://openalex.org/I5023651,https://ror.org/01pxwe438,auto,McGill University,76,30,68,True,True,True
 McMaster University,McMaster University,Canada,CA,https://openalex.org/I98251732,https://ror.org/02fa3aq29,auto,McMaster University,101-150,174,150,True,True,True
@@ -113,8 +113,8 @@ Paris-Saclay University,Université Paris-Saclay,France,FR,https://openalex.org/
 Sorbonne University,Sorbonne Université,France,FR,https://openalex.org/I39804081,https://ror.org/02en5vm52,auto,Sorbonne Universite; Sorbonne University,43,73,67,True,True,True
 University of Montpellier,Université de Montpellier,France,FR,https://openalex.org/I19894307,https://ror.org/051escj72,auto,University of Montpellier,151-200,473,259,True,False,False
 University of Strasbourg,Université de Strasbourg,France,FR,https://openalex.org/I68947357,https://ror.org/00pg6eq24,auto,University of Strasbourg,101-150,456,331,True,False,False
-Universit茅 Grenoble Alpes,Université Grenoble Alpes,France,FR,https://openalex.org/I899635006,https://ror.org/02rx3b187,manual,Universit茅 Grenoble Alpes,151-200,387,320,True,False,False
-Universit茅 Paris Cit茅,Université Paris Cité,France,FR,https://openalex.org/I204730241,https://ror.org/05f82e368,manual,Université de Paris; Universit茅 Paris Cit茅,60,303,61,True,False,True
+Université Grenoble Alpes,Université Grenoble Alpes,France,FR,https://openalex.org/I899635006,https://ror.org/02rx3b187,manual,Université Grenoble Alpes,151-200,387,320,True,False,False
+Université Paris Cité,Université Paris Cité,France,FR,https://openalex.org/I204730241,https://ror.org/05f82e368,manual,Université de Paris; Université Paris Cité,60,303,61,True,False,True
 Cardiff University,Cardiff University,United Kingdom,GB,https://openalex.org/I79510175,https://ror.org/03kk7td41,auto,Cardiff University,201-300,179,211,False,True,False
 Durham University,Durham University,United Kingdom,GB,https://openalex.org/I190082696,https://ror.org/01v29qb04,auto,Durham University,201-300,85,270,False,True,False
 Imperial College London,Imperial College London,United Kingdom,GB,https://openalex.org/I47508984,https://ror.org/041kmwe10,auto,Imperial College London,26,2,14,True,True,True

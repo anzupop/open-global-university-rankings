@@ -31,11 +31,11 @@
 
 ## University of Tuebingen file openalex_search_University_of_Tuebingen.json exists True
 
-## Universit茅 Grenoble Alpes file openalex_search_Universit_Grenoble_Alpes.json exists True
+## Université Grenoble Alpes file openalex_search_Universit_Grenoble_Alpes.json exists True
 
-## Universit茅 Paris Cit茅 file openalex_search_Universit_Paris_Cit_.json exists True
+## Université Paris Cité file openalex_search_Universit_Paris_Cit_.json exists True
 
-## Universit茅 libre de Bruxelles (ULB) file openalex_search_Universit_libre_de_Bruxelles_ULB_.json exists True
+## Université libre de Bruxelles (ULB) file openalex_search_Universit_libre_de_Bruxelles_ULB_.json exists True
 
 ## EPFL – École polytechnique fédérale de Lausanne file openalex_search_EPFL_cole_polytechnique_f_d_rale_de_Lausanne.json exists True
 

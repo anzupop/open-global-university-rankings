@@ -335,12 +335,12 @@ def write_csv(path: Path, rows: list[dict[str, Any]], fieldnames: list[str]) -> 
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
         for row in rows:
-            writer.writerow(row)
+            writer.writerow({key: clean_text(value) if isinstance(value, str) else value for key, value in row.items()})
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8", newline="") as f:
-        return list(csv.DictReader(f))
+        return [{key: clean_text(value) for key, value in row.items()} for row in csv.DictReader(f)]
 
 
 def download_binary(url: str, path: Path, *, refresh: bool = False, timeout: int = 120) -> None:
@@ -397,8 +397,68 @@ def clean_text(value: Any) -> str:
     if value is None:
         return ""
     text = html.unescape(str(value))
+    text = repair_mojibake(text)
     text = re.sub(r"\s+", " ", text)
     return text.strip()
+
+
+MOJIBAKE_ENCODINGS = ("gbk", "cp949", "latin1")
+MOJIBAKE_LITERAL_REPLACEMENTS = {
+    "Universit\u0132": "Universit\u00e9",
+    "universit\u0133": "universit\u00e9",
+    "Cit\u0132": "Cit\u00e9",
+    "cit\u0133": "cit\u00e9",
+}
+MOJIBAKE_ADJACENT_REPLACEMENTS = {
+    "\u8305": "\u00e9",
+    "\u8121": "\u00c9",
+    "\u813f": "\u00e0",
+    "\u732b": "\u00e8",
+    "\u83bd": "\u00e7",
+    "\ucc55": "\u00e9",
+    "\ucc54": "\u00c9",
+    "\u0132": "\u00e9",
+    "\u0133": "\u00e9",
+}
+MOJIBAKE_SUSPICIOUS_CHARS = set("\u8305\u8121\u813f\u732b\u83bd\ucc55\ucc54\u0132\u0133\u00c3\u00c2\ufffd")
+
+
+def mojibake_score(text: str) -> int:
+    return sum(text.count(ch) for ch in MOJIBAKE_SUSPICIOUS_CHARS)
+
+
+def repair_mojibake(text: str) -> str:
+    for bad, good in MOJIBAKE_LITERAL_REPLACEMENTS.items():
+        text = text.replace(bad, good)
+    if ";" in text and mojibake_score(text) > 0:
+        return "; ".join(repair_mojibake(part.strip()) for part in text.split(";") if part.strip())
+    best = text
+    best_score = mojibake_score(best)
+    if best_score == 0:
+        return best
+    for encoding in MOJIBAKE_ENCODINGS:
+        try:
+            candidate = text.encode(encoding).decode("utf-8")
+        except UnicodeError:
+            continue
+        for bad, good in MOJIBAKE_LITERAL_REPLACEMENTS.items():
+            candidate = candidate.replace(bad, good)
+        candidate_score = mojibake_score(candidate)
+        if candidate_score < best_score:
+            best = candidate
+            best_score = candidate_score
+    candidate = replace_adjacent_mojibake_chars(best)
+    candidate_score = mojibake_score(candidate)
+    if candidate_score < best_score:
+        best = candidate
+    return best
+
+
+def replace_adjacent_mojibake_chars(text: str) -> str:
+    for bad, good in MOJIBAKE_ADJACENT_REPLACEMENTS.items():
+        pattern = rf"(?<=[A-Za-z]){re.escape(bad)}|{re.escape(bad)}(?=[A-Za-z])"
+        text = re.sub(pattern, good, text)
+    return text
 
 
 def safe_log_text(value: Any) -> str:
@@ -1639,6 +1699,7 @@ def score_rankings(window: MetricWindow | None = None) -> tuple[list[dict[str, A
             row["window_end"] = window.end
     rows = enrich_candidate_metadata(rows)
     rows = enrich_reference_ranks(rows)
+    write_csv(PROCESSED / metrics_filename(window), rows, metrics_fieldnames())
     score_cols: dict[str, dict[int, float]] = {}
     for spec in METRIC_SPECS:
         score_cols[spec["score"]] = winsorized_scores(rows, spec["source"], log=bool(spec["log"]))
