@@ -1,6 +1,9 @@
 name: Rebuild Data and Deploy
 
 on:
+  schedule:
+    # Monthly refresh: 03:17 UTC on the first day of each month (11:17 Singapore time).
+    - cron: "17 3 1 * *"
   workflow_dispatch:
     inputs:
       force_metrics:
@@ -51,6 +54,10 @@ jobs:
 
       - name: Rebuild OpenAlex metrics and rankings
         run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            python scripts/build_rankings.py --metrics-heavy --force-metrics --score
+            exit 0
+          fi
           WINDOW_ARG=""
           if [ "${{ inputs.window }}" != "all" ]; then
             WINDOW_ARG="--window ${{ inputs.window }}"
